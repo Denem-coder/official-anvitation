@@ -1,5 +1,21 @@
 import { useState, useEffect } from 'react';
 import logo from '../assets/img/navbar-img/anvitation-logo.png';
+
+import serviceWedding from '../assets/img/services-img/service-1.png';
+import serviceBirthday from '../assets/img/services-img/service-2.png';
+import serviceSouvenirs from '../assets/img/services-img/service-3.png';
+import serviceBaptismal from '../assets/img/services-img/service-2.png';
+
+import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
+import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
+import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
+import work4 from '../assets/img/gallery-img/wedding-invitation-4.png';
+
+import package1 from '../assets/img/services-img/service-1.png';
+import package2 from '../assets/img/services-img/service-2.png';
+import package3 from '../assets/img/services-img/service-3.png';
+import package4 from '../assets/img/services-img/service-1.png';
+
 import { Link, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { useCart } from '../context/CartContext';
@@ -9,8 +25,87 @@ function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('');
+  const [mobileDropdown, setMobileDropdown] = useState(null);
+
   const location = useLocation();
   const { cart } = useCart();
+
+  const servicesMenu = [
+    {
+      label: 'Wedding Invitations',
+      desc: 'Elegant and timeless wedding designs',
+      to: '/services/wedding-invitations',
+      img: serviceWedding,
+    },
+    {
+      label: 'Birthday Invitations',
+      desc: 'Fun and creative birthday invitation styles',
+      to: '/services/birthday-invitations',
+      img: serviceBirthday,
+    },
+    {
+      label: 'Baptismal Invitations',
+      desc: 'Soft and meaningful baptismal themes',
+      to: '/services/baptismal-invitations',
+      img: serviceBaptismal,
+    },
+    {
+      label: 'Souvenirs',
+      desc: 'Memorable keepsakes for your guests',
+      to: '/services/souvenirs',
+      img: serviceSouvenirs,
+    },
+  ];
+
+  const packagesMenu = [
+    {
+      label: 'Wedding Packages',
+      desc: 'Curated bundles for your big day',
+      to: '/packages/wedding',
+      img: package1,
+    },
+    {
+      label: 'Birthday Packages',
+      desc: 'Affordable party-ready invitation sets',
+      to: '/packages/birthday',
+      img: package2,
+    },
+    {
+      label: 'Baptismal Packages',
+      desc: 'Thoughtfully designed baptismal bundles',
+      to: '/packages/baptismal',
+      img: package3,
+    },
+    {
+      label: 'Souvenir Packages',
+      desc: 'Bundled keepsakes for special events',
+      to: '/packages/souvenirs',
+      img: package4,
+    },
+  ];
+
+  const worksMenu = [
+    {
+      label: 'Wedding Samples',
+      to: '/gallery',
+      img: work1,
+    },
+    {
+      label: 'Birthday Samples',
+      to: '/gallery',
+      img: work2,
+    },
+    {
+      label: 'Baptismal Samples',
+      to: '/gallery',
+      img: work3,
+    },
+    {
+      label: 'Souvenir Samples',
+      to: '/gallery',
+      img: work4,
+    },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,10 +156,50 @@ function Navbar() {
      hover:text-orange-500
      after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
      after:bg-orange-500 after:transition-all after:duration-300
-     ${activeSection === section
-        ? 'text-orange-500 after:w-full'
-        : 'text-gray-800 after:w-0 hover:after:w-full'
-      }`;
+     ${
+       activeSection === section
+         ? 'text-orange-500 after:w-full'
+         : 'text-gray-800 after:w-0 hover:after:w-full'
+     }`;
+
+  const desktopTriggerClass =
+    'relative font-semibold tracking-wide text-gray-800 transition-all duration-300 hover:text-orange-500 after:content-[\'\'] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-orange-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer';
+
+  const toggleMobileDropdown = (menu) => {
+    setMobileDropdown((prev) => (prev === menu ? null : menu));
+  };
+
+  const closeAllMenus = () => {
+    setIsOpen(false);
+    setMobileDropdown(null);
+  };
+
+  const MegaMenuCard = ({ item, compact = false, onClick }) => (
+    <Link
+      to={item.to}
+      onClick={onClick}
+      className="group block rounded-2xl p-2 transition hover:bg-orange-50"
+    >
+      <div className="overflow-hidden rounded-2xl">
+        <img
+          src={item.img}
+          alt={item.label}
+          className={`w-full object-cover transition duration-300 group-hover:scale-105 ${
+            compact ? 'h-24' : 'h-40'
+          }`}
+        />
+      </div>
+
+      <div className="mt-3">
+        <p className="font-semibold text-gray-800 transition group-hover:text-orange-500">
+          {item.label}
+        </p>
+        {'desc' in item && item.desc && (
+          <p className="mt-1 text-sm text-gray-500">{item.desc}</p>
+        )}
+      </div>
+    </Link>
+  );
 
   return (
     <nav
@@ -73,26 +208,105 @@ function Navbar() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3">
-        <div className="flex items-center justify-between rounded-2xl border border-white/40 bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-5 py-3">
-          
+        <div className="relative flex items-center justify-between rounded-2xl border border-white/40 bg-white/70 px-5 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl">
           {/* Logo */}
           <Link
             to="/"
             className="flex items-center gap-2 transition-transform duration-300 hover:scale-105"
-            onClick={() => setIsOpen(false)}
+            onClick={closeAllMenus}
           >
             <img src={logo} alt="Anvitation Logo" className="h-11 w-auto object-contain" />
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <HashLink smooth to="/#hero" className={navLinkClass('hero')}>Home</HashLink>
-            <HashLink smooth to="/#services" className={navLinkClass('services')}>Services</HashLink>
-            <HashLink smooth to="/#packages" className={navLinkClass('packages')}>Packages</HashLink>
-            <HashLink smooth to="/#gallery" className={navLinkClass('gallery')}>Our Works</HashLink>
-            <HashLink smooth to="/#reviews" className={navLinkClass('reviews')}>Reviews</HashLink>
-            <HashLink smooth to="/#faqs" className={navLinkClass('faqs')}>FAQs</HashLink>
-            <HashLink smooth to="/#contact" className={navLinkClass('contact')}>Contact</HashLink>
+            <HashLink smooth to="/#hero" className={navLinkClass('hero')}>
+              Home
+            </HashLink>
+
+            {/* Services Mega Menu */}
+            <div className="group">
+              <div className={desktopTriggerClass}>Services</div>
+
+              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                  <div className="mb-4">
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                      Services
+                    </p>
+                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                      Explore our categories
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4">
+                    {servicesMenu.map((item) => (
+                      <MegaMenuCard key={item.label} item={item} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Packages Mega Menu */}
+            <div className="group">
+              <div className={desktopTriggerClass}>Packages</div>
+
+              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                  <div className="mb-4">
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                      Packages
+                    </p>
+                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                      Choose a bundle that fits your event
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4">
+                    {packagesMenu.map((item) => (
+                      <MegaMenuCard key={item.label} item={item} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Our Works Mega Menu */}
+            <div className="group">
+              <div className={desktopTriggerClass}>Our Works</div>
+
+              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                  <div className="mb-4">
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                      Our Works
+                    </p>
+                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                      Browse sample products
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4">
+                    {worksMenu.map((item) => (
+                      <MegaMenuCard key={item.label} item={item} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <HashLink smooth to="/#reviews" className={navLinkClass('reviews')}>
+              Reviews
+            </HashLink>
+
+            <HashLink smooth to="/#faqs" className={navLinkClass('faqs')}>
+              FAQs
+            </HashLink>
+
+            <HashLink smooth to="/#contact" className={navLinkClass('contact')}>
+              Contact
+            </HashLink>
 
             {/* Desktop Cart */}
             <Link
@@ -130,7 +344,7 @@ function Navbar() {
               to="/cart"
               className="relative flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
               aria-label="Cart"
-              onClick={() => setIsOpen(false)}
+              onClick={closeAllMenus}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -189,52 +403,117 @@ function Navbar() {
         {/* Mobile Menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isOpen ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0'
+            isOpen ? 'max-h-[1200px] opacity-100 mt-3' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="rounded-3xl border border-white/50 bg-white/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] px-4 py-4">
-            
+          <div className="rounded-3xl border border-white/50 bg-white/95 px-4 py-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
             <div className="flex flex-col gap-2">
               <HashLink
                 smooth
                 to="/#hero"
-                onClick={() => setIsOpen(false)}
+                onClick={closeAllMenus}
                 className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
               >
                 Home
               </HashLink>
 
-              <HashLink
-                smooth
-                to="/#services"
-                onClick={() => setIsOpen(false)}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-              >
-                Services
-              </HashLink>
+              {/* Mobile Services */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleMobileDropdown('services')}
+                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                >
+                  <span>Services</span>
+                  <span className={`transition ${mobileDropdown === 'services' ? 'rotate-180' : ''}`}>
+                    ⌄
+                  </span>
+                </button>
 
-              <HashLink
-                smooth
-                to="/#packages"
-                onClick={() => setIsOpen(false)}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-              >
-                Packages
-              </HashLink>
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    mobileDropdown === 'services' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-3 px-2">
+                    {servicesMenu.map((item) => (
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-              <HashLink
-                smooth
-                to="/#gallery"
-                onClick={() => setIsOpen(false)}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-              >
-                Our Works
-              </HashLink>
+              {/* Mobile Packages */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleMobileDropdown('packages')}
+                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                >
+                  <span>Packages</span>
+                  <span className={`transition ${mobileDropdown === 'packages' ? 'rotate-180' : ''}`}>
+                    ⌄
+                  </span>
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    mobileDropdown === 'packages' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-3 px-2">
+                    {packagesMenu.map((item) => (
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Our Works */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleMobileDropdown('works')}
+                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                >
+                  <span>Our Works</span>
+                  <span className={`transition ${mobileDropdown === 'works' ? 'rotate-180' : ''}`}>
+                    ⌄
+                  </span>
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    mobileDropdown === 'works' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-3 px-2">
+                    {worksMenu.map((item) => (
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               <HashLink
                 smooth
                 to="/#reviews"
-                onClick={() => setIsOpen(false)}
+                onClick={closeAllMenus}
                 className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
               >
                 Reviews
@@ -243,7 +522,7 @@ function Navbar() {
               <HashLink
                 smooth
                 to="/#faqs"
-                onClick={() => setIsOpen(false)}
+                onClick={closeAllMenus}
                 className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
               >
                 FAQs
@@ -254,7 +533,7 @@ function Navbar() {
               <HashLink
                 smooth
                 to="/#contact"
-                onClick={() => setIsOpen(false)}
+                onClick={closeAllMenus}
                 className="w-full rounded-2xl bg-orange-500 px-4 py-3 text-center font-semibold text-white shadow-md transition hover:bg-orange-600"
               >
                 Contact Us

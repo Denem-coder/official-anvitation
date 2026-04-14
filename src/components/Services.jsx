@@ -1,31 +1,35 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
 
-import 'swiper/css/bundle'
 
 import { Link } from 'react-router-dom'
 
-import service1 from '../assets/img/services-img/service-1.png'
-import service2 from '../assets/img/services-img/service-2.png'
-import service3 from '../assets/img/services-img/service-3.png'
+import wedding from '../assets/img/services-img/service-1.png'
+import baptismal from '../assets/img/services-img/service-2.png'
+import birthday from '../assets/img/services-img/service-3.png'
+import souvenirs from '../assets/img/services-img/service-3.png'
+import BackButton from '../components/BackButton'
 
-const services = [
+
+const categories = [
   {
-    img: service1,
-    title: 'Wedding Invitations',
-    desc: 'Luxury and elegant designs',
+    img: wedding,
+    title: 'Wedding',
     link: '/services/wedding-invitations',
   },
   {
-    img: service2,
-    title: 'Birthday Invitations',
-    desc: 'Fun and creative styles',
+    img: baptismal,
+    title: 'Baptismal',
+    link: '/services/baptismal-invitations',
+  },
+  {
+    img: birthday,
+    title: 'Birthday',
     link: '/services/birthday-invitations',
   },
   {
-    img: service3,
+    img: souvenirs,
     title: 'Souvenirs',
-    desc: 'Memorable keepsakes',
     link: '/services/souvenirs',
   },
 ]
@@ -36,62 +40,58 @@ function Services() {
       id="services"
       className="bg-gradient-to-b from-orange-100 to-white flex flex-col items-center justify-center text-center p-6 pt-20"
     >
-      <h2 className="text-3xl font-bold mb-10 text-orange-600">
-        Our Services
+      {/* TITLE */}
+      <h2 className="text-2xl font-bold mb-10 text-orange-600">
+        Explore Categories
       </h2>
 
+      {/* SWIPER */}
       <div className="w-full max-w-6xl">
         <Swiper
-          modules={[Autoplay]}
-          spaceBetween={20}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          loop={false}
+          spaceBetween={12}
+          slidesPerView={2.3} // 👈 mobile: shows ~2.5 cards
           grabCursor={true}
+          loop={false}
           breakpoints={{
-            0: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            640: { slidesPerView: 2.5 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
           }}
         >
-          {services.map((service, index) => (
+          {categories.map((category, index) => (
             <SwiperSlide key={index}>
-              <div className="shadow-xl rounded-2xl bg-gray-100 overflow-hidden h-full flex flex-col">
-                <div className="relative">
+              <Link to={category.link}>
+                
+                <div className="relative aspect-square rounded-xl overflow-hidden shadow-md group">
+                  
+                  {/* IMAGE */}
                   <img
-                    src={service.img}
-                    alt={service.title}
-                    className="w-full h-56 object-cover"
+                    src={category.img}
+                    alt={category.title}
+                    className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                   />
 
-                  <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded-full">
-                    Popular
-                  </span>
+                  {/* OVERLAY */}
+                  <div className="absolute inset-0 flex items-end justify-center pb-4 bg-gradient-to-t from-black/70 to-transparent">
+                    
+                    <h3 className="text-white text-sm md:text-lg font-semibold">
+                      {category.title}
+                    </h3>
+
+                  </div>
+
                 </div>
 
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-xl font-semibold">
-                    {service.title}
-                  </h3>
-                  <p className="mb-4">{service.desc}</p>
-
-                  <Link
-                    to={service.link}
-                    className="mt-auto inline-block bg-orange-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-600 transition"
-                  >
-                    View Samples
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
+      {/* VIEW ALL BUTTON */}
       <Link
         to="/services"
-        className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-2xl hover:scale-110 transition hover:bg-orange-400 hover:text-white"
+        className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-xl hover:scale-105 transition hover:bg-orange-500 hover:text-white"
       >
         View All
       </Link>

@@ -4,30 +4,15 @@ function BackButton() {
   const navigate = useNavigate()
 
   return (
-    <button
-      onClick={() => {
-        if (window.history.length > 1) {
-          navigate(-1)
-        } else {
-          navigate('/services')
-        }
-      }}
-      className="flex items-center gap-1 text-gray-600 hover:text-black text-sm transition"
+    <div
+      onClick={() => navigate(-1)}
+      className="flex items-center gap-2 cursor-pointer 
+      text-gray-600 hover:text-orange-500 
+      transition hover:-translate-x-1"
     >
-      {/* Icon */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-4 h-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-      </svg>
-
-      {/* Text */}
-      <span>Back</span>
-    </button>
+      <span className="text-base opacity-70">{'<'}</span>
+      <span className="text-sm font-medium">Back</span>
+    </div>
   )
 }
 
