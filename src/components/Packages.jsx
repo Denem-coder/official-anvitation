@@ -2,35 +2,33 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css/bundle'
 
 import { Link } from 'react-router-dom'
-import { useCart } from '../context/CartContext'
 
 import service1 from '../assets/img/services-img/service-1.png'
 import service2 from '../assets/img/services-img/service-2.png'
 import service3 from '../assets/img/services-img/service-3.png'
-import bgimg from '../assets/img/hero-img/bg-img.png'
-
 
 const packages = [
   {
     img: service1,
-    title: 'Package A',
-    desc: 'Paddle fan invitation with 5R rectangular pull-out envelope',
+    title: 'Wedding Packages',
+    desc: 'Elegant invites & souvenirs for your big day.',
+    link: '/packages/wedding',
   },
   {
     img: service2,
-    title: 'Package B',
-    desc: 'Fun and creative styles',
+    title: 'Birthday Packages',
+    desc: 'Creative invites & souvenirs for unforgettable birthdays.',
+    link: '/packages/birthday',
   },
   {
     img: service3,
-    title: 'Package C',
-    desc: 'Memorable keepsakes',
+    title: 'Souvenir Packages',
+    desc: 'Memorable souvenirs for every special occasion.',
+    link: '/packages/souvenirs',
   },
 ]
 
 function Packages() {
-  const { addToCart } = useCart()
-
   return (
     <section
       id="packages"
@@ -69,12 +67,12 @@ function Packages() {
                     {item.desc}
                   </p>
 
-                  <button
-                      onClick={() => addToCart(item)}
-                      className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full hover:scale-105 transition"
-                    >
-                      Add to Cart
-                  </button>
+                  <Link
+                    to={item.link}
+                    className="mt-4 inline-block bg-orange-500 text-white px-4 py-2 rounded-full hover:scale-105 transition"
+                  >
+                    View Packages
+                  </Link>
                 </div>
               </div>
             </SwiperSlide>

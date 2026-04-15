@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================= ANIMATIONS ================= */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -17,6 +19,7 @@
   animation: fadeInUp 1s ease-out forwards;
 }
 
+/* Floating */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -28,4 +31,52 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* ================= CONTINUOUS SCROLL (FIXED) ================= */
+
+/* IMPORTANT: uses 1/3 width instead of 1/2 to prevent blank spaces */
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-33.333% - 5.33px));
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(calc(-33.333% - 5.33px));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Desktop (smooth + premium) */
+.animate-scroll-left {
+  animation: marquee-left 28s linear infinite;
+}
+
+.animate-scroll-right {
+  animation: marquee-right 28s linear infinite;
+}
+
+/* Pause on hover (desktop only) */
+.animate-scroll-left:hover,
+.animate-scroll-right:hover {
+  animation-play-state: paused;
+}
+
+/* Mobile (faster for engagement) */
+@media (max-width: 768px) {
+  .animate-scroll-left {
+    animation: marquee-left 20s linear infinite;
+  }
+
+  .animate-scroll-right {
+    animation: marquee-right 20s linear infinite;
+  }
 }

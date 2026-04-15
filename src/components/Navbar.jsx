@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import logo from '../assets/img/navbar-img/anvitation-logo.png';
 
 import serviceWedding from '../assets/img/services-img/service-1.png';
@@ -6,10 +6,10 @@ import serviceBirthday from '../assets/img/services-img/service-2.png';
 import serviceSouvenirs from '../assets/img/services-img/service-3.png';
 import serviceBaptismal from '../assets/img/services-img/service-2.png';
 
-import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
-import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
-import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
-import work4 from '../assets/img/gallery-img/wedding-invitation-4.png';
+import work1 from '../assets/img/gallery-img/wedding-invitation-8.png';
+import work2 from '../assets/img/gallery-img/birthday-invitation-1.png';
+import work3 from '../assets/img/gallery-img/baptismal-invitation-1.png';
+import work4 from '../assets/img/gallery-img/souvenir-3.png';
 
 import package1 from '../assets/img/services-img/service-1.png';
 import package2 from '../assets/img/services-img/service-2.png';
@@ -26,6 +26,9 @@ function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('');
   const [mobileDropdown, setMobileDropdown] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
+
+  const closeTimeout = useRef(null);
 
   const location = useLocation();
   const { cart } = useCart();
@@ -151,19 +154,56 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
 
-  const navLinkClass = (section) =>
-    `relative font-semibold tracking-wide transition-all duration-300
-     hover:text-orange-500
-     after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-     after:bg-orange-500 after:transition-all after:duration-300
-     ${
-       activeSection === section
-         ? 'text-orange-500 after:w-full'
-         : 'text-gray-800 after:w-0 hover:after:w-full'
-     }`;
+  useEffect(() => {
+    return () => {
+      if (closeTimeout.current) {
+        clearTimeout(closeTimeout.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  const handleMenuEnter = (menuName) => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+    }
+    setActiveMenu(menuName);
+  };
+
+  const handleMenuLeave = () => {
+    closeTimeout.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 250);
+  };
+
+  const navLinkClass = (section, path = null) => {
+    const isActive =
+      (path && location.pathname === path) || activeSection === section;
+
+    return `relative font-semibold tracking-wide transition-all duration-300
+      hover:text-orange-500
+      after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
+      after:bg-orange-500 after:transition-all after:duration-300
+      ${
+        isActive
+          ? 'text-orange-500 after:w-full'
+          : 'text-gray-800 after:w-0 hover:after:w-full'
+      }`;
+  };
 
   const desktopTriggerClass =
-    'relative font-semibold tracking-wide text-gray-800 transition-all duration-300 hover:text-orange-500 after:content-[\'\'] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-orange-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer';
+    "relative font-semibold tracking-wide text-gray-800 transition-all duration-300 hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-orange-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer";
 
   const toggleMobileDropdown = (menu) => {
     setMobileDropdown((prev) => (prev === menu ? null : menu));
@@ -172,6 +212,7 @@ function Navbar() {
   const closeAllMenus = () => {
     setIsOpen(false);
     setMobileDropdown(null);
+    setActiveMenu(null);
   };
 
   const MegaMenuCard = ({ item, compact = false, onClick }) => (
@@ -201,6 +242,30 @@ function Navbar() {
     </Link>
   );
 
+  const DropdownSeeAllButton = ({ to }) => (
+    <div className="mt-6 flex justify-center border-t border-gray-200 pt-5">
+      <Link
+        to={to}
+        onClick={closeAllMenus}
+        className="inline-flex items-center rounded-full bg-orange-500 px-6 py-2.5 font-semibold text-white transition hover:bg-orange-600"
+      >
+        See All
+      </Link>
+    </div>
+  );
+
+  const MobileSeeAllButton = ({ to }) => (
+    <div className="mt-4 px-2">
+      <Link
+        to={to}
+        onClick={closeAllMenus}
+        className="block w-full rounded-full bg-orange-500 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-orange-600"
+      >
+        See All
+      </Link>
+    </div>
+  );
+
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
@@ -209,7 +274,6 @@ function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3">
         <div className="relative flex items-center justify-between rounded-2xl border border-white/40 bg-white/70 px-5 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center gap-2 transition-transform duration-300 hover:scale-105"
@@ -218,79 +282,120 @@ function Navbar() {
             <img src={logo} alt="Anvitation Logo" className="h-11 w-auto object-contain" />
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <HashLink smooth to="/#hero" className={navLinkClass('hero')}>
+            <HashLink smooth to="/#hero" className={navLinkClass('hero', '/')}>
               Home
             </HashLink>
 
-            {/* Services Mega Menu */}
-            <div className="group">
+            {/* Services */}
+            <div
+              className="static"
+              onMouseEnter={() => handleMenuEnter('services')}
+              onMouseLeave={handleMenuLeave}
+            >
               <div className={desktopTriggerClass}>Services</div>
 
-              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                  <div className="mb-4">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                      Services
-                    </p>
-                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                      Explore our categories
-                    </h3>
-                  </div>
+              <div
+                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
+                  activeMenu === 'services'
+                    ? 'visible opacity-100'
+                    : 'invisible opacity-0 pointer-events-none'
+                }`}
+              >
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                    <div className="mb-4">
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        Services
+                      </p>
+                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                        Explore our categories
+                      </h3>
+                    </div>
 
-                  <div className="grid grid-cols-4 gap-4">
-                    {servicesMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} />
-                    ))}
+                    <div className="grid grid-cols-4 gap-4">
+                      {servicesMenu.map((item) => (
+                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
+                      ))}
+                    </div>
+
+                    <DropdownSeeAllButton to="/services" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Packages Mega Menu */}
-            <div className="group">
+            {/* Packages */}
+            <div
+              className="static"
+              onMouseEnter={() => handleMenuEnter('packages')}
+              onMouseLeave={handleMenuLeave}
+            >
               <div className={desktopTriggerClass}>Packages</div>
 
-              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                  <div className="mb-4">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                      Packages
-                    </p>
-                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                      Choose a bundle that fits your event
-                    </h3>
-                  </div>
+              <div
+                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
+                  activeMenu === 'packages'
+                    ? 'visible opacity-100'
+                    : 'invisible opacity-0 pointer-events-none'
+                }`}
+              >
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                    <div className="mb-4">
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        Packages
+                      </p>
+                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                        Choose a bundle that fits your event
+                      </h3>
+                    </div>
 
-                  <div className="grid grid-cols-4 gap-4">
-                    {packagesMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} />
-                    ))}
+                    <div className="grid grid-cols-4 gap-4">
+                      {packagesMenu.map((item) => (
+                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
+                      ))}
+                    </div>
+
+                    <DropdownSeeAllButton to="/packages" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Our Works Mega Menu */}
-            <div className="group">
+            {/* Our Works */}
+            <div
+              className="static"
+              onMouseEnter={() => handleMenuEnter('works')}
+              onMouseLeave={handleMenuLeave}
+            >
               <div className={desktopTriggerClass}>Our Works</div>
 
-              <div className="invisible absolute left-1/2 top-full z-50 mt-5 w-screen max-w-[1000px] -translate-x-1/2 px-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                  <div className="mb-4">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                      Our Works
-                    </p>
-                    <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                      Browse sample products
-                    </h3>
-                  </div>
+              <div
+                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
+                  activeMenu === 'works'
+                    ? 'visible opacity-100'
+                    : 'invisible opacity-0 pointer-events-none'
+                }`}
+              >
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                    <div className="mb-4">
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        Our Works
+                      </p>
+                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                        Browse sample products
+                      </h3>
+                    </div>
 
-                  <div className="grid grid-cols-4 gap-4">
-                    {worksMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} />
-                    ))}
+                    <div className="grid grid-cols-4 gap-4">
+                      {worksMenu.map((item) => (
+                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
+                      ))}
+                    </div>
+
+                    <DropdownSeeAllButton to="/gallery" />
                   </div>
                 </div>
               </div>
@@ -308,7 +413,6 @@ function Navbar() {
               Contact
             </HashLink>
 
-            {/* Desktop Cart */}
             <Link
               to="/cart"
               className="relative flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
@@ -337,9 +441,7 @@ function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Right Actions */}
           <div className="md:hidden flex items-center gap-2">
-            {/* Mobile Cart */}
             <Link
               to="/cart"
               className="relative flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
@@ -368,7 +470,6 @@ function Navbar() {
               )}
             </Link>
 
-            {/* Hamburger */}
             <button
               className="flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
               onClick={() => setIsOpen(!isOpen)}
@@ -400,10 +501,9 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isOpen ? 'max-h-[1200px] opacity-100 mt-3' : 'max-h-0 opacity-0'
+          className={`md:hidden overflow-y-auto transition-all duration-300 ${
+            isOpen ? 'max-h-[80vh] opacity-100 mt-3' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="rounded-3xl border border-white/50 bg-white/95 px-4 py-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
@@ -432,19 +532,16 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'services' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'services' ? 'max-h-[650px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {servicesMenu.map((item) => (
-                      <MegaMenuCard
-                        key={item.label}
-                        item={item}
-                        compact
-                        onClick={closeAllMenus}
-                      />
+                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
                     ))}
                   </div>
+
+                  <MobileSeeAllButton to="/services" />
                 </div>
               </div>
 
@@ -463,23 +560,20 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'packages' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'packages' ? 'max-h-[650px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {packagesMenu.map((item) => (
-                      <MegaMenuCard
-                        key={item.label}
-                        item={item}
-                        compact
-                        onClick={closeAllMenus}
-                      />
+                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
                     ))}
                   </div>
+
+                  <MobileSeeAllButton to="/package" />
                 </div>
               </div>
 
-              {/* Mobile Our Works */}
+              {/* Mobile Works */}
               <div>
                 <button
                   type="button"
@@ -494,19 +588,16 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'works' ? 'max-h-[500px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'works' ? 'max-h-[650px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {worksMenu.map((item) => (
-                      <MegaMenuCard
-                        key={item.label}
-                        item={item}
-                        compact
-                        onClick={closeAllMenus}
-                      />
+                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
                     ))}
                   </div>
+
+                  <MobileSeeAllButton to="/gallery" />
                 </div>
               </div>
 
