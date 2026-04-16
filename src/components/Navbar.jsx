@@ -6,10 +6,10 @@ import serviceBirthday from '../assets/img/services-img/service-2.png';
 import serviceSouvenirs from '../assets/img/services-img/service-3.png';
 import serviceBaptismal from '../assets/img/services-img/service-2.png';
 
-import work1 from '../assets/img/gallery-img/wedding-invitation-8.png';
-import work2 from '../assets/img/gallery-img/birthday-invitation-1.png';
-import work3 from '../assets/img/gallery-img/baptismal-invitation-1.png';
-import work4 from '../assets/img/gallery-img/souvenir-3.png';
+import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
+import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
+import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
+import work4 from '../assets/img/gallery-img/wedding-invitation-4.png';
 
 import package1 from '../assets/img/services-img/service-1.png';
 import package2 from '../assets/img/services-img/service-2.png';
@@ -28,7 +28,7 @@ function Navbar() {
   const [mobileDropdown, setMobileDropdown] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
 
-  const closeTimeout = useRef(null);
+  const closeTimeoutRef = useRef(null);
 
   const location = useLocation();
   const { cart } = useCart();
@@ -37,25 +37,25 @@ function Navbar() {
     {
       label: 'Wedding Invitations',
       desc: 'Elegant and timeless wedding designs',
-      to: '/services/wedding-invitations',
+      to: '/services/wedding',
       img: serviceWedding,
     },
     {
       label: 'Birthday Invitations',
       desc: 'Fun and creative birthday invitation styles',
-      to: '/services/birthday-invitations',
+      to: '/services/birthday',
       img: serviceBirthday,
     },
     {
       label: 'Baptismal Invitations',
       desc: 'Soft and meaningful baptismal themes',
-      to: '/services/baptismal-invitations',
+      to: '/services/baptismal',
       img: serviceBaptismal,
     },
     {
       label: 'Souvenirs',
       desc: 'Memorable keepsakes for your guests',
-      to: '/services/souvenirs',
+      to: '/services/souvenir',
       img: serviceSouvenirs,
     },
   ];
@@ -128,7 +128,10 @@ function Navbar() {
   }, [lastScrollY]);
 
   useEffect(() => {
-    if (location.pathname !== '/') return;
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
 
     const sections = ['hero', 'services', 'packages', 'gallery', 'reviews', 'faqs', 'contact'];
 
@@ -156,9 +159,7 @@ function Navbar() {
 
   useEffect(() => {
     return () => {
-      if (closeTimeout.current) {
-        clearTimeout(closeTimeout.current);
-      }
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     };
   }, []);
 
@@ -174,22 +175,24 @@ function Navbar() {
     };
   }, [isOpen]);
 
-  const handleMenuEnter = (menuName) => {
-    if (closeTimeout.current) {
-      clearTimeout(closeTimeout.current);
-    }
-    setActiveMenu(menuName);
+  const handleMenuEnter = (menu) => {
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    setActiveMenu(menu);
   };
 
   const handleMenuLeave = () => {
-    closeTimeout.current = setTimeout(() => {
+    closeTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
-    }, 250);
+    }, 220);
   };
 
-  const navLinkClass = (section, path = null) => {
+  const navLinkClass = (section = null, path = null) => {
+    const isHomePage = location.pathname === '/';
+
     const isActive =
-      (path && location.pathname === path) || activeSection === section;
+      (path && path !== '/' && location.pathname.startsWith(path)) ||
+      (path === '/' && location.pathname === '/' && (!section || activeSection === section)) ||
+      (isHomePage && !path && section && activeSection === section);
 
     return `relative font-semibold tracking-wide transition-all duration-300
       hover:text-orange-500
@@ -202,8 +205,37 @@ function Navbar() {
       }`;
   };
 
-  const desktopTriggerClass =
-    "relative font-semibold tracking-wide text-gray-800 transition-all duration-300 hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-orange-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer";
+  const desktopMenuTriggerClass = (path) => {
+    const isActive = location.pathname.startsWith(path);
+
+    return `relative block font-semibold tracking-wide transition-all duration-300
+      after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
+      after:bg-orange-500 after:transition-all after:duration-300
+      ${
+        isActive
+          ? 'text-orange-500 after:w-full'
+          : 'text-gray-800 after:w-0 hover:text-orange-500 hover:after:w-full'
+      }`;
+  };
+
+  const mobileLinkClass = (section = null, path = null, isPrimary = false) => {
+    const isHomePage = location.pathname === '/';
+
+    const isActive =
+      (path && path !== '/' && location.pathname.startsWith(path)) ||
+      (path === '/' && location.pathname === '/' && (!section || activeSection === section)) ||
+      (isHomePage && !path && section && activeSection === section);
+
+    if (isPrimary) {
+      return 'w-full rounded-2xl px-4 py-3 text-center font-semibold bg-orange-500 text-white shadow-md transition hover:bg-orange-600';
+    }
+
+    return `w-full rounded-2xl px-4 py-3 text-left font-semibold transition ${
+      isActive
+        ? 'bg-orange-50 text-orange-500'
+        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+    }`;
+  };
 
   const toggleMobileDropdown = (menu) => {
     setMobileDropdown((prev) => (prev === menu ? null : menu));
@@ -213,6 +245,7 @@ function Navbar() {
     setIsOpen(false);
     setMobileDropdown(null);
     setActiveMenu(null);
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
   };
 
   const MegaMenuCard = ({ item, compact = false, onClick }) => (
@@ -242,11 +275,11 @@ function Navbar() {
     </Link>
   );
 
-  const DropdownSeeAllButton = ({ to }) => (
+  const DropdownSeeAllButton = ({ to, onClick }) => (
     <div className="mt-6 flex justify-center border-t border-gray-200 pt-5">
       <Link
         to={to}
-        onClick={closeAllMenus}
+        onClick={onClick}
         className="inline-flex items-center rounded-full bg-orange-500 px-6 py-2.5 font-semibold text-white transition hover:bg-orange-600"
       >
         See All
@@ -254,17 +287,38 @@ function Navbar() {
     </div>
   );
 
-  const MobileSeeAllButton = ({ to }) => (
-    <div className="mt-4 px-2">
-      <Link
-        to={to}
-        onClick={closeAllMenus}
-        className="block w-full rounded-full bg-orange-500 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-orange-600"
-      >
-        See All
-      </Link>
-    </div>
-  );
+  const getMegaMenuContent = () => {
+    if (activeMenu === 'services') {
+      return {
+        eyebrow: 'Services',
+        title: 'Explore our categories',
+        items: servicesMenu,
+        seeAllTo: '/services',
+      };
+    }
+
+    if (activeMenu === 'packages') {
+      return {
+        eyebrow: 'Packages',
+        title: 'Choose a bundle that fits your event',
+        items: packagesMenu,
+        seeAllTo: '/packages',
+      };
+    }
+
+    if (activeMenu === 'works') {
+      return {
+        eyebrow: 'Our Works',
+        title: 'Browse sample products',
+        items: worksMenu,
+        seeAllTo: '/gallery',
+      };
+    }
+
+    return null;
+  };
+
+  const megaMenuContent = getMegaMenuContent();
 
   return (
     <nav
@@ -272,7 +326,10 @@ function Navbar() {
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3">
+      <div
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 relative"
+        onMouseLeave={handleMenuLeave}
+      >
         <div className="relative flex items-center justify-between rounded-2xl border border-white/40 bg-white/70 px-5 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl">
           <Link
             to="/"
@@ -287,118 +344,34 @@ function Navbar() {
               Home
             </HashLink>
 
-            {/* Services */}
-            <div
-              className="static"
-              onMouseEnter={() => handleMenuEnter('services')}
-              onMouseLeave={handleMenuLeave}
-            >
-              <div className={desktopTriggerClass}>Services</div>
-
-              <div
-                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
-                  activeMenu === 'services'
-                    ? 'visible opacity-100'
-                    : 'invisible opacity-0 pointer-events-none'
-                }`}
+            <div className="relative" onMouseEnter={() => handleMenuEnter('services')}>
+              <Link
+                to="/services"
+                className={desktopMenuTriggerClass('/services')}
+                onClick={closeAllMenus}
               >
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                    <div className="mb-4">
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Services
-                      </p>
-                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                        Explore our categories
-                      </h3>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4">
-                      {servicesMenu.map((item) => (
-                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
-                      ))}
-                    </div>
-
-                    <DropdownSeeAllButton to="/services" />
-                  </div>
-                </div>
-              </div>
+                Services
+              </Link>
             </div>
 
-            {/* Packages */}
-            <div
-              className="static"
-              onMouseEnter={() => handleMenuEnter('packages')}
-              onMouseLeave={handleMenuLeave}
-            >
-              <div className={desktopTriggerClass}>Packages</div>
-
-              <div
-                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
-                  activeMenu === 'packages'
-                    ? 'visible opacity-100'
-                    : 'invisible opacity-0 pointer-events-none'
-                }`}
+            <div className="relative" onMouseEnter={() => handleMenuEnter('packages')}>
+              <Link
+                to="/packages"
+                className={desktopMenuTriggerClass('/packages')}
+                onClick={closeAllMenus}
               >
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                    <div className="mb-4">
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Packages
-                      </p>
-                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                        Choose a bundle that fits your event
-                      </h3>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4">
-                      {packagesMenu.map((item) => (
-                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
-                      ))}
-                    </div>
-
-                    <DropdownSeeAllButton to="/packages" />
-                  </div>
-                </div>
-              </div>
+                Packages
+              </Link>
             </div>
 
-            {/* Our Works */}
-            <div
-              className="static"
-              onMouseEnter={() => handleMenuEnter('works')}
-              onMouseLeave={handleMenuLeave}
-            >
-              <div className={desktopTriggerClass}>Our Works</div>
-
-              <div
-                className={`absolute left-0 top-full mt-5 z-50 w-full pt-0 transition-all duration-200 ${
-                  activeMenu === 'works'
-                    ? 'visible opacity-100'
-                    : 'invisible opacity-0 pointer-events-none'
-                }`}
+            <div className="relative" onMouseEnter={() => handleMenuEnter('works')}>
+              <Link
+                to="/gallery"
+                className={desktopMenuTriggerClass('/gallery')}
+                onClick={closeAllMenus}
               >
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <div className="rounded-b-3xl rounded-t-none border border-white/40 border-t-0 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-                    <div className="mb-4">
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Our Works
-                      </p>
-                      <h3 className="mt-1 text-2xl font-bold text-gray-900">
-                        Browse sample products
-                      </h3>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4">
-                      {worksMenu.map((item) => (
-                        <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
-                      ))}
-                    </div>
-
-                    <DropdownSeeAllButton to="/gallery" />
-                  </div>
-                </div>
-              </div>
+                Our Works
+              </Link>
             </div>
 
             <HashLink smooth to="/#reviews" className={navLinkClass('reviews')}>
@@ -409,13 +382,21 @@ function Navbar() {
               FAQs
             </HashLink>
 
-            <HashLink smooth to="/#contact" className={navLinkClass('contact')}>
-              Contact
+            <HashLink
+              smooth
+              to="/#contact"
+              className="rounded-full bg-orange-500 px-5 py-2 text-white font-semibold shadow-md transition hover:bg-orange-600"
+            >
+              Inquire Now
             </HashLink>
 
             <Link
               to="/cart"
-              className="relative flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
+              className={`relative flex items-center justify-center rounded-full p-2 transition-all duration-300 ${
+                location.pathname.startsWith('/cart')
+                  ? 'bg-orange-50 text-orange-500'
+                  : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+              }`}
               aria-label="Cart"
             >
               <svg
@@ -444,7 +425,11 @@ function Navbar() {
           <div className="md:hidden flex items-center gap-2">
             <Link
               to="/cart"
-              className="relative flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
+              className={`relative flex items-center justify-center rounded-full p-2 transition-all duration-300 ${
+                location.pathname.startsWith('/cart')
+                  ? 'bg-orange-50 text-orange-500'
+                  : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+              }`}
               aria-label="Cart"
               onClick={closeAllMenus}
             >
@@ -502,8 +487,48 @@ function Navbar() {
         </div>
 
         <div
-          className={`md:hidden overflow-y-auto transition-all duration-300 ${
-            isOpen ? 'max-h-[80vh] opacity-100 mt-3' : 'max-h-0 opacity-0'
+          onMouseEnter={() => {
+            if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+          }}
+          onMouseLeave={handleMenuLeave}
+          className={`hidden md:block absolute left-1/2 top-full z-50 mt-5 w-full max-w-[1000px] -translate-x-1/2 px-2 transition-all duration-200 ${
+            megaMenuContent
+              ? 'visible opacity-100 translate-y-0 pointer-events-auto'
+              : 'invisible opacity-0 translate-y-2 pointer-events-none'
+          }`}
+        >
+          <div className="rounded-3xl border border-white/50 bg-white/95 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+            {megaMenuContent && (
+              <>
+                <div className="mb-4">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                    {megaMenuContent.eyebrow}
+                  </p>
+                  <h3 className="mt-1 text-2xl font-bold text-gray-900">
+                    {megaMenuContent.title}
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-4 gap-4">
+                  {megaMenuContent.items.map((item) => (
+                    <MegaMenuCard key={item.label} item={item} onClick={closeAllMenus} />
+                  ))}
+                </div>
+
+                <DropdownSeeAllButton
+                  to={megaMenuContent.seeAllTo}
+                  onClick={closeAllMenus}
+                />
+              </>
+            )}
+          </div>
+        </div>
+
+        <div
+          className={`md:hidden transition-all duration-300 ${
+            isOpen
+              ? 'max-h-[calc(100vh-90px)] overflow-y-auto opacity-100 mt-3'
+              : 'max-h-0 overflow-hidden opacity-0'
           }`}
         >
           <div className="rounded-3xl border border-white/50 bg-white/95 px-4 py-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
@@ -512,92 +537,158 @@ function Navbar() {
                 smooth
                 to="/#hero"
                 onClick={closeAllMenus}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                className={mobileLinkClass('hero', '/')}
               >
                 Home
               </HashLink>
 
-              {/* Mobile Services */}
               <div>
-                <button
-                  type="button"
-                  onClick={() => toggleMobileDropdown('services')}
-                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-                >
-                  <span>Services</span>
-                  <span className={`transition ${mobileDropdown === 'services' ? 'rotate-180' : ''}`}>
-                    ⌄
-                  </span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/services"
+                    onClick={closeAllMenus}
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                      location.pathname.startsWith('/services')
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                  >
+                    Services
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleMobileDropdown('services')}
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
+                      location.pathname.startsWith('/services') || mobileDropdown === 'services'
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                    aria-label="Toggle Services menu"
+                  >
+                    <span className={`transition ${mobileDropdown === 'services' ? 'rotate-180' : ''}`}>
+                      ⌄
+                    </span>
+                  </button>
+                </div>
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'services' ? 'max-h-[650px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'services'
+                      ? 'max-h-[500px] pt-2'
+                      : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {servicesMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
                     ))}
                   </div>
-
-                  <MobileSeeAllButton to="/services" />
                 </div>
               </div>
 
-              {/* Mobile Packages */}
               <div>
-                <button
-                  type="button"
-                  onClick={() => toggleMobileDropdown('packages')}
-                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-                >
-                  <span>Packages</span>
-                  <span className={`transition ${mobileDropdown === 'packages' ? 'rotate-180' : ''}`}>
-                    ⌄
-                  </span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/packages"
+                    onClick={closeAllMenus}
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                      location.pathname.startsWith('/packages')
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                  >
+                    Packages
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleMobileDropdown('packages')}
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
+                      location.pathname.startsWith('/packages') || mobileDropdown === 'packages'
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                    aria-label="Toggle Packages menu"
+                  >
+                    <span className={`transition ${mobileDropdown === 'packages' ? 'rotate-180' : ''}`}>
+                      ⌄
+                    </span>
+                  </button>
+                </div>
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'packages' ? 'max-h-[650px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'packages'
+                      ? 'max-h-[500px] pt-2'
+                      : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {packagesMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
                     ))}
                   </div>
-
-                  <MobileSeeAllButton to="/package" />
                 </div>
               </div>
 
-              {/* Mobile Works */}
               <div>
-                <button
-                  type="button"
-                  onClick={() => toggleMobileDropdown('works')}
-                  className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
-                >
-                  <span>Our Works</span>
-                  <span className={`transition ${mobileDropdown === 'works' ? 'rotate-180' : ''}`}>
-                    ⌄
-                  </span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/gallery"
+                    onClick={closeAllMenus}
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                      location.pathname.startsWith('/gallery')
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                  >
+                    Our Works
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleMobileDropdown('works')}
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
+                      location.pathname.startsWith('/gallery') || mobileDropdown === 'works'
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
+                    aria-label="Toggle Our Works menu"
+                  >
+                    <span className={`transition ${mobileDropdown === 'works' ? 'rotate-180' : ''}`}>
+                      ⌄
+                    </span>
+                  </button>
+                </div>
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'works' ? 'max-h-[650px] pt-2' : 'max-h-0'
+                    mobileDropdown === 'works'
+                      ? 'max-h-[500px] pt-2'
+                      : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
                     {worksMenu.map((item) => (
-                      <MegaMenuCard key={item.label} item={item} compact onClick={closeAllMenus} />
+                      <MegaMenuCard
+                        key={item.label}
+                        item={item}
+                        compact
+                        onClick={closeAllMenus}
+                      />
                     ))}
                   </div>
-
-                  <MobileSeeAllButton to="/gallery" />
                 </div>
               </div>
 
@@ -605,7 +696,7 @@ function Navbar() {
                 smooth
                 to="/#reviews"
                 onClick={closeAllMenus}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                className={mobileLinkClass('reviews')}
               >
                 Reviews
               </HashLink>
@@ -614,7 +705,7 @@ function Navbar() {
                 smooth
                 to="/#faqs"
                 onClick={closeAllMenus}
-                className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-gray-800 transition hover:bg-orange-50 hover:text-orange-500"
+                className={mobileLinkClass('faqs')}
               >
                 FAQs
               </HashLink>
@@ -625,9 +716,9 @@ function Navbar() {
                 smooth
                 to="/#contact"
                 onClick={closeAllMenus}
-                className="w-full rounded-2xl bg-orange-500 px-4 py-3 text-center font-semibold text-white shadow-md transition hover:bg-orange-600"
+                className={mobileLinkClass('contact', null, true)}
               >
-                Contact Us
+                Inquire Now
               </HashLink>
             </div>
           </div>

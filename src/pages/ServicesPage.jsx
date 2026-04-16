@@ -13,31 +13,31 @@ function ServicesPage() {
       title: "Wedding Invitations",
       desc: "Elegant and timeless designs crafted for your special day.",
       img: wedding,
-      link: "/services/wedding-invitations",
+      link: "/services/wedding",
     },
     {
       title: "Birthday Invitations",
       desc: "Fun, creative, and personalized invitations for all ages.",
       img: birthday,
-      link: "/services/birthday-invitations",
+      link: "/services/birthday",
     },
     {
       title: "Baptismal Invitations",
       desc: "Soft and meaningful designs perfect for sacred celebrations.",
       img: baptismal,
-      link: "/services/baptismal-invitations",
+      link: "/services/baptismal",
     },
     {
       title: "Souvenirs",
       desc: "Memorable keepsakes your guests will truly appreciate.",
       img: souvenirs,
-      link: "/services/souvenirs",
+      link: "/services/souvenir",
     },
     {
       title: "Printing Supplies",
       desc: "Essential papers, inks, and materials for all your printing needs.",
       img: printingSupplies,
-      link: "/services/printing-supplies",
+      link: "/services/printingsupplies",
     },
   ]
 

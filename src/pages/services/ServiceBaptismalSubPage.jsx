@@ -1,88 +1,36 @@
-import { Link } from 'react-router-dom'
-import BackButton from '../../components/BackButton'
+import ServiceTemplate from '../services/ServiceTemplate'
+import sample1 from '../../assets/img/gallery-img/baptismal-invitation-1.png'
 
 function ServiceBaptismalSubPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 pt-28">
-        <BackButton />
-      <h1 className="text-3xl font-bold mb-6">Our Services</h1>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        
-        {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service1.jpg"
-            alt="Service 1"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Custom Invitations
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              High-quality print invitations for weddings, birthdays, and events.
-            </p>
-            <Link to="/services/wedding-invitations">Wedding Invitations</Link>
-          </div>
-        </div>
-
-        {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service2.jpg"
-            alt="Service 2"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Birthday Invitation 
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/baptismal-invitations">Birthday Invitations</Link>
-          </div>
-        </div>
-
-         {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service2.jpg"
-            alt="Service 2"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Baptismal Invitation 
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/baptismal-invitations">Baptismal Invitations</Link>
-          </div>
-        </div>
-
-         {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service3.jpg"
-            alt="Service 3"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Souvenirs
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/souvenirs">Souvenirs</Link>
-          </div>
-        </div>
-
-      </div>
-    </div>
+    <ServiceTemplate
+      badge="Baptismal Invitations"
+      title="Meaningful Invitations for Baptismal Celebrations"
+      subtitle="Browse elegant baptismal invitation styles prepared for warm and memorable family celebrations."
+      packageLink="/package/baptismal"
+      inquiryLink="/#contact"
+      inquiryText="Need Help?"
+      designs={[
+        {
+          slug: 'classic-baptismal',
+          img: sample1,
+          title: 'Classic Baptismal Invitation',
+          desc: 'A soft and elegant invitation design perfect for meaningful baptismal celebrations.',
+          details: [
+            'Gentle and clean design',
+            'Suitable for formal family gatherings',
+            'Customizable wording',
+            'Printed in high quality finish',
+          ],
+        },
+      ]}
+      features={[
+        'Soft and elegant baptismal themes',
+        'Meaningful and child-friendly styles',
+        'Customizable wording and layout',
+        'Quality prints for special family celebrations',
+      ]}
+    />
   )
 }
 

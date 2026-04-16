@@ -1,88 +1,80 @@
-import { Link } from 'react-router-dom'
-import BackButton from '../../components/BackButton'
+import ServiceTemplate from './ServiceTemplate'
+
+import sample1 from '../../assets/img/gallery-img/wedding-invitation-1.png'
+import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
+import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
+import sample4 from '../../assets/img/gallery-img/wedding-invitation-4.png'
 
 function ServiceWeddingSubPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 pt-28">
-    <BackButton />
-      <h1 className="text-3xl font-bold mb-6">Our Services</h1>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        
-        {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service1.jpg"
-            alt="Service 1"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Custom Invitations
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              High-quality print invitations for weddings, birthdays, and events.
-            </p>
-            <Link to="/services/wedding-invitations">Wedding Invitations</Link>
-          </div>
-        </div>
-
-        {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service2.jpg"
-            alt="Service 2"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Birthday Invitation 
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/baptismal-invitations">Birthday Invitations</Link>
-          </div>
-        </div>
-
-         {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service2.jpg"
-            alt="Service 2"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Baptismal Invitation 
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/baptismal-invitations">Baptismal Invitations</Link>
-          </div>
-        </div>
-
-         {/* Item */}
-        <div className="border rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-          <img
-            src="/images/service3.jpg"
-            alt="Service 3"
-            className="w-full h-32 object-cover"
-          />
-          <div className="p-3">
-            <h2 className="font-semibold text-sm md:text-base">
-              Souvenirs
-            </h2>
-            <p className="text-xs md:text-sm text-gray-600">
-              Customized souvenirs for parties and corporate events.
-            </p>
-            <Link to="/services/souvenirs">Souvenirs</Link>
-          </div>
-        </div>
-
-      </div>
-    </div>
+    <ServiceTemplate
+      badge="Wedding Invitations"
+      title="Elegant Invitations for Your Special Day"
+      subtitle="Browse some of our wedding invitation designs and choose the one that fits your celebration best."
+      packageLink="/packages/wedding"
+      inquiryLink="/#contact"
+      inquiryText="Need Help?"
+      designs={[
+        {
+          slug: 'floral-wedding',
+          cover: sample1,
+          images: [sample1, sample2, sample3, sample4],
+          title: 'Floral Wedding Invitation',
+          desc: 'An elegant floral-themed wedding invitation perfect for romantic and garden-inspired weddings.',
+          details: [
+            'Soft floral design',
+            'Elegant layout and typography',
+            'Ideal for classic and romantic themes',
+            'Customizable wording and colors',
+          ],
+        },
+        {
+          slug: 'minimalist-wedding',
+          cover: sample2,
+          images: [sample2],
+          title: 'Minimalist Wedding Invitation',
+          desc: 'A clean and modern wedding invitation for couples who prefer a timeless minimalist style.',
+          details: [
+            'Modern and clean design',
+            'Simple and classy layout',
+            'Great for minimalist weddings',
+            'Customizable details and text',
+          ],
+        },
+        {
+          slug: 'rustic-wedding',
+          cover: sample3,
+          images: [sample3],
+          title: 'Rustic Wedding Invitation',
+          desc: 'A warm and charming invitation style that fits rustic, boho, and outdoor weddings.',
+          details: [
+            'Rustic-inspired design',
+            'Warm earthy tones',
+            'Perfect for outdoor weddings',
+            'Customizable theme colors',
+          ],
+        },
+        {
+          slug: 'classic-wedding',
+          cover: sample4,
+          images: [sample4],
+          title: 'Classic Wedding Invitation',
+          desc: 'A timeless invitation design with a formal and refined look for elegant wedding celebrations.',
+          details: [
+            'Classic and sophisticated style',
+            'Clean formal presentation',
+            'Suitable for elegant wedding themes',
+            'Custom layout and text available',
+          ],
+        },
+      ]}
+      features={[
+        'Elegant and timeless invitation styles',
+        'Customizable layouts and wording',
+        'High-quality printing and finishing',
+        'Perfect for intimate or grand weddings',
+      ]}
+    />
   )
 }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 
@@ -31,6 +31,29 @@ function Gallery() {
   const topScroll = [...topImages, ...topImages, ...topImages]
   const bottomScroll = [...bottomImages, ...bottomImages, ...bottomImages]
 
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [selectedIndex])
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedIndex(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <section id="gallery" className="bg-orange-500 py-20 overflow-hidden">
       <div className="text-center mb-10">
@@ -40,7 +63,6 @@ function Gallery() {
         </p>
       </div>
 
-      {/* Top row */}
       <div className="overflow-hidden">
         <div className="flex w-max gap-2 animate-scroll-right will-change-transform">
           {topScroll.map((img, index) => (
@@ -49,13 +71,12 @@ function Gallery() {
               src={img}
               alt={`Top ${index + 1}`}
               onClick={() => setSelectedIndex(allImages.indexOf(img))}
-              className="h-40 md:h-56 flex-none object-cover cursor-pointer hover:scale-105 transition duration-300 ease-in-out"
+              className="h-40 md:h-56 flex-none rounded-xl object-cover cursor-pointer hover:scale-105 transition duration-300 ease-in-out"
             />
           ))}
         </div>
       </div>
 
-      {/* Bottom row */}
       <div className="overflow-hidden mt-2">
         <div className="flex w-max gap-2 animate-scroll-left will-change-transform">
           {bottomScroll.map((img, index) => (
@@ -64,14 +85,17 @@ function Gallery() {
               src={img}
               alt={`Bottom ${index + 1}`}
               onClick={() => setSelectedIndex(allImages.indexOf(img))}
-              className="h-40 md:h-56 flex-none object-cover cursor-pointer hover:scale-105 transition duration-300 ease-in-out"
+              className="h-40 md:h-56 flex-none rounded-xl object-cover cursor-pointer hover:scale-105 transition duration-300 ease-in-out"
             />
           ))}
         </div>
       </div>
 
       {selectedIndex !== null && (
-        <div className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center">
+        <div
+          className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+          onClick={() => setSelectedIndex(null)}
+        >
           <button
             onClick={() => setSelectedIndex(null)}
             className="absolute top-5 right-5 text-white text-4xl z-10"
@@ -79,17 +103,19 @@ function Gallery() {
             ×
           </button>
 
-          <Swiper initialSlide={selectedIndex}>
-            {allImages.map((img, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={img}
-                  alt={`Preview ${index + 1}`}
-                  className="max-h-[80vh] mx-auto object-contain"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-5xl">
+            <Swiper initialSlide={selectedIndex} className="w-full">
+              {allImages.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    src={img}
+                    alt={`Preview ${index + 1}`}
+                    className="max-h-[80vh] w-full mx-auto object-contain"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
       )}
     </section>

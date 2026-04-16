@@ -13,27 +13,27 @@ const categories = [
   {
     img: wedding,
     title: 'Wedding',
-    link: '/services/wedding-invitations',
+    link: '/services/wedding',
   },
   {
     img: baptismal,
     title: 'Baptismal',
-    link: '/services/baptismal-invitations',
+    link: '/services/baptismal',
   },
   {
     img: birthday,
     title: 'Birthday',
-    link: '/services/birthday-invitations',
+    link: '/services/birthday',
   },
   {
     img: souvenirs,
     title: 'Souvenirs',
-    link: '/services/souvenirs',
+    link: '/services/souvenir',
   },
   {
     img: printingSupplies,
     title: 'Printing Supplies',
-    link: '/services/printing-supplies',
+    link: '/services/printingsupplies',
   },
 ]
 

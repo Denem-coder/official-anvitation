@@ -5,7 +5,7 @@ function Faqs() {
     {
       question: "How do I place an order?",
       answer:
-        "Simply message us on Messenger, send your details, choose a design, and we will guide you through the process.",
+        "Choose a design, select your package, add to cart, and checkout via Messenger. Once you send your order, we’ll assist you with customization and payment.",
     },
     {
       question: "Do you provide layout/design?",
