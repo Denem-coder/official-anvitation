@@ -3,26 +3,35 @@ import { useCart } from '../context/CartContext'
 function Cart() {
   const {
     cart,
+    totalItems,
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
     clearCart,
   } = useCart()
 
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0)
+  const cartSubtotal = cart.reduce(
+    (total, item) => total + (Number(item.price) || 0) * item.quantity,
+    0
+  )
 
   const handleMessengerCheckout = () => {
     if (cart.length === 0) return
 
     const orderList = cart
-      .map(
-        (item, index) =>
-          `${index + 1}. ${item.title} - Quantity: ${item.quantity}`
-      )
-      .join('\n')
+      .map((item, index) => {
+        const itemPrice = Number(item.price) || 0
+        const itemSubtotal = itemPrice * item.quantity
+
+        return `${index + 1}. ${item.title}
+Quantity: ${item.quantity}
+Price: ₱${itemPrice.toLocaleString()}
+Subtotal: ₱${itemSubtotal.toLocaleString()}`
+      })
+      .join('\n\n')
 
     const message = encodeURIComponent(
-      `Hello! I would like to place an order:\n\n${orderList}\n\nTotal Items: ${totalItems}\n\nPlease send me the details. Thank you!`
+      `Hello! I would like to place an order:\n\n${orderList}\n\nTotal Items: ${totalItems}\nCart Total: ₱${cartSubtotal.toLocaleString()}\n\nPlease send me the details. Thank you!`
     )
 
     window.open(
@@ -41,48 +50,80 @@ function Cart() {
         ) : (
           <>
             <div className="space-y-4">
-              {cart.map((item) => (
-                <div
-                  key={item.title}
-                  className="bg-white rounded-xl shadow-md p-5"
-                >
-                  <h3 className="text-xl font-semibold">{item.title}</h3>
-                  <p className="text-gray-600 mb-4">{item.desc}</p>
+              {cart.map((item) => {
+                const itemPrice = Number(item.price) || 0
+                const itemSubtotal = itemPrice * item.quantity
 
-                  <div className="flex items-center justify-between gap-4 flex-wrap">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => decreaseQuantity(item.title)}
-                        className="w-9 h-9 rounded-full bg-orange-100 text-orange-600 font-bold hover:bg-orange-200"
-                      >
-                        -
-                      </button>
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-xl shadow-md p-5"
+                  >
+                    <h3 className="text-xl font-semibold">{item.title}</h3>
 
-                      <span className="font-semibold text-lg min-w-[30px] text-center">
-                        {item.quantity}
-                      </span>
+                    {item.desc && (
+                      <p className="text-gray-600 mb-2">{item.desc}</p>
+                    )}
 
-                      <button
-                        onClick={() => increaseQuantity(item.title)}
-                        className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600"
-                      >
-                        +
-                      </button>
+                    <div className="space-y-1 mb-4">
+                      <p className="text-gray-700">
+                        Price:{' '}
+                        <span className="font-semibold text-orange-500">
+                          ₱{itemPrice.toLocaleString()}
+                        </span>
+                      </p>
+
+                      <p className="text-gray-700">
+                        Subtotal:{' '}
+                        <span className="font-semibold text-orange-600">
+                          ₱{itemSubtotal.toLocaleString()}
+                        </span>
+                      </p>
                     </div>
 
-                    <button
-                      onClick={() => removeFromCart(item.title)}
-                      className="text-red-500 font-medium hover:underline"
-                    >
-                      Remove
-                    </button>
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => decreaseQuantity(item.id)}
+                          className="w-9 h-9 rounded-full bg-orange-100 text-orange-600 font-bold hover:bg-orange-200 transition"
+                        >
+                          -
+                        </button>
+
+                        <span className="font-semibold text-lg min-w-[30px] text-center">
+                          {item.quantity}
+                        </span>
+
+                        <button
+                          onClick={() => increaseQuantity(item.id)}
+                          className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-red-500 font-medium hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
-            <div className="mt-6 text-right font-semibold text-lg">
-              Total Items: {totalItems}
+            <div className="mt-8 bg-white rounded-xl shadow-md p-5 space-y-3">
+              <div className="flex justify-between text-gray-700">
+                <span>Total Items</span>
+                <span className="font-semibold">{totalItems}</span>
+              </div>
+
+              <div className="flex justify-between text-xl font-bold text-orange-600 border-t pt-3">
+                <span>Cart Total</span>
+                <span>₱{cartSubtotal.toLocaleString()}</span>
+              </div>
             </div>
 
             <p className="text-sm text-gray-600 mt-6 mb-4 text-center">

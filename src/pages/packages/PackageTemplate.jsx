@@ -20,12 +20,20 @@ function PackageTemplate({
     designsCatalog.find((item) => item.slug === designSlug) || null
 
   const choosePackage = (pkg) => {
-    addToCart({
+    const cartItem = {
+      id: selectedDesign
+        ? `${selectedDesign.slug}-${pkg.id}`
+        : pkg.id,
       type: 'package',
       category: badge,
-      title: pkg.name,
-      packagePrice: pkg.price,
-      packageSubtitle: pkg.subtitle,
+      title: selectedDesign
+        ? `${selectedDesign.title} - ${pkg.name}`
+        : pkg.title,
+      desc: pkg.subtitle,
+      price: pkg.price,
+      quantity: 1,
+      packageName: pkg.name,
+      packageTitle: pkg.title,
       packageFeatures: pkg.features,
       designTitle: selectedDesign?.title || null,
       designSlug: selectedDesign?.slug || null,
@@ -34,8 +42,9 @@ function PackageTemplate({
         selectedDesign?.images?.[0] ||
         selectedDesign?.img ||
         null,
-    })
+    }
 
+    addToCart(cartItem)
     navigate('/cart')
   }
 
@@ -107,11 +116,11 @@ function PackageTemplate({
               </div>
             </div>
 
-            {packages.map((pkg, index) => (
+            {packages.map((pkg) => (
               <div
-                key={index}
+                key={pkg.id}
                 className={`relative p-8 ${
-                  index !== packages.length - 1
+                  pkg.id !== packages[packages.length - 1]?.id
                     ? 'border-b border-gray-200 lg:border-b-0 lg:border-r'
                     : ''
                 } ${pkg.highlight ? 'bg-orange-50/70' : 'bg-white'}`}
@@ -123,7 +132,9 @@ function PackageTemplate({
                 )}
 
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900">{pkg.price}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    ₱{pkg.price.toLocaleString()}
+                  </h3>
                   <p className="mt-2 text-lg font-semibold text-gray-800">{pkg.name}</p>
                   <p className="mt-1 text-sm text-gray-500">{pkg.subtitle}</p>
 

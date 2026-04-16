@@ -1,0 +1,183 @@
+const packagesData = {
+  baptismal: [
+    {
+      id: 'baptismal-basic',
+      title: 'Baptismal Package - Basic',
+      name: 'Basic',
+      price: 1300,
+      subtitle: 'For simple celebrations',
+      highlight: false,
+      features: [
+        '25 invitations',
+        'Standard paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'baptismal-standard',
+      title: 'Baptismal Package - Standard',
+      name: 'Standard',
+      price: 2700,
+      subtitle: 'Most chosen package',
+      highlight: true,
+      features: [
+        '50 invitations',
+        'Premium paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'baptismal-premium',
+      title: 'Baptismal Package - Premium',
+      name: 'Premium',
+      price: 4200,
+      subtitle: 'For elegant events',
+      highlight: false,
+      features: [
+        '80 invitations',
+        'Premium textured paper',
+        'Free layout editing',
+        'Elegant envelope',
+      ],
+    },
+  ],
+
+  wedding: [
+     {
+      id: 'wedding-basic',
+      title: 'Wedding Package - Basic',
+      name: 'Basic',
+      price: 1300,
+      subtitle: 'For simple celebrations',
+      highlight: false,
+      features: [
+        '25 invitations',
+        'Standard paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'wedding-standard',
+      title: 'Wedding Package - Standard',
+      name: 'Standard',
+      price: 2700,
+      subtitle: 'Most chosen package',
+      highlight: true,
+      features: [
+        '50 invitations',
+        'Premium paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'wedding-premium',
+      title: 'Wedding Package - Premium',
+      name: 'Premium',
+      price: 4200,
+      subtitle: 'For elegant events',
+      highlight: false,
+      features: [
+        '80 invitations',
+        'Premium textured paper',
+        'Free layout editing',
+        'Elegant envelope',
+      ],
+    },
+  ],
+
+  birthday: [
+     {
+      id: 'birthday-basic',
+      title: 'Birthday Package - Basic',
+      name: 'Basic',
+      price: 1300,
+      subtitle: 'For simple celebrations',
+      highlight: false,
+      features: [
+        '25 invitations',
+        'Standard paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'birthday-standard',
+      title: 'Birthday Package - Standard',
+      name: 'Standard',
+      price: 2700,
+      subtitle: 'Most chosen package',
+      highlight: true,
+      features: [
+        '50 invitations',
+        'Premium paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'birthday-premium',
+      title: 'Birthday Package - Premium',
+      name: 'Premium',
+      price: 4200,
+      subtitle: 'For elegant events',
+      highlight: false,
+      features: [
+        '80 invitations',
+        'Premium textured paper',
+        'Free layout editing',
+        'Elegant envelope',
+      ],
+    },
+  ],
+
+  souvenirs: [
+    {
+      id: 'souvenir-basic',
+      title: 'Souvenir Package - Basic',
+      name: 'Basic',
+      price: 1300,
+      subtitle: 'For simple celebrations',
+      highlight: false,
+      features: [
+        '25 invitations',
+        'Standard paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'souvenir-standard',
+      title: 'Souvenir Package - Standard',
+      name: 'Standard',
+      price: 2700,
+      subtitle: 'Most chosen package',
+      highlight: true,
+      features: [
+        '50 invitations',
+        'Premium paper',
+        'Free layout editing',
+        'Envelope included',
+      ],
+    },
+    {
+      id: 'souvenir-premium',
+      title: 'Souvenir Package - Premium',
+      name: 'Premium',
+      price: 4200,
+      subtitle: 'For elegant events',
+      highlight: false,
+      features: [
+        '80 invitations',
+        'Premium textured paper',
+        'Free layout editing',
+        'Elegant envelope',
+      ],
+    },
+  ],
+}
+
+export default packagesData
