@@ -57,8 +57,10 @@ function ServicesPage() {
         </div>
 
         {/* SERVICES GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {services.map((item, index) => (
+            <Link  to={item.link}>
             <div
               key={index}
               className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col"
@@ -91,8 +93,11 @@ function ServicesPage() {
                 </Link>
               </div>
             </div>
+            </Link>
           ))}
         </div>
+        
+        
 
         {/* CTA SECTION */}
         <div className="mt-16 text-center">

@@ -1,16 +1,17 @@
 import PackageTemplate from './PackageTemplate'
-import galleryData from '../../data/galleryData'
+import designData from '../../data/designData'
 import packagesData from '../../data/packagesData'
+import productsData from '../../data/productsData'
 
 function WeddingPackagePage() {
   return (
     <PackageTemplate
-      badge="Wedding Packages"
-      title="Choose the Right Wedding Package"
-      subtitle="Pick the package that fits your selected invitation design and celebration needs."
-      designsCatalog={galleryData.wedding}
+      category="Wedding"
+      title="Build Your Wedding Invitation Order"
+      subtitle="Order by product or choose a package that fits your event and budget."
+      designsCatalog={designData.wedding}
+      products={productsData.wedding}
       packages={packagesData.wedding}
-      category="wedding"
     />
   )
 }

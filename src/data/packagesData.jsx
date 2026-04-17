@@ -2,8 +2,8 @@ const packagesData = {
   baptismal: [
     {
       id: 'baptismal-basic',
-      title: 'Baptismal Package - Basic',
-      name: 'Basic',
+      title: 'Baptismal - Basic Package',
+      name: 'Basic Package',
       price: 1300,
       subtitle: 'For simple celebrations',
       highlight: false,
@@ -16,8 +16,8 @@ const packagesData = {
     },
     {
       id: 'baptismal-standard',
-      title: 'Baptismal Package - Standard',
-      name: 'Standard',
+      title: 'Baptismal - Standard Package',
+      name: 'Standard Package',
       price: 2700,
       subtitle: 'Most chosen package',
       highlight: true,
@@ -30,8 +30,8 @@ const packagesData = {
     },
     {
       id: 'baptismal-premium',
-      title: 'Baptismal Package - Premium',
-      name: 'Premium',
+      title: 'Baptismal - Premium Package',
+      name: 'Premium Package',
       price: 4200,
       subtitle: 'For elegant events',
       highlight: false,
@@ -47,8 +47,8 @@ const packagesData = {
   wedding: [
      {
       id: 'wedding-basic',
-      title: 'Wedding Package - Basic',
-      name: 'Basic',
+      title: 'Wedding - Basic Package',
+      name: 'Basic Package',
       price: 1300,
       subtitle: 'For simple celebrations',
       highlight: false,
@@ -61,8 +61,8 @@ const packagesData = {
     },
     {
       id: 'wedding-standard',
-      title: 'Wedding Package - Standard',
-      name: 'Standard',
+      title: 'Wedding - Standard Package',
+      name: 'Standard Package',
       price: 2700,
       subtitle: 'Most chosen package',
       highlight: true,
@@ -75,8 +75,8 @@ const packagesData = {
     },
     {
       id: 'wedding-premium',
-      title: 'Wedding Package - Premium',
-      name: 'Premium',
+      title: 'Wedding - Premium Package',
+      name: 'Premium Package',
       price: 4200,
       subtitle: 'For elegant events',
       highlight: false,
@@ -92,8 +92,8 @@ const packagesData = {
   birthday: [
      {
       id: 'birthday-basic',
-      title: 'Birthday Package - Basic',
-      name: 'Basic',
+      title: 'Birthday - Basic Package',
+      name: 'Basic Package',
       price: 1300,
       subtitle: 'For simple celebrations',
       highlight: false,
@@ -106,8 +106,8 @@ const packagesData = {
     },
     {
       id: 'birthday-standard',
-      title: 'Birthday Package - Standard',
-      name: 'Standard',
+      title: 'Birthday - Standard Package',
+      name: 'Standard Package',
       price: 2700,
       subtitle: 'Most chosen package',
       highlight: true,
@@ -120,8 +120,8 @@ const packagesData = {
     },
     {
       id: 'birthday-premium',
-      title: 'Birthday Package - Premium',
-      name: 'Premium',
+      title: 'Birthday - Premium Package',
+      name: 'Premium Package',
       price: 4200,
       subtitle: 'For elegant events',
       highlight: false,
@@ -134,16 +134,16 @@ const packagesData = {
     },
   ],
 
-  souvenirs: [
+  souvenir: [
     {
       id: 'souvenir-basic',
-      title: 'Souvenir Package - Basic',
-      name: 'Basic',
+      title: 'Souvenir - Basic Package',
+      name: 'Basic Package',
       price: 1300,
       subtitle: 'For simple celebrations',
       highlight: false,
       features: [
-        '25 invitations',
+        '25 souvenirs',
         'Standard paper',
         'Free layout editing',
         'Envelope included',
@@ -151,13 +151,13 @@ const packagesData = {
     },
     {
       id: 'souvenir-standard',
-      title: 'Souvenir Package - Standard',
-      name: 'Standard',
+      title: 'Souvenir - Standard Package',
+      name: 'Standard Package',
       price: 2700,
       subtitle: 'Most chosen package',
       highlight: true,
       features: [
-        '50 invitations',
+        '50 souvenirs',
         'Premium paper',
         'Free layout editing',
         'Envelope included',
@@ -165,13 +165,13 @@ const packagesData = {
     },
     {
       id: 'souvenir-premium',
-      title: 'Souvenir Package - Premium',
-      name: 'Premium',
+      title: 'Souvenir - Premium Package',
+      name: 'Premium Package',
       price: 4200,
       subtitle: 'For elegant events',
       highlight: false,
       features: [
-        '80 invitations',
+        '80 souvenirs',
         'Premium textured paper',
         'Free layout editing',
         'Elegant envelope',

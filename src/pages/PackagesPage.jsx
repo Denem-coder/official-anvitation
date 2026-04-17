@@ -25,7 +25,7 @@ function PackagesPage() {
       title: 'Souvenir Packages',
       desc: 'Memorable keepsakes bundled for your special events.',
       img: '/images/project4.jpg',
-      link: '/packages/souvenirs',
+      link: '/packages/souvenir',
     },
   ]
 

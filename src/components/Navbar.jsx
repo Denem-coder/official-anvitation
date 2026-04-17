@@ -3,7 +3,7 @@ import logo from '../assets/img/navbar-img/anvitation-logo.png';
 
 import serviceWedding from '../assets/img/services-img/service-1.png';
 import serviceBirthday from '../assets/img/services-img/service-2.png';
-import serviceSouvenirs from '../assets/img/services-img/service-3.png';
+import serviceSouvenir from '../assets/img/services-img/service-3.png';
 import serviceBaptismal from '../assets/img/services-img/service-2.png';
 
 import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
@@ -56,7 +56,7 @@ function Navbar() {
       label: 'Souvenirs',
       desc: 'Memorable keepsakes for your guests',
       to: '/services/souvenir',
-      img: serviceSouvenirs,
+      img: serviceSouvenir,
     },
   ];
 
@@ -82,7 +82,7 @@ function Navbar() {
     {
       label: 'Souvenir Packages',
       desc: 'Bundled keepsakes for special events',
-      to: '/packages/souvenirs',
+      to: '/packages/souvenir',
       img: package4,
     },
   ];
@@ -387,7 +387,7 @@ function Navbar() {
               to="/#contact"
               className="rounded-full bg-orange-500 px-5 py-2 text-white font-semibold shadow-md transition hover:bg-orange-600"
             >
-              Inquire Now
+              Message us
             </HashLink>
 
             <Link

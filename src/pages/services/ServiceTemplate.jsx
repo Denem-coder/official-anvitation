@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
-import { useCart } from '../../context/CartContext'
 
 function ServiceTemplate({
   badge,
@@ -16,7 +15,7 @@ function ServiceTemplate({
 }) {
   const [selectedItem, setSelectedItem] = useState(null)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
-  const { addToCart } = useCart()
+  const [selectedColor, setSelectedColor] = useState('')
 
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
@@ -47,11 +46,13 @@ function ServiceTemplate({
   const openModal = (item) => {
     setSelectedItem(item)
     setActiveImageIndex(0)
+    setSelectedColor('')
   }
 
   const closeModal = () => {
     setSelectedItem(null)
     setActiveImageIndex(0)
+    setSelectedColor('')
   }
 
   const nextImage = () => {
@@ -96,24 +97,12 @@ function ServiceTemplate({
 
   const currentImage = imageList[activeImageIndex] || ''
 
-  const handleAddToCart = () => {
-    if (!selectedItem) return
-
-    addToCart({
-      type: 'design',
-      category: badge,
-      title: selectedItem.title,
-      designSlug: selectedItem.slug,
-      image: selectedItem.cover || selectedItem.images?.[0] || selectedItem.img,
-      description: selectedItem.desc,
-    })
-
-    closeModal()
-  }
-
-  const buyNowLink = selectedItem?.slug
-    ? `${packageLink}?design=${encodeURIComponent(selectedItem.slug)}`
-    : packageLink
+  const buyNowLink =
+    selectedItem?.slug && selectedColor
+      ? `${packageLink}?design=${encodeURIComponent(
+          selectedItem.slug
+        )}&color=${encodeURIComponent(selectedColor)}`
+      : '#'
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
@@ -150,7 +139,7 @@ function ServiceTemplate({
                     <img
                       src={item.cover || item.images?.[0] || item.img}
                       alt={item.title}
-                      className="w-full h-72 object-cover"
+                      className="w-full h-48 object-cover"
                     />
                   </div>
 
@@ -158,6 +147,13 @@ function ServiceTemplate({
                     <p className="text-sm md:text-base font-semibold text-gray-900 line-clamp-2">
                       {item.title}
                     </p>
+
+                    {item.price && (
+                      <p className="mt-2 text-xl font-bold text-orange-500">
+                        ₱{Number(item.price).toLocaleString()}
+                        <span className="text-sm text-gray-500 ml-2">/ set</span>
+                      </p>
+                    )}
 
                     <span className="mt-3 inline-flex rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white">
                       View Details
@@ -169,7 +165,7 @@ function ServiceTemplate({
           </div>
         </section>
 
-        <section className="mt-16">
+        {/* <section className="mt-16">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center">
             Why Choose Our {badge}
           </h2>
@@ -187,7 +183,7 @@ function ServiceTemplate({
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         <section className="mt-16 rounded-[2rem] bg-white p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.06)] text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
@@ -317,18 +313,25 @@ function ServiceTemplate({
                     {selectedItem.title}
                   </h2>
 
+                  {selectedItem.price && (
+                    <p className="mt-3 text-2xl font-bold text-orange-500">
+                      ₱{Number(selectedItem.price).toLocaleString()}
+                      <span className="text-sm text-gray-500 ml-2">/ set</span>
+                    </p>
+                  )}
+
                   <p className="mt-4 text-gray-600 leading-7">
                     {selectedItem.desc}
                   </p>
 
-                  {selectedItem.details?.length > 0 && (
+                  {selectedItem.inclusions?.length > 0 && (
                     <div className="mt-6 rounded-2xl bg-orange-50 p-5">
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                        What makes it special
+                        Inclusions
                       </h3>
 
                       <ul className="mt-4 space-y-3 text-sm text-gray-700">
-                        {selectedItem.details.map((detail, index) => (
+                        {selectedItem.inclusions.map((detail, index) => (
                           <li key={index} className="flex items-start gap-3">
                             <span className="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-orange-500 shadow-sm">
                               ✔
@@ -340,19 +343,46 @@ function ServiceTemplate({
                     </div>
                   )}
 
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                    <button
-                      onClick={handleAddToCart}
-                      className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-50"
-                    >
-                      Add to Cart
-                    </button>
+                  {selectedItem.colors?.length > 0 && (
+                    <div className="mt-6">
+                      <label className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-700">
+                        PICK YOUR MOTIF?
+                      </label>
 
+                      <select
+                        value={selectedColor}
+                        onChange={(e) => setSelectedColor(e.target.value)}
+                        className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-gray-700 outline-none transition focus:border-orange-400"
+                      >
+                        <option value="">Select a motif</option>
+                        {selectedItem.colors.map((color) => (
+                          <option key={color} value={color}>
+                            {color}
+                          </option>
+                        ))}
+                      </select>
+
+                      {!selectedColor && (
+                        <p className="mt-2 text-sm text-orange-500">
+                          Please choose a color first before proceeding to packages.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                     <Link
                       to={buyNowLink}
-                      className="inline-flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
+                      onClick={(e) => {
+                        if (!selectedColor) e.preventDefault()
+                      }}
+                      className={`inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold transition ${
+                        selectedColor
+                          ? 'bg-orange-500 text-white hover:bg-orange-600'
+                          : 'cursor-not-allowed bg-gray-200 text-gray-500'
+                      }`}
                     >
-                      Buy Now
+                      {selectedColor ? 'Buy Now' : 'Choose Color First'}
                     </Link>
 
                     <Link
