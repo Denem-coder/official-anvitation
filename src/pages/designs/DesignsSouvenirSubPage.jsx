@@ -1,4 +1,4 @@
-import ServiceTemplate from '../services/ServiceTemplate'
+import DesignsTemplate from '../designs/DesignsTemplate'
 import designData from '../../data/designData'
 
 import sample1 from '../../assets/img/gallery-img/wedding-invitation-1.png'
@@ -6,12 +6,12 @@ import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
 import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
 import sample4 from '../../assets/img/gallery-img/wedding-invitation-4.png'
 
-function ServiceSouvenirSubPage() {
+function DesignsSouvenirSubPage() {
   return (
-    <ServiceTemplate
+    <DesignsTemplate
       badge="Birthday Invitations"
-      title="Fun Invitations for Every Birthday Celebration"
-      subtitle="Explore birthday invitation styles that are playful, personalized, and perfect for memorable celebrations."
+      title="Choose Your Design"
+      subtitle="Browse our souvenir designs and choose your perfect match"
       packageLink="/packages/souvenir"
       inquiryLink="/#contact"
       inquiryText="Need Help?"
@@ -97,4 +97,4 @@ function ServiceSouvenirSubPage() {
   )
 }
 
-export default ServiceSouvenirSubPage
+export default DesignsSouvenirSubPage

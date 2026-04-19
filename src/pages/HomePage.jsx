@@ -1,5 +1,5 @@
 import Hero from '../components/Hero'
-import Services from '../components/Services'
+import Designs from '../components/Designs'
 import Packages from '../components/Packages'
 import Gallery from '../components/Gallery'
 import Reviews from '../components/Reviews'
@@ -10,7 +10,7 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <Services />
+      <Designs />
       <Packages />
       <Gallery />
       <Reviews />

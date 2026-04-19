@@ -1,43 +1,40 @@
 import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 
-import wedding from '../assets/img/services-img/service-1.png'
-import baptismal from '../assets/img/services-img/service-2.png'
-import birthday from '../assets/img/services-img/service-3.png'
-import souvenirs from '../assets/img/services-img/service-4.png'
-import printingSupplies from '../assets/img/services-img/service-5.png'
+import wedding from '../assets/img/designs-img/design-1.png'
+import baptismal from '../assets/img/designs-img/design-2.png'
+import birthday from '../assets/img/designs-img/design-3.png'
+import souvenirs from '../assets/img/designs-img/design-4.png'
 
-function ServicesPage() {
-  const services = [
+function DesignsPage() {
+  const designs = [
     {
-      title: "Wedding Invitations",
+      title: "Wedding",
       desc: "Elegant and timeless designs crafted for your special day.",
       img: wedding,
-      link: "/services/wedding",
+      strt: "Starts at ₱60 per set",
+      link: "/designs/wedding",
     },
     {
-      title: "Birthday Invitations",
-      desc: "Fun, creative, and personalized invitations for all ages.",
+      title: "Birthday",
+      desc: "Fun, creative, and personalized invitations, perfect for all ages.",
       img: birthday,
-      link: "/services/birthday",
+      strt: "Starts at ₱56 per set",
+      link: "/designs/birthday",
     },
     {
-      title: "Baptismal Invitations",
+      title: "Baptismal",
       desc: "Soft and meaningful designs perfect for sacred celebrations.",
       img: baptismal,
-      link: "/services/baptismal",
+      strt: "Starts at ₱50 per set",
+      link: "/designs/baptismal",
     },
     {
       title: "Souvenirs",
       desc: "Memorable keepsakes your guests will truly appreciate.",
       img: souvenirs,
-      link: "/services/souvenir",
-    },
-    {
-      title: "Printing Supplies",
-      desc: "Essential papers, inks, and materials for all your printing needs.",
-      img: printingSupplies,
-      link: "/services/printingsupplies",
+      strt: "Starts at ₱100 per set",
+      link: "/designs/souvenir",
     },
   ]
 
@@ -49,45 +46,49 @@ function ServicesPage() {
         {/* HERO */}
         <div className="text-center mt-6 mb-12">
           <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
-            Our Services
+            Our Designs
           </h1>
           <p className="mt-4 text-gray-600 max-w-xl mx-auto">
             Premium invitations and souvenirs designed to make your events unforgettable.
           </p>
         </div>
 
-        {/* SERVICES GRID */}
+        {/* DESIGNS GRID */}
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {services.map((item, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {designs.map((item, index) => (
             <Link  to={item.link}>
             <div
               key={index}
-              className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col"
+              className="group bg-white rounded-lg shadow-sm hover:shadow-md transition duration-200 overflow-hidden flex flex-col border border-gray-100"
             >
               {/* Image */}
-              <div className="overflow-hidden">
+              <div className="overflow-hidden rounded-t-lg">
                 <img
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-44 object-cover group-hover:scale-110 transition duration-500"
+                  className="w-full h-40 object-cover group-hover:scale-105 transition duration-300"
                 />
               </div>
 
               {/* Content */}
-              <div className="p-5 flex flex-col flex-grow">
-                <h2 className="text-lg font-semibold text-gray-900">
+              <div className="p-3 flex flex-col flex-grow">
+                <h2 className=" text-gray-900 text-[14px] md:text-base text-center md:text-start font-bold">
                   {item.title}
                 </h2>
 
-                <p className="text-sm text-gray-600 mt-2 flex-grow">
+                <p className="text-xs text-gray-600 mt-1 flex-grow hidden md:block">
                   {item.desc}
+                </p>
+
+                <p className="text-sm text-orange-600 mt-1 flex-grow font-bold">
+                  {item.strt}
                 </p>
 
                 {/* CTA */}
                 <Link
                   to={item.link}
-                  className="mt-4 inline-block text-center bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition"
+                  className="mt-3 text-center bg-orange-500 text-white px-3 py-2 rounded-2xl text-sm font-semibold hover:bg-orange-600 transition"
                 >
                   View Designs
                 </Link>
@@ -120,4 +121,4 @@ function ServicesPage() {
   )
 }
 
-export default ServicesPage
+export default DesignsPage

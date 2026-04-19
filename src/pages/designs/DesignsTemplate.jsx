@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 
-function ServiceTemplate({
+function DesignsTemplate({
   badge,
   title,
   subtitle,
@@ -16,17 +16,30 @@ function ServiceTemplate({
   const [selectedItem, setSelectedItem] = useState(null)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState('')
+  const [showHelpModal, setShowHelpModal] = useState(false)
 
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
 
+  const message = encodeURIComponent('Hi I need help choosing a design')
+  const isMobileDevice =
+    typeof navigator !== 'undefined' &&
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+
+  const messengerLink = isMobileDevice
+    ? `https://m.me/YOURPAGEUSERNAME?text=${message}`
+    : 'https://www.facebook.com/messages/t/YOURPAGEUSERNAME'
+
   useEffect(() => {
-    if (!selectedItem) return
+    if (!selectedItem && !showHelpModal) return
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') closeModal()
+      if (e.key === 'Escape') {
+        if (showHelpModal) setShowHelpModal(false)
+        if (selectedItem) closeModal()
+      }
 
-      if (!selectedItem.images || selectedItem.images.length <= 1) return
+      if (!selectedItem?.images || selectedItem.images.length <= 1) return
 
       if (e.key === 'ArrowRight') nextImage()
       if (e.key === 'ArrowLeft') prevImage()
@@ -34,14 +47,14 @@ function ServiceTemplate({
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [selectedItem, activeImageIndex])
+  }, [selectedItem, activeImageIndex, showHelpModal])
 
   useEffect(() => {
-    document.body.style.overflow = selectedItem ? 'hidden' : ''
+    document.body.style.overflow = selectedItem || showHelpModal ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [selectedItem])
+  }, [selectedItem, showHelpModal])
 
   const openModal = (item) => {
     setSelectedItem(item)
@@ -105,7 +118,7 @@ function ServiceTemplate({
       : '#'
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
+    <div className="min-h-screen bg-gray-100 px-4 pt-28 pb-16">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <BackButton />
@@ -124,11 +137,11 @@ function ServiceTemplate({
         </section>
 
         <section className="mt-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {designs.map((item, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-3xl bg-white shadow-md transition duration-300"
+                className="overflow-hidden rounded-lg bg-white shadow-md transition duration-300"
               >
                 <button
                   type="button"
@@ -205,14 +218,68 @@ function ServiceTemplate({
               </Link>
             )}
 
-            <Link
-              to={inquiryLink}
+            <button
+              type="button"
+              onClick={() => setShowHelpModal(true)}
               className="rounded-full border border-orange-300 bg-white px-7 py-3 font-semibold text-orange-500 transition hover:bg-orange-50"
             >
               {inquiryText}
-            </Link>
+            </button>
           </div>
         </section>
+
+        {showHelpModal && (
+          <div
+            className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 py-6 sm:px-6 md:px-10"
+            onClick={() => setShowHelpModal(false)}
+          >
+            <div
+              className="relative w-full max-w-lg rounded-[2rem] bg-white p-6 shadow-[0_30px_100px_rgba(0,0,0,0.25)] md:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                Need Help?
+              </p>
+
+              <h3 className="mt-3 text-2xl font-bold text-gray-900 md:text-3xl">
+                Need help choosing a design?
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-7">
+                Message us on Messenger and we’ll help you choose the best design,
+                motif, and option based on your event, style, and budget.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={messengerLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setShowHelpModal(false)}
+                  className="inline-flex flex-1 items-center justify-center rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
+                >
+                  Message Us on Messenger
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setShowHelpModal(false)}
+                  className="inline-flex flex-1 items-center justify-center rounded-full border border-orange-300 bg-white px-6 py-3 font-semibold text-orange-500 transition hover:bg-orange-50"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {selectedItem && (
           <div
@@ -385,12 +452,13 @@ function ServiceTemplate({
                       {selectedColor ? 'Buy Now' : 'Choose Color First'}
                     </Link>
 
-                    <Link
-                      to={inquiryLink}
+                    <button
+                      type="button"
+                      onClick={() => setShowHelpModal(true)}
                       className="inline-flex items-center justify-center rounded-full border border-orange-300 bg-white px-6 py-3 font-semibold text-orange-500 transition hover:bg-orange-50"
                     >
                       {inquiryText}
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -402,4 +470,4 @@ function ServiceTemplate({
   )
 }
 
-export default ServiceTemplate
+export default DesignsTemplate

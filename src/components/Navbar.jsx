@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import logo from '../assets/img/navbar-img/anvitation-logo.png';
 
-import serviceWedding from '../assets/img/services-img/service-1.png';
-import serviceBirthday from '../assets/img/services-img/service-2.png';
-import serviceSouvenir from '../assets/img/services-img/service-3.png';
-import serviceBaptismal from '../assets/img/services-img/service-2.png';
+import weddingDesigns from '../assets/img/designs-img/design-1.png';
+import birthdayDesigns from '../assets/img/designs-img/design-2.png';
+import souvenirDesigns from '../assets/img/designs-img/design-3.png';
+import baptismalDesigns from '../assets/img/designs-img/design-2.png';
 
 import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
 import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
 import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
 import work4 from '../assets/img/gallery-img/wedding-invitation-4.png';
 
-import package1 from '../assets/img/services-img/service-1.png';
-import package2 from '../assets/img/services-img/service-2.png';
-import package3 from '../assets/img/services-img/service-3.png';
-import package4 from '../assets/img/services-img/service-1.png';
+import package1 from '../assets/img/designs-img/design-1.png';
+import package2 from '../assets/img/designs-img/design-2.png';
+import package3 from '../assets/img/designs-img/design-3.png';
+import package4 from '../assets/img/designs-img/design-1.png';
 
 import { Link, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -33,30 +33,30 @@ function Navbar() {
   const location = useLocation();
   const { cart } = useCart();
 
-  const servicesMenu = [
+  const designsMenu = [
     {
       label: 'Wedding Invitations',
       desc: 'Elegant and timeless wedding designs',
-      to: '/services/wedding',
-      img: serviceWedding,
+      to: '/designs/wedding',
+      img: weddingDesigns,
     },
     {
       label: 'Birthday Invitations',
       desc: 'Fun and creative birthday invitation styles',
-      to: '/services/birthday',
-      img: serviceBirthday,
+      to: '/designs/birthday',
+      img: birthdayDesigns,
     },
     {
       label: 'Baptismal Invitations',
       desc: 'Soft and meaningful baptismal themes',
-      to: '/services/baptismal',
-      img: serviceBaptismal,
+      to: '/designs/baptismal',
+      img: baptismalDesigns,
     },
     {
       label: 'Souvenirs',
       desc: 'Memorable keepsakes for your guests',
-      to: '/services/souvenir',
-      img: serviceSouvenir,
+      to: '/designs/souvenir',
+      img: souvenirDesigns,
     },
   ];
 
@@ -133,7 +133,7 @@ function Navbar() {
       return;
     }
 
-    const sections = ['hero', 'services', 'packages', 'gallery', 'reviews', 'faqs', 'contact'];
+    const sections = ['hero', 'designs', 'packages', 'gallery', 'reviews', 'faqs', 'contact'];
 
     const handleScroll = () => {
       let current = '';
@@ -194,27 +194,32 @@ function Navbar() {
       (path === '/' && location.pathname === '/' && (!section || activeSection === section)) ||
       (isHomePage && !path && section && activeSection === section);
 
-    return `relative font-semibold tracking-wide transition-all duration-300
-      hover:text-orange-500
-      after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-      after:bg-orange-500 after:transition-all after:duration-300
+    return `group relative inline-flex items-center justify-center rounded-full px-4 py-2 font-semibold tracking-wide
+      transition-all duration-300 ease-out
+      before:absolute before:inset-0 before:rounded-full before:bg-orange-50 before:opacity-0 before:scale-75
+      before:transition-all before:duration-300 before:ease-out
+      after:absolute after:left-1/2 after:-bottom-0.5 after:h-[2.5px] after:-translate-x-1/2 after:rounded-full
+      after:bg-orange-500 after:transition-all after:duration-300 after:ease-out
       ${
         isActive
-          ? 'text-orange-500 after:w-full'
-          : 'text-gray-800 after:w-0 hover:after:w-full'
+          ? 'text-orange-500 before:opacity-100 before:scale-100 after:w-8'
+          : 'text-gray-800 after:w-0 hover:text-orange-500 hover:-translate-y-[1px] hover:before:opacity-100 hover:before:scale-100 hover:after:w-8'
       }`;
   };
 
   const desktopMenuTriggerClass = (path) => {
     const isActive = location.pathname.startsWith(path);
 
-    return `relative block font-semibold tracking-wide transition-all duration-300
-      after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px]
-      after:bg-orange-500 after:transition-all after:duration-300
+    return `group relative inline-flex items-center justify-center rounded-full px-4 py-2 font-semibold tracking-wide
+      transition-all duration-300 ease-out
+      before:absolute before:inset-0 before:rounded-full before:bg-orange-50 before:opacity-0 before:scale-75
+      before:transition-all before:duration-300 before:ease-out
+      after:absolute after:left-1/2 after:-bottom-0.5 after:h-[2.5px] after:-translate-x-1/2 after:rounded-full
+      after:bg-orange-500 after:transition-all after:duration-300 after:ease-out
       ${
         isActive
-          ? 'text-orange-500 after:w-full'
-          : 'text-gray-800 after:w-0 hover:text-orange-500 hover:after:w-full'
+          ? 'text-orange-500 before:opacity-100 before:scale-100 after:w-8'
+          : 'text-gray-800 after:w-0 hover:text-orange-500 hover:-translate-y-[1px] hover:before:opacity-100 hover:before:scale-100 hover:after:w-8'
       }`;
   };
 
@@ -227,13 +232,13 @@ function Navbar() {
       (isHomePage && !path && section && activeSection === section);
 
     if (isPrimary) {
-      return 'w-full rounded-2xl px-4 py-3 text-center font-semibold bg-orange-500 text-white shadow-md transition hover:bg-orange-600';
+      return 'w-full rounded-2xl px-4 py-3 text-center font-semibold bg-orange-500 text-white shadow-md transition-all duration-300 hover:bg-orange-600 hover:shadow-lg';
     }
 
-    return `w-full rounded-2xl px-4 py-3 text-left font-semibold transition ${
+    return `w-full rounded-2xl px-4 py-3 text-left font-semibold transition-all duration-300 ${
       isActive
-        ? 'bg-orange-50 text-orange-500'
-        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+        ? 'bg-orange-50 text-orange-500 shadow-sm'
+        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
     }`;
   };
 
@@ -288,12 +293,12 @@ function Navbar() {
   );
 
   const getMegaMenuContent = () => {
-    if (activeMenu === 'services') {
+    if (activeMenu === 'designs') {
       return {
-        eyebrow: 'Services',
+        eyebrow: 'Designs',
         title: 'Explore our categories',
-        items: servicesMenu,
-        seeAllTo: '/services',
+        items: designsMenu,
+        seeAllTo: '/designs',
       };
     }
 
@@ -339,18 +344,14 @@ function Navbar() {
             <img src={logo} alt="Anvitation Logo" className="h-11 w-auto object-contain" />
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            <HashLink smooth to="/#hero" className={navLinkClass('hero', '/')}>
-              Home
-            </HashLink>
-
-            <div className="relative" onMouseEnter={() => handleMenuEnter('services')}>
+          <div className="hidden md:flex items-center gap-3">
+            <div className="relative" onMouseEnter={() => handleMenuEnter('designs')}>
               <Link
-                to="/services"
-                className={desktopMenuTriggerClass('/services')}
+                to="/designs"
+                className={desktopMenuTriggerClass('/designs')}
                 onClick={closeAllMenus}
               >
-                Services
+                <span className="relative z-10">Designs</span>
               </Link>
             </div>
 
@@ -360,7 +361,7 @@ function Navbar() {
                 className={desktopMenuTriggerClass('/packages')}
                 onClick={closeAllMenus}
               >
-                Packages
+                <span className="relative z-10">Packages</span>
               </Link>
             </div>
 
@@ -370,32 +371,24 @@ function Navbar() {
                 className={desktopMenuTriggerClass('/gallery')}
                 onClick={closeAllMenus}
               >
-                Our Works
+                <span className="relative z-10">Our Works</span>
               </Link>
             </div>
 
-            <HashLink smooth to="/#reviews" className={navLinkClass('reviews')}>
-              Reviews
+            <HashLink smooth to="/#reviews" className={navLinkClass('reviews')} onClick={closeAllMenus}>
+              <span className="relative z-10">Reviews</span>
             </HashLink>
 
-            <HashLink smooth to="/#faqs" className={navLinkClass('faqs')}>
-              FAQs
-            </HashLink>
-
-            <HashLink
-              smooth
-              to="/#contact"
-              className="rounded-full bg-orange-500 px-5 py-2 text-white font-semibold shadow-md transition hover:bg-orange-600"
-            >
-              Message us
+            <HashLink smooth to="/#faqs" className={navLinkClass('faqs')} onClick={closeAllMenus}>
+              <span className="relative z-10">FAQs</span>
             </HashLink>
 
             <Link
               to="/cart"
-              className={`relative flex items-center justify-center rounded-full p-2 transition-all duration-300 ${
+              className={`relative flex items-center justify-center rounded-full p-2.5 transition-all duration-300 ease-out ${
                 location.pathname.startsWith('/cart')
-                  ? 'bg-orange-50 text-orange-500'
-                  : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                  ? 'bg-orange-50 text-orange-500 shadow-sm'
+                  : 'text-gray-800 hover:bg-white/80 hover:text-orange-500 hover:shadow-md hover:-translate-y-[1px]'
               }`}
               aria-label="Cart"
             >
@@ -425,10 +418,10 @@ function Navbar() {
           <div className="md:hidden flex items-center gap-2">
             <Link
               to="/cart"
-              className={`relative flex items-center justify-center rounded-full p-2 transition-all duration-300 ${
+              className={`relative flex items-center justify-center rounded-full p-2.5 transition-all duration-300 ease-out ${
                 location.pathname.startsWith('/cart')
-                  ? 'bg-orange-50 text-orange-500'
-                  : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                  ? 'bg-orange-50 text-orange-500 shadow-sm'
+                  : 'text-gray-800 hover:bg-white/80 hover:text-orange-500 hover:shadow-md hover:-translate-y-[1px]'
               }`}
               aria-label="Cart"
               onClick={closeAllMenus}
@@ -456,7 +449,7 @@ function Navbar() {
             </Link>
 
             <button
-              className="flex items-center justify-center rounded-full p-2 text-gray-800 transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
+              className="flex items-center justify-center rounded-full p-2.5 text-gray-800 transition-all duration-300 ease-out hover:bg-white/80 hover:text-orange-500 hover:shadow-md hover:-translate-y-[1px]"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -533,40 +526,31 @@ function Navbar() {
         >
           <div className="rounded-3xl border border-white/50 bg-white/95 px-4 py-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-xl">
             <div className="flex flex-col gap-2">
-              <HashLink
-                smooth
-                to="/#hero"
-                onClick={closeAllMenus}
-                className={mobileLinkClass('hero', '/')}
-              >
-                Home
-              </HashLink>
-
               <div>
                 <div className="flex items-center gap-2">
                   <Link
-                    to="/services"
+                    to="/designs"
                     onClick={closeAllMenus}
-                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
-                      location.pathname.startsWith('/services')
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition-all duration-300 ${
+                      location.pathname.startsWith('/designs')
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
                   >
-                    Services
+                    Designs
                   </Link>
 
                   <button
                     type="button"
-                    onClick={() => toggleMobileDropdown('services')}
-                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
-                      location.pathname.startsWith('/services') || mobileDropdown === 'services'
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                    onClick={() => toggleMobileDropdown('designs')}
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition-all duration-300 ${
+                      location.pathname.startsWith('/designs') || mobileDropdown === 'designs'
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
-                    aria-label="Toggle Services menu"
+                    aria-label="Toggle Designs menu"
                   >
-                    <span className={`transition ${mobileDropdown === 'services' ? 'rotate-180' : ''}`}>
+                    <span className={`transition ${mobileDropdown === 'designs' ? 'rotate-180' : ''}`}>
                       ⌄
                     </span>
                   </button>
@@ -574,13 +558,11 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'services'
-                      ? 'max-h-[500px] pt-2'
-                      : 'max-h-0'
+                    mobileDropdown === 'designs' ? 'max-h-[500px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
-                    {servicesMenu.map((item) => (
+                    {designsMenu.map((item) => (
                       <MegaMenuCard
                         key={item.label}
                         item={item}
@@ -597,10 +579,10 @@ function Navbar() {
                   <Link
                     to="/packages"
                     onClick={closeAllMenus}
-                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition-all duration-300 ${
                       location.pathname.startsWith('/packages')
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
                   >
                     Packages
@@ -609,10 +591,10 @@ function Navbar() {
                   <button
                     type="button"
                     onClick={() => toggleMobileDropdown('packages')}
-                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition-all duration-300 ${
                       location.pathname.startsWith('/packages') || mobileDropdown === 'packages'
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
                     aria-label="Toggle Packages menu"
                   >
@@ -624,9 +606,7 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'packages'
-                      ? 'max-h-[500px] pt-2'
-                      : 'max-h-0'
+                    mobileDropdown === 'packages' ? 'max-h-[500px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
@@ -647,10 +627,10 @@ function Navbar() {
                   <Link
                     to="/gallery"
                     onClick={closeAllMenus}
-                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                    className={`flex-1 rounded-2xl px-4 py-3 text-left font-semibold transition-all duration-300 ${
                       location.pathname.startsWith('/gallery')
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
                   >
                     Our Works
@@ -659,10 +639,10 @@ function Navbar() {
                   <button
                     type="button"
                     onClick={() => toggleMobileDropdown('works')}
-                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition ${
+                    className={`flex h-[48px] w-[48px] items-center justify-center rounded-2xl transition-all duration-300 ${
                       location.pathname.startsWith('/gallery') || mobileDropdown === 'works'
-                        ? 'bg-orange-50 text-orange-500'
-                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500'
+                        ? 'bg-orange-50 text-orange-500 shadow-sm'
+                        : 'text-gray-800 hover:bg-orange-50 hover:text-orange-500 hover:translate-x-1'
                     }`}
                     aria-label="Toggle Our Works menu"
                   >
@@ -674,9 +654,7 @@ function Navbar() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    mobileDropdown === 'works'
-                      ? 'max-h-[500px] pt-2'
-                      : 'max-h-0'
+                    mobileDropdown === 'works' ? 'max-h-[500px] pt-2' : 'max-h-0'
                   }`}
                 >
                   <div className="grid grid-cols-2 gap-3 px-2">
@@ -708,17 +686,6 @@ function Navbar() {
                 className={mobileLinkClass('faqs')}
               >
                 FAQs
-              </HashLink>
-
-              <div className="my-2 h-px bg-gray-200" />
-
-              <HashLink
-                smooth
-                to="/#contact"
-                onClick={closeAllMenus}
-                className={mobileLinkClass('contact', null, true)}
-              >
-                Inquire Now
               </HashLink>
             </div>
           </div>

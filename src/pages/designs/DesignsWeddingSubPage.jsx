@@ -1,4 +1,4 @@
-import ServiceTemplate from './ServiceTemplate'
+import DesignsTemplate from './DesignsTemplate'
 import designData from '../../data/designData'
 
 import sample1 from '../../assets/img/gallery-img/wedding-invitation-1.png'
@@ -6,16 +6,16 @@ import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
 import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
 import sample4 from '../../assets/img/gallery-img/wedding-invitation-4.png'
 
-function ServiceWeddingSubPage() {
+function DesignsWeddingSubPage() {
   return (
-    <ServiceTemplate
+    <DesignsTemplate
       badge="Wedding Invitations"
-      title="Elegant Invitations for Your Special Day"
-      subtitle="Browse some of our wedding invitation designs..."
+      title="Choose Your Design"
+      subtitle="Browse our wedding designs and choose your perfect match"
       packageLink="/packages/wedding"
       designs={designData.wedding} // ✅ USE CENTRAL DATA
     />
   )
 }
 
-export default ServiceWeddingSubPage
+export default DesignsWeddingSubPage

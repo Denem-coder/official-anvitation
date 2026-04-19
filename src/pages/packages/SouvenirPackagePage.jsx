@@ -7,8 +7,8 @@ function SouvenirPackagePage() {
   return (
     <PackageTemplate
       badge="Souvenir Packages"
-      title="Choose the Right Souvenir Package"
-      subtitle="Pick the package that fits your selected souvenir design and celebration needs."
+      title="Customize Your Order"
+      subtitle="Choose individual items or select a package that best fits your event and budget."
       designsCatalog={designData.souvenir}
       products={productsData.souvenir}
       packages={packagesData.souvenir}

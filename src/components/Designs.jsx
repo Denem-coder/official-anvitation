@@ -3,44 +3,44 @@ import 'swiper/css'
 
 import { Link } from 'react-router-dom'
 
-import wedding from '../assets/img/services-img/service-1.png'
-import baptismal from '../assets/img/services-img/service-2.png'
-import birthday from '../assets/img/services-img/service-3.png'
-import souvenirs from '../assets/img/services-img/service-4.png'
-import printingSupplies from '../assets/img/services-img/service-5.png'
+import wedding from '../assets/img/designs-img/design-1.png'
+import baptismal from '../assets/img/designs-img/design-2.png'
+import birthday from '../assets/img/designs-img/design-3.png'
+import souvenirs from '../assets/img/designs-img/design-4.png'
+import printingSupplies from '../assets/img/designs-img/design-5.png'
 
 const categories = [
   {
     img: wedding,
     title: 'Wedding',
-    link: '/services/wedding',
+    link: '/designs/wedding',
   },
   {
     img: baptismal,
     title: 'Baptismal',
-    link: '/services/baptismal',
+    link: '/designs/baptismal',
   },
   {
     img: birthday,
     title: 'Birthday',
-    link: '/services/birthday',
+    link: '/designs/birthday',
   },
   {
     img: souvenirs,
     title: 'Souvenirs',
-    link: '/services/souvenir',
+    link: '/designs/souvenir',
   },
   {
     img: printingSupplies,
     title: 'Printing Supplies',
-    link: '/services/printingsupplies',
+    link: '/designs/printingsupplies',
   },
 ]
 
-function Services() {
+function Designs() {
   return (
     <section
-      id="services"
+      id="designs"
       className="bg-gradient-to-b from-orange-100 to-white flex flex-col items-center justify-center text-center p-6 pt-20"
     >
       <h2 className="text-2xl font-bold mb-10 text-orange-600">
@@ -84,7 +84,7 @@ function Services() {
       </div>
 
       <Link
-        to="/services"
+        to="/designs"
         className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-xl hover:scale-105 transition hover:bg-orange-500 hover:text-white"
       >
         View All
@@ -93,4 +93,4 @@ function Services() {
   )
 }
 
-export default Services
+export default Designs

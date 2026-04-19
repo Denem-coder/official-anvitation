@@ -1,5 +1,5 @@
-import img1 from '../assets/img/services-img/service-1.png'
-import img2 from '../assets/img/services-img/service-2.png'
+import img1 from '../assets/img/designs-img/design-1.png'
+import img2 from '../assets/img/designs-img/design-2.png'
 
 const designData = {
   wedding: [

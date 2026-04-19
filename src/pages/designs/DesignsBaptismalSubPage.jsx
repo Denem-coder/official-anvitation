@@ -1,16 +1,16 @@
-import ServiceTemplate from '../services/ServiceTemplate'
+import DesignsTemplate from './DesignsTemplate'
 
 import sample1 from '../../assets/img/gallery-img/baptismal-invitation-1.png'
 import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
 import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
 import sample4 from '../../assets/img/gallery-img/wedding-invitation-4.png'
 
-function ServiceBaptismalSubPage() {
+function DesignsBaptismalSubPage() {
   return (
-    <ServiceTemplate
+    <DesignsTemplate
       badge="Birthday Invitations"
-      title="Fun Invitations for Every Birthday Celebration"
-      subtitle="Explore birthday invitation styles that are playful, personalized, and perfect for memorable celebrations."
+      title="Choose Your Design"
+      subtitle="Browse our baptismal designs and choose your perfect match"
       packageLink="/packages/baptismal"
       inquiryLink="/#contact"
       inquiryText="Need Help?"
@@ -96,4 +96,4 @@ function ServiceBaptismalSubPage() {
   )
 }
 
-export default ServiceBaptismalSubPage
+export default DesignsBaptismalSubPage

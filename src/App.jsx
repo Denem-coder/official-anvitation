@@ -1,15 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import ScrollToTop from './components/ScrollToTop'
+import Footer from './components/Footer'
 import Cart from './pages/Cart'
 import { useCart } from './context/CartContext'
 
 import HomePage from './pages/HomePage'
-import ServicesPage from './pages/ServicesPage'
-import ServiceWeddingSubPage from './pages/services/ServiceWeddingSubPage'
-import ServiceBaptismalSubPage from './pages/services/ServiceBaptismalSubPage'
-import ServiceBirthdaySubPage from './pages/services/ServiceBirthdaySubPage'
-import ServiceSouvenirSubPage from './pages/services/ServiceSouvenirSubPage'
+import DesignsPage from './pages/DesignsPage'
+import DesignsWeddingSubPage from './pages/designs/DesignsWeddingSubPage'
+import DesignsBaptismalSubPage from './pages/designs/DesignsBaptismalSubPage'
+import DesignsBirthdaySubPage from './pages/designs/DesignsBirthdaySubPage'
+import DesignsSouvenirSubPage from './pages/designs/DesignsSouvenirSubPage'
 
 import PackagesPage from './pages/PackagesPage'
 import GalleryPage from './pages/GalleryPage'
@@ -18,13 +19,13 @@ import WeddingPackagePage from './pages/packages/WeddingPackagePage'
 import BirthdayPackagePage from './pages/packages/BirthdayPackagePage'
 import BaptismalPackagePage from './pages/packages/BaptismalPackagePage'
 import SouvenirPackagePage from './pages/packages/SouvenirPackagePage'
-import ServicePrintingSuppliesSubPage from './pages/services/ServicePrintingSuppliesSubPage'
+import DesignsPrintingSuppliesSubPage from './pages/designs/DesignsPrintingSuppliesSubPage'
 
 function App() {
   const { showToast } = useCart()
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
       {showToast && (
@@ -35,26 +36,30 @@ function App() {
 
       <ScrollToTop />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
 
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/services/wedding" element={<ServiceWeddingSubPage />} />
-        <Route path="/services/baptismal" element={<ServiceBaptismalSubPage />} />
-        <Route path="/services/birthday" element={<ServiceBirthdaySubPage />} />
-        <Route path="/services/souvenir" element={<ServiceSouvenirSubPage />} />
-        <Route path="/services/printingsupplies" element={<ServicePrintingSuppliesSubPage />} />
+          <Route path="/designs" element={<DesignsPage />} />
+          <Route path="/designs/wedding" element={<DesignsWeddingSubPage />} />
+          <Route path="/designs/baptismal" element={<DesignsBaptismalSubPage />} />
+          <Route path="/designs/birthday" element={<DesignsBirthdaySubPage />} />
+          <Route path="/designs/souvenir" element={<DesignsSouvenirSubPage />} />
+          <Route path="/designs/printingsupplies" element={<DesignsPrintingSuppliesSubPage />} />
 
-        <Route path="/packages" element={<PackagesPage />} />
-        <Route path="/packages/wedding" element={<WeddingPackagePage />} />
-        <Route path="/packages/birthday" element={<BirthdayPackagePage />} />
-        <Route path="/packages/baptismal" element={<BaptismalPackagePage />} />
-        <Route path="/packages/souvenir" element={<SouvenirPackagePage />} />
+          <Route path="/packages" element={<PackagesPage />} />
+          <Route path="/packages/wedding" element={<WeddingPackagePage />} />
+          <Route path="/packages/birthday" element={<BirthdayPackagePage />} />
+          <Route path="/packages/baptismal" element={<BaptismalPackagePage />} />
+          <Route path="/packages/souvenir" element={<SouvenirPackagePage />} />
 
-        <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-    </>
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </main>
+
+      <Footer />
+    </div>
   )
 }
 

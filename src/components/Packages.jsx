@@ -3,25 +3,25 @@ import 'swiper/css/bundle'
 
 import { Link } from 'react-router-dom'
 
-import service1 from '../assets/img/services-img/service-1.png'
-import service2 from '../assets/img/services-img/service-2.png'
-import service3 from '../assets/img/services-img/service-3.png'
+import design1 from '../assets/img/designs-img/design-1.png'
+import design2 from '../assets/img/designs-img/design-2.png'
+import design3 from '../assets/img/designs-img/design-3.png'
 
 const packages = [
   {
-    img: service1,
+    img: design1,
     title: 'Wedding Packages',
     desc: 'Elegant invites & souvenirs for your big day.',
     link: '/packages/wedding',
   },
   {
-    img: service2,
+    img: design2,
     title: 'Birthday Packages',
     desc: 'Creative invites & souvenirs for unforgettable birthdays.',
     link: '/packages/birthday',
   },
   {
-    img: service3,
+    img: design3,
     title: 'Souvenir Packages',
     desc: 'Memorable souvenirs for every special occasion.',
     link: '/packages/souvenirs',
@@ -34,7 +34,7 @@ function Packages() {
       id="packages"
       className="min-h-screen flex flex-col items-center justify-center text-center p-6 pt-20 bg-gradient-to-b from-white to-orange-50"
     >
-      <h2 className="text-2xl font-bold mb-8 text-orange-600">
+      <h2 className="text-3xl font-bold mb-8 text-orange-600">
         Our Packages
       </h2>
 

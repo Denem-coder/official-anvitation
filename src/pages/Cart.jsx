@@ -57,57 +57,67 @@ Subtotal: ₱${itemSubtotal.toLocaleString()}`
                 return (
                   <div
                     key={item.id}
-                    className="bg-white rounded-xl shadow-md p-5"
+                    className="bg-white rounded-xl shadow-md p-5 flex gap-4"
                   >
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
-
-                    {item.desc && (
-                      <p className="text-gray-600 mb-2">{item.desc}</p>
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                      />
                     )}
 
-                    <div className="space-y-1 mb-4">
-                      <p className="text-gray-700">
-                        Price:{' '}
-                        <span className="font-semibold text-orange-500">
-                          ₱{itemPrice.toLocaleString()}
-                        </span>
-                      </p>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">{item.title}</h3>
 
-                      <p className="text-gray-700">
-                        Subtotal:{' '}
-                        <span className="font-semibold text-orange-600">
-                          ₱{itemSubtotal.toLocaleString()}
-                        </span>
-                      </p>
-                    </div>
+                      {item.desc && (
+                        <p className="text-gray-600 mb-2 text-sm">{item.desc}</p>
+                      )}
 
-                    <div className="flex items-center justify-between gap-4 flex-wrap">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => decreaseQuantity(item.id)}
-                          className="w-9 h-9 rounded-full bg-orange-100 text-orange-600 font-bold hover:bg-orange-200 transition"
-                        >
-                          -
-                        </button>
+                      <div className="space-y-1 mb-4">
+                        <p className="text-gray-700 text-sm">
+                          Price:{' '}
+                          <span className="font-semibold text-orange-500">
+                            ₱{itemPrice.toLocaleString()}
+                          </span>
+                        </p>
 
-                        <span className="font-semibold text-lg min-w-[30px] text-center">
-                          {item.quantity}
-                        </span>
-
-                        <button
-                          onClick={() => increaseQuantity(item.id)}
-                          className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition"
-                        >
-                          +
-                        </button>
+                        <p className="text-gray-700 text-sm">
+                          Subtotal:{' '}
+                          <span className="font-semibold text-orange-600">
+                            ₱{itemSubtotal.toLocaleString()}
+                          </span>
+                        </p>
                       </div>
 
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 font-medium hover:underline"
-                      >
-                        Remove
-                      </button>
+                      <div className="flex items-center justify-between gap-4 flex-wrap">
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => decreaseQuantity(item.id)}
+                            className="w-9 h-9 rounded-full bg-orange-100 text-orange-600 font-bold hover:bg-orange-200 transition"
+                          >
+                            -
+                          </button>
+
+                          <span className="font-semibold text-lg min-w-[30px] text-center">
+                            {item.quantity}
+                          </span>
+
+                          <button
+                            onClick={() => increaseQuantity(item.id)}
+                            className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition"
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-red-500 font-medium hover:underline text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )

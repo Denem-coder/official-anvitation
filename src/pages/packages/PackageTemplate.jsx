@@ -28,9 +28,10 @@ function PackageTemplate({
     show: false,
     message: '',
   })
+  const [showHelpModal, setShowHelpModal] = useState(false)
 
   const browseDesignsLink =
-    location.pathname.replace('/packages/', '/services/') || '/services'
+    location.pathname.replace('/packages/', '/designs/') || '/designs'
 
   useEffect(() => {
     if (!toast.show) return
@@ -41,6 +42,24 @@ function PackageTemplate({
 
     return () => clearTimeout(timer)
   }, [toast])
+
+  useEffect(() => {
+    if (!showHelpModal) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowHelpModal(false)
+      }
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [showHelpModal])
 
   const showToast = (message) => {
     setToast({
@@ -120,6 +139,12 @@ function PackageTemplate({
     showToast(`${safeQuantity} ${selectedProduct.unit || 'set'} of ${selectedProduct.name} added to cart`)
   }
 
+  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+
+  const messengerLink = isMobileDevice
+    ? 'https://m.me/ANv8e?text=Hi%20I%20need%20help%20choosing%20a%20design'
+    : 'https://www.facebook.com/messages/t/ANv8e'
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
       {toast.show && (
@@ -129,6 +154,73 @@ function PackageTemplate({
               ✓
             </span>
             <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+
+      {showHelpModal && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 px-4"
+          onClick={() => setShowHelpModal(false)}
+        >
+          <div
+            className="relative w-full max-w-lg rounded-[2rem] bg-white p-6 shadow-[0_25px_80px_rgba(0,0,0,0.25)] md:p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowHelpModal(false)}
+              className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-xl text-gray-600 transition hover:bg-orange-50 hover:text-orange-500"
+              aria-label="Close modal"
+            >
+              ×
+            </button>
+
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+              Need Help?
+            </p>
+
+            <h3 className="mt-3 text-2xl font-bold text-gray-900 md:text-3xl">
+              Not sure which option fits your event?
+            </h3>
+
+            <p className="mt-4 text-gray-600">
+              We can help you choose the right design, motif, quantity, or package
+              based on your event and budget.
+            </p>
+
+            <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50 p-4 text-left">
+              <p className="text-sm font-semibold text-gray-900">
+                We can assist you with:
+              </p>
+
+              <ul className="mt-3 space-y-2 text-sm text-gray-700">
+                <li>• Choosing the best design for your event theme</li>
+                <li>• Picking the right motif or color</li>
+                <li>• Recommending the best package for your budget</li>
+                <li>• Answering customization and order questions</li>
+              </ul>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href={messengerLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
+                onClick={() => setShowHelpModal(false)}
+              >
+                Message Us on Messenger
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setShowHelpModal(false)}
+                className="inline-flex flex-1 items-center justify-center rounded-full border border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 transition hover:border-orange-300 hover:text-orange-500"
+              >
+                Maybe Later
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -253,7 +345,7 @@ function PackageTemplate({
 
                     <button
                       onClick={addSingleProduct}
-                      className="ml-auto rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      className="ml-auto rounded-full bg-orange-500 p-2.5 w-28 text-sm font-semibold text-white transition hover:bg-orange-600"
                     >
                       Add to Cart
                     </button>
@@ -273,26 +365,13 @@ function PackageTemplate({
                 </p>
 
                 <h2 className="mt-4 text-3xl font-bold leading-tight text-gray-900">
-                  Package
-                  <br />
-                  options
+                  Package Options
                 </h2>
 
-                <p className="mt-4 text-sm leading-7 text-gray-600 text-center">
+                <p className="mt-4 text-sm leading-7 text-gray-600 text-center hidden md:block">
                   These are optional bundled sets in case you want a package
                   instead of ordering per product.
                 </p>
-
-                {/* <div className="mt-8 space-y-4 text-sm text-gray-700">
-                  <div className="border-b border-gray-200 pb-3">Inclusions</div>
-                  <div className="border-b border-gray-200 pb-3">
-                    Print quality
-                  </div>
-                  <div className="border-b border-gray-200 pb-3">
-                    Customization
-                  </div>
-                  <div className="border-b border-gray-200 pb-3">Best use</div>
-                </div> */}
               </div>
 
               {packages.map((pkg) => (
@@ -350,28 +429,14 @@ function PackageTemplate({
           </div>
         )}
 
-        {/* {selectedDesign && packages.length > 0 && (
-          <div className="mt-8 text-center">
-            <button
-              onClick={() => choosePackage(packages[0])}
-              className="rounded-full bg-gray-900 px-7 py-3 font-semibold text-white transition hover:bg-black"
-            >
-              Add Package to Cart
-            </button>
-            <p className="mt-3 text-sm text-gray-500">
-              Package section is optional. Direct product ordering remains the
-              main action above.
-            </p>
-          </div>
-        )} */}
-
         <div className="mt-12 text-center">
-          <Link
-            to="/#contact"
+          <button
+            type="button"
+            onClick={() => setShowHelpModal(true)}
             className="inline-block rounded-full border border-orange-300 bg-white px-7 py-3 font-semibold text-orange-500 transition hover:bg-orange-50"
           >
             Need Help Choosing?
-          </Link>
+          </button>
         </div>
       </div>
     </div>

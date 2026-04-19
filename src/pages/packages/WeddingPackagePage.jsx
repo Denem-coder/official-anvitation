@@ -7,8 +7,8 @@ function WeddingPackagePage() {
   return (
     <PackageTemplate
       category="Wedding"
-      title="Build Your Wedding Invitation Order"
-      subtitle="Order by product or choose a package that fits your event and budget."
+      title="Customize Your Order"
+      subtitle="Choose individual items or select a package that best fits your event and budget."
       designsCatalog={designData.wedding}
       products={productsData.wedding}
       packages={packagesData.wedding}

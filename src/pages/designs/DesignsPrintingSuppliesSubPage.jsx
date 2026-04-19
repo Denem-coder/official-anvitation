@@ -1,12 +1,12 @@
-import ServiceTemplate from './ServiceTemplate'
+import DesignsTemplate from './DesignsTemplate'
 
-import pm1 from '../../assets/img/services-img/service-1.png'
-import pm2 from '../../assets/img/services-img/service-2.png'
-import pm3 from '../../assets/img/services-img/service-3.png'
-import pm4 from '../../assets/img/services-img/service-4.png'
-import pm5 from '../../assets/img/services-img/service-5.png'
+import pm1 from '../../assets/img/designs-img/design-1.png'
+import pm2 from '../../assets/img/designs-img/design-2.png'
+import pm3 from '../../assets/img/designs-img/design-3.png'
+import pm4 from '../../assets/img/designs-img/design-4.png'
+import pm5 from '../../assets/img/designs-img/design-5.png'
 
-function ServicePrintingMaterialsSubPage() {
+function DesignsPrintingMaterialsSubPage() {
   const features = [
     'Affordable and reliable printing supplies',
     'Suitable for personal and business use',
@@ -40,10 +40,10 @@ function ServicePrintingMaterialsSubPage() {
   ]
 
   return (
-    <ServiceTemplate
+    <DesignsTemplate
       badge="Printing Materials"
-      title="Quality Printing Materials for Everyday Use"
-      subtitle="Explore selected printing materials such as papers, inks, and essentials for business or personal needs."
+      title="Choose Products"
+      subtitle="Browse our printing supplies and choose what you want"
       features={features}
       designs={designs}
       packageLink={null}
@@ -53,4 +53,4 @@ function ServicePrintingMaterialsSubPage() {
   )
 }
 
-export default ServicePrintingMaterialsSubPage
+export default DesignsPrintingMaterialsSubPage
