@@ -3,7 +3,7 @@ import DesignsTemplate from './DesignsTemplate'
 import sample1 from '../../assets/img/gallery-img/baptismal-invitation-1.png'
 import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
 import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
-import sample4 from '../../assets/img/gallery-img/wedding-invitation-4.png'
+import sample4 from '../../assets/img/gallery-img/birthday-invitation-2.png'
 
 function DesignsBaptismalSubPage() {
   return (

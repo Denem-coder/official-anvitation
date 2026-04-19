@@ -9,7 +9,7 @@ import baptismalDesigns from '../assets/img/designs-img/design-2.png';
 import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
 import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
 import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
-import work4 from '../assets/img/gallery-img/wedding-invitation-4.png';
+import work4 from '../assets/img/gallery-img/birthday-invitation-2.png';
 
 import package1 from '../assets/img/designs-img/design-1.png';
 import package2 from '../assets/img/designs-img/design-2.png';

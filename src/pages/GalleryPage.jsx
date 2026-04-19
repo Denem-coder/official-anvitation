@@ -5,29 +5,40 @@ import BackButton from '../components/BackButton';
 import wedding1 from '../assets/img/gallery-img/wedding-invitation-1.png';
 import wedding2 from '../assets/img/gallery-img/wedding-invitation-2.png';
 import wedding3 from '../assets/img/gallery-img/wedding-invitation-3.png';
-import wedding4 from '../assets/img/gallery-img/wedding-invitation-4.png';
 import wedding5 from '../assets/img/gallery-img/wedding-invitation-5.png';
 import wedding6 from '../assets/img/gallery-img/wedding-invitation-6.png';
 import wedding7 from '../assets/img/gallery-img/wedding-invitation-7.png';
 import wedding8 from '../assets/img/gallery-img/wedding-invitation-8.png';
 import wedding9 from '../assets/img/gallery-img/wedding-invitation-9.png';
 import wedding10 from '../assets/img/gallery-img/wedding-invitation-10.png';
+import birthday1 from '../assets/img/gallery-img/birthday-invitation-1.png';
+import birthday2 from '../assets/img/gallery-img/birthday-invitation-2.png';
+import baptismal1 from '../assets/img/gallery-img/baptismal-invitation-1.png';
+import baptismal2 from '../assets/img/gallery-img/baptismal-invitation-2.png';
+import baptismal3 from '../assets/img/gallery-img/baptismal-invitation-3.png';
+import souvenir1 from '../assets/img/gallery-img/souvenir-1.png';
+import souvenir2 from '../assets/img/gallery-img/souvenir-2.png';
+import souvenir3 from '../assets/img/gallery-img/souvenir-3.png';
 
 function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedImage, setSelectedImage] = useState(null);
 
   const galleryItems = [
-    { id: 1, src: wedding1, title: 'Wedding Invitation 1', category: 'Wedding' },
-    { id: 2, src: wedding2, title: 'Wedding Invitation 2', category: 'Wedding' },
-    { id: 3, src: wedding3, title: 'Wedding Invitation 3', category: 'Wedding' },
-    { id: 4, src: wedding4, title: 'Wedding Invitation 4', category: 'Wedding' },
-    { id: 5, src: wedding5, title: 'Wedding Invitation 5', category: 'Wedding' },
-    { id: 6, src: wedding6, title: 'Wedding Invitation 6', category: 'Wedding' },
-    { id: 7, src: wedding7, title: 'Wedding Invitation 7', category: 'Wedding' },
-    { id: 8, src: wedding8, title: 'Wedding Invitation 8', category: 'Wedding' },
-    { id: 9, src: wedding9, title: 'Wedding Invitation 9', category: 'Wedding' },
-    { id: 10, src: wedding10, title: 'Wedding Invitation 10', category: 'Wedding' },
+    { id: 1, src: wedding1, title: 'Blue Passport Invitation', category: 'Wedding' },
+    { id: 2, src: wedding2, title: 'Black Flap Invitation', category: 'Wedding' },
+    { id: 3, src: wedding3, title: 'White Fan Invitation', category: 'Wedding' },
+    { id: 4, src: wedding5, title: 'Sage Green Traditional Invitation', category: 'Wedding' },
+    { id: 5, src: wedding6, title: 'Sage Green Trifold Invitation', category: 'Wedding' },
+    { id: 6, src: wedding7, title: 'Blue Glittery Pull-out Invitation', category: 'Wedding' },
+    { id: 7, src: wedding8, title: 'Blue Traditional Invitation', category: 'Wedding' },
+    { id: 8, src: wedding9, title: 'Rustic Pull-out Invitation', category: 'Wedding' },
+    { id: 9, src: wedding10, title: 'Rustic Pull-out Invitation', category: 'Wedding' },
+    { id: 10, src: birthday1, title: 'Birthday Invitation 1', category: 'Birthday' },
+    { id: 11, src: birthday2, title: 'Birthday Invitation 2', category: 'Birthday' },
+    { id: 12, src: baptismal1, title: 'Baptismal Invitation 1', category: 'Baptismal' },
+    { id: 13, src: baptismal2, title: 'Baptismal Invitation 2', category: 'Baptisma2' },
+    { id: 14, src: baptismal3, title: 'Baptismal Invitation 3', category: 'Baptismal' },
   ];
 
   const categories = ['All', 'Wedding', 'Birthday', 'Baptismal', 'Souvenirs'];
