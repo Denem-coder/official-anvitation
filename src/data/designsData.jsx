@@ -1,37 +1,165 @@
-import weddingImg from '../assets/img/designs-img/design-1.png'
-import baptismalImg from '../assets/img/designs-img/design-2.png'
-import birthdayImg from '../assets/img/designs-img/design-3.png'
-import souvenirsImg from '../assets/img/designs-img/design-4.png'
+import img1 from '../assets/img/designs-img/design-1.png'
+import img2 from '../assets/img/designs-img/design-2.png'
 
-const designsData = [
-  {
-    id: 'wedding',
-    title: 'Wedding Invitations',
-    desc: 'Elegant and customized wedding invitation designs.',
-    img: weddingImg,
-    link: '/designs/wedding',
-  },
-  {
-    id: 'baptismal',
-    title: 'Baptismal Invitations',
-    desc: 'Soft and meaningful designs for baptismal celebrations.',
-    img: baptismalImg,
-    link: '/designs/baptismal',
-  },
-  {
-    id: 'birthday',
-    title: 'Birthday Invitations',
-    desc: 'Fun and creative invitation styles for all ages.',
-    img: birthdayImg,
-    link: '/designs/birthday',
-  },
-  {
-    id: 'souvenirs',
-    title: 'Souvenirs',
-    desc: 'Memorable keepsakes for your special events.',
-    img: souvenirsImg,
-    link: '/designs/souvenir',
-  },
-]
+const designsData = {
+  wedding: [
+    {
+      slug: 'traditional',
+      category: 'wedding',
+      cover: img1,
+      images: [img1, img2],
+      colorImages: {
+        Blue: [img1, img2],
+        'Sage Green': [img1, img2],
+        Gold: [img1, img2],
+        Black: [img1, img2],
+        Orange: [img1, img2],
+      },
+      title: 'Traditional Invitation',
+      desc: 'Elegant traditional invitation.',
+      price: 60,
+      tags: ['traditional'],
+      colors: ['Blue', 'Sage Green', 'Gold', 'Black', 'Orange'],
+      inclusions: [
+        'A simple baronial envelope',
+        '4 inserts',
+        'Ribbon and sticker seal',
+      ],
+    },
+    {
+      slug: 'pull-out',
+      category: 'wedding',
+      cover: img2,
+      images: [img1, img2],
+      colorImages: {
+        Blue: [img1, img2],
+        Pink: [img1, img2],
+        Beige: [img1, img2],
+        White: [img1, img2],
+      },
+      title: 'Pull-out Invitation',
+      desc: 'Elegant pull-out invitation.',
+      price: 60,
+      tags: ['pull-out'],
+      colors: ['Blue', 'Pink', 'Beige', 'White'],
+      inclusions: [
+        'Envelope included',
+        'Insert cards included',
+      ],
+    },
+  ],
+
+  baptismal: [
+    {
+      slug: 'traditional',
+      category: 'baptismal',
+      cover: img1,
+      images: [img1],
+      colorImages: {
+        Blue: [img1],
+        Pink: [img1],
+        White: [img1],
+      },
+      title: 'Traditional Invitation',
+      desc: 'Elegant baptismal invitation.',
+      price: 60,
+      tags: ['traditional'],
+      colors: ['Blue', 'Pink', 'White'],
+      inclusions: [],
+    },
+    {
+      slug: 'pull-out',
+      category: 'baptismal',
+      cover: img2,
+      images: [img2],
+      colorImages: {
+        Blue: [img2],
+        Yellow: [img2],
+        White: [img2],
+      },
+      title: 'Pull-out Invitation',
+      desc: 'Modern pull-out baptismal invitation.',
+      price: 60,
+      tags: ['pull-out'],
+      colors: ['Blue', 'Yellow', 'White'],
+      inclusions: [],
+    },
+  ],
+
+  birthday: [
+    {
+      slug: 'traditional',
+      category: 'birthday',
+      cover: img1,
+      images: [img1],
+      colorImages: {
+        Blue: [img1],
+        Pink: [img1],
+        Red: [img1],
+        Yellow: [img1],
+      },
+      title: 'Traditional Invitation',
+      desc: 'Fun traditional birthday invitation.',
+      price: 60,
+      tags: ['traditional'],
+      colors: ['Blue', 'Pink', 'Red', 'Yellow'],
+      inclusions: [],
+    },
+    {
+      slug: 'pull-out',
+      category: 'birthday',
+      cover: img2,
+      images: [img2],
+      colorImages: {
+        Blue: [img2],
+        Purple: [img2],
+        Orange: [img2],
+      },
+      title: 'Pull-out Invitation',
+      desc: 'Creative pull-out birthday invitation.',
+      price: 60,
+      tags: ['pull-out'],
+      colors: ['Blue', 'Purple', 'Orange'],
+      inclusions: [],
+    },
+  ],
+
+  souvenir: [
+    {
+      slug: 'traditional',
+      category: 'souvenir',
+      cover: img1,
+      images: [img1],
+      colorImages: {
+        Blue: [img1],
+        Gold: [img1],
+        White: [img1],
+      },
+      title: 'Traditional Souvenir',
+      desc: 'Elegant traditional souvenir.',
+      price: 60,
+      tags: ['traditional'],
+      colors: ['Blue', 'Gold', 'White'],
+      inclusions: [],
+    },
+    {
+      slug: 'pull-out',
+      category: 'souvenir',
+      cover: img2,
+      images: [img2],
+      colorImages: {
+        Blue: [img2],
+        Pink: [img2],
+        White: [img2],
+      },
+      title: 'Pull-out Souvenir',
+      desc: 'Creative pull-out souvenir.',
+      price: 60,
+      tags: ['pull-out'],
+      colors: ['Blue', 'Pink', 'White'],
+      inclusions: [],
+    },
+  ],
+}
 
 export default designsData

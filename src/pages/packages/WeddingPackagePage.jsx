@@ -1,5 +1,5 @@
 import PackageTemplate from './PackageTemplate'
-import designData from '../../data/designData'
+import designsData from '../../data/designsData'
 import packagesData from '../../data/packagesData'
 import productsData from '../../data/productsData'
 
@@ -9,7 +9,7 @@ function WeddingPackagePage() {
       category="Wedding"
       title="Customize Your Order"
       subtitle="Choose individual items or select a package that best fits your event and budget."
-      designsCatalog={designData.wedding}
+      designsCatalog={designsData.wedding}
       products={productsData.wedding}
       packages={packagesData.wedding}
     />

@@ -1,5 +1,5 @@
 import DesignsTemplate from './DesignsTemplate'
-import designData from '../../data/designData'
+import designsData from '../../data/designsData'
 
 import sample1 from '../../assets/img/gallery-img/wedding-invitation-1.png'
 import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
@@ -13,7 +13,7 @@ function DesignsWeddingSubPage() {
       title="Choose Your Design"
       subtitle="Browse our wedding designs and choose your perfect match"
       packageLink="/packages/wedding"
-      designs={designData.wedding} // ✅ USE CENTRAL DATA
+      designs={designsData.wedding} // ✅ USE CENTRAL DATA
     />
   )
 }

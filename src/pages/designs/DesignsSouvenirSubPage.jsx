@@ -1,5 +1,5 @@
 import DesignsTemplate from '../designs/DesignsTemplate'
-import designData from '../../data/designData'
+import designsData from '../../data/designsData'
 
 import sample1 from '../../assets/img/gallery-img/wedding-invitation-1.png'
 import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
