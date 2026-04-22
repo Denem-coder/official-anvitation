@@ -113,11 +113,12 @@ const weddingInsertDesignsData = [
       inside: orangeInsert5Inside,
       third: orangeInsert5Third,
       back: orangeInsert5Last,
-
+      },
+      
     cover: orangeInsert5Front,
     colors: ['Orange'],
     isActive: true,
-    }
+    
   },
 
   {

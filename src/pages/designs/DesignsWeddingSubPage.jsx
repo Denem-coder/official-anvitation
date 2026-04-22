@@ -10,7 +10,7 @@ function DesignsWeddingSubPage() {
   return (
     <DesignsTemplate
       badge="Wedding Invitations"
-      title="Choose Your Design"
+      title="Choose Your Invitation"
       subtitle="Browse our wedding designs and choose your perfect match"
       packageLink="/packages/wedding"
       designs={designsData.wedding} // ✅ USE CENTRAL DATA

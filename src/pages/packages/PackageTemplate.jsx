@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
 import BackButton from '../../components/BackButton'
 import { useCart } from '../../context/CartContext'
 
@@ -9,14 +9,24 @@ function PackageTemplate({
   subtitle,
   designsCatalog = [],
   products = [],
+  addOns = [],
   packages = [],
 }) {
   const location = useLocation()
-  const { addToCart } = useCart()
+  const navigate = useNavigate()
+  const { addToCart, updateCartItem } = useCart()
 
-  const params = new URLSearchParams(location.search)
+  const params = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  )
+
   const designSlug = params.get('design')
   const selectedColor = params.get('color')
+  const qtyParam = params.get('qty')
+  const addOnsParam = params.get('addons')
+  const editItemId = params.get('editItemId')
+  const selectedInsertId = params.get('insert')
 
   const selectedDesign =
     designsCatalog.find((item) => item.slug === designSlug) || null
@@ -24,14 +34,27 @@ function PackageTemplate({
   const selectedProduct = products[0] || null
 
   const [quantity, setQuantity] = useState(1)
+  const [addOnQuantities, setAddOnQuantities] = useState({})
   const [toast, setToast] = useState({
     show: false,
     message: '',
   })
   const [showHelpModal, setShowHelpModal] = useState(false)
+  const [previewImage, setPreviewImage] = useState(null)
 
-  const browseDesignsLink =
-    location.pathname.replace('/packages/', '/designs/') || '/designs'
+  const browseDesignsLink = useMemo(() => {
+    const baseLink =
+      location.pathname.replace('/packages/', '/designs/') || '/designs'
+    const nextParams = new URLSearchParams()
+
+    if (editItemId) {
+      nextParams.set('editItemId', editItemId)
+    }
+
+    return nextParams.toString()
+      ? `${baseLink}?${nextParams.toString()}`
+      : baseLink
+  }, [location.pathname, editItemId])
 
   useEffect(() => {
     if (!toast.show) return
@@ -44,22 +67,46 @@ function PackageTemplate({
   }, [toast])
 
   useEffect(() => {
-    if (!showHelpModal) return
-
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setShowHelpModal(false)
+        setPreviewImage(null)
       }
     }
 
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', handleKeyDown)
+    if (showHelpModal || previewImage) {
+      document.body.style.overflow = 'hidden'
+      window.addEventListener('keydown', handleKeyDown)
+    }
 
     return () => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [showHelpModal])
+  }, [showHelpModal, previewImage])
+
+  useEffect(() => {
+    const parsedQty = Math.max(1, parseInt(qtyParam || '1', 10) || 1)
+    setQuantity(parsedQty)
+
+    if (!addOnsParam) {
+      setAddOnQuantities({})
+      return
+    }
+
+    const parsedAddOns = {}
+
+    addOnsParam.split(',').forEach((pair) => {
+      const [id, rawQty] = pair.split(':')
+      const parsedAddOnQty = Math.max(0, parseInt(rawQty || '0', 10) || 0)
+
+      if (id && parsedAddOnQty > 0) {
+        parsedAddOns[id] = parsedAddOnQty
+      }
+    })
+
+    setAddOnQuantities(parsedAddOns)
+  }, [qtyParam, addOnsParam])
 
   const showToast = (message) => {
     setToast({
@@ -81,16 +128,49 @@ function PackageTemplate({
     setQuantity(Number.isNaN(qty) ? 1 : Math.max(1, qty))
   }
 
+  const getAddOnQuantity = (id) => {
+    return Math.max(0, Number(addOnQuantities[id]) || 0)
+  }
+
+  const decreaseAddOnQuantity = (id) => {
+    setAddOnQuantities((prev) => ({
+      ...prev,
+      [id]: Math.max(0, (Number(prev[id]) || 0) - 1),
+    }))
+  }
+
+  const increaseAddOnQuantity = (id) => {
+    setAddOnQuantities((prev) => ({
+      ...prev,
+      [id]: (Number(prev[id]) || 0) + 1,
+    }))
+  }
+
+  const handleAddOnQuantityChange = (id, value) => {
+    const qty = parseInt(value, 10)
+    setAddOnQuantities((prev) => ({
+      ...prev,
+      [id]: Number.isNaN(qty) ? 0 : Math.max(0, qty),
+    }))
+  }
+
+  const clearAllAddOns = () => {
+    setAddOnQuantities({})
+  }
+
   const choosePackage = (pkg) => {
     if (!selectedDesign) return
 
     const cartItem = {
-      id: `${selectedDesign.slug}-${selectedColor || 'default'}-${pkg.id}-${Date.now()}`,
+      id:
+        editItemId ||
+        `${selectedDesign.slug}-${selectedColor || 'default'}-${pkg.id}-${Date.now()}`,
       type: 'package',
       category,
       title: `${selectedDesign.title} - ${pkg.name}`,
       desc: pkg.subtitle,
       price: Number(pkg.price),
+      basePrice: Number(pkg.price),
       quantity: 1,
       packageName: pkg.name,
       packageTitle: pkg.title,
@@ -98,11 +178,21 @@ function PackageTemplate({
       designTitle: selectedDesign.title,
       designSlug: selectedDesign.slug,
       selectedColor: selectedColor || '',
+      selectedInsertId: selectedInsertId || '',
       image:
         selectedDesign.cover ||
         selectedDesign.images?.[0] ||
         selectedDesign.img ||
         null,
+      selectedAddOns: [],
+      addOnsTotal: 0,
+      mainProductTotal: Number(pkg.price),
+    }
+
+    if (editItemId) {
+      updateCartItem(editItemId, cartItem)
+      navigate('/cart')
+      return
     }
 
     addToCart(cartItem)
@@ -114,13 +204,43 @@ function PackageTemplate({
 
     const safeQuantity = Math.max(1, Number(quantity) || 1)
 
+    const selectedAddOns = addOns
+      .map((addOn) => {
+        const qty = Math.max(0, Number(addOnQuantities[addOn.id]) || 0)
+
+        if (qty < 1) return null
+
+        return {
+          id: addOn.id,
+          name: addOn.name,
+          price: Number(addOn.price),
+          quantity: qty,
+          unit: addOn.unit || 'pc',
+          description: addOn.description || addOn.subtitle || '',
+          image: addOn.image || null,
+          subtotal: Number(addOn.price) * qty,
+        }
+      })
+      .filter(Boolean)
+
+    const addOnsTotal = selectedAddOns.reduce(
+      (total, item) => total + item.subtotal,
+      0
+    )
+
+    const mainProductTotal = Number(selectedProduct.price) * safeQuantity
+    const totalPrice = mainProductTotal + addOnsTotal
+
     const cartItem = {
-      id: `${selectedDesign.slug}-${selectedColor || 'default'}-${selectedProduct.id}-${Date.now()}`,
-      type: 'product',
+      id:
+        editItemId ||
+        `${selectedDesign.slug}-${selectedColor || 'default'}-${selectedProduct.id}-${Date.now()}`,
+      type: 'product-with-addons',
       category,
       title: `${selectedDesign.title} - ${selectedProduct.name}`,
       desc: selectedProduct.description || selectedProduct.subtitle || '',
-      price: Number(selectedProduct.price),
+      price: totalPrice,
+      basePrice: Number(selectedProduct.price),
       quantity: safeQuantity,
       productName: selectedProduct.name,
       productId: selectedProduct.id,
@@ -128,25 +248,61 @@ function PackageTemplate({
       designTitle: selectedDesign.title,
       designSlug: selectedDesign.slug,
       selectedColor: selectedColor || '',
+      selectedInsertId: selectedInsertId || '',
       image:
         selectedDesign.cover ||
         selectedDesign.images?.[0] ||
         selectedDesign.img ||
         null,
+      selectedAddOns,
+      addOnsTotal,
+      mainProductTotal,
+    }
+
+    if (editItemId) {
+      updateCartItem(editItemId, cartItem)
+      navigate('/cart')
+      return
     }
 
     addToCart(cartItem)
-    showToast(`${safeQuantity} ${selectedProduct.unit || 'set'} of ${selectedProduct.name} added to cart`)
+
+    const addOnSummary =
+      selectedAddOns.length > 0
+        ? ` with ${selectedAddOns.length} add-on${selectedAddOns.length > 1 ? 's' : ''}`
+        : ''
+
+    showToast(
+      `${safeQuantity} ${selectedProduct.unit || 'set'} of ${selectedProduct.name}${addOnSummary} added to cart`
+    )
   }
 
-  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+  const totalSelectedAddOnsPrice = addOns.reduce(
+    (total, item) => total + Number(item.price) * getAddOnQuantity(item.id),
+    0
+  )
+
+  const totalSelectedProductPrice =
+    Number(selectedProduct?.price || 0) * Math.max(1, Number(quantity) || 1)
+
+  const combinedTotal = totalSelectedProductPrice + totalSelectedAddOnsPrice
+
+  const selectedAddOnsSummary = addOns.filter(
+    (item) => getAddOnQuantity(item.id) > 0
+  )
+
+  const hasSelectedAddOns = selectedAddOnsSummary.length > 0
+
+  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(
+    navigator.userAgent
+  )
 
   const messengerLink = isMobileDevice
     ? 'https://m.me/ANv8e?text=Hi%20I%20need%20help%20choosing%20a%20design'
     : 'https://www.facebook.com/messages/t/ANv8e'
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-28 md:pb-16">
       {toast.show && (
         <div className="fixed left-1/2 top-24 z-[9999] -translate-x-1/2">
           <div className="flex items-center gap-3 rounded-2xl bg-gray-900 px-5 py-3 text-sm font-medium text-white shadow-[0_20px_50px_rgba(0,0,0,0.25)]">
@@ -154,6 +310,33 @@ function PackageTemplate({
               ✓
             </span>
             <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/70 px-4"
+          onClick={() => setPreviewImage(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setPreviewImage(null)}
+              className="absolute -top-12 right-0 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-gray-700 shadow-lg"
+              aria-label="Close preview"
+            >
+              ×
+            </button>
+
+            <img
+              src={previewImage.src}
+              alt={previewImage.alt}
+              className="max-h-[80vh] w-full rounded-[1.5rem] bg-white object-contain"
+            />
           </div>
         </div>
       )}
@@ -263,19 +446,21 @@ function PackageTemplate({
         )}
 
         {selectedDesign && (
-          <div className="mb-10 rounded-[2rem] border border-orange-100 bg-white p-6 shadow-sm">
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[180px_1fr_340px] xl:items-center">
-              <img
-                src={
-                  selectedDesign.cover ||
-                  selectedDesign.images?.[0] ||
-                  selectedDesign.img
-                }
-                alt={selectedDesign.title}
-                className="h-44 w-full rounded-2xl object-cover"
-              />
+          <div className="mb-10 rounded-[2rem] border border-orange-100 bg-white p-4 md:p-6 shadow-sm">
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[180px_1fr_340px] xl:items-start">
+              <div className="order-1 xl:order-1">
+                <img
+                  src={
+                    selectedDesign.cover ||
+                    selectedDesign.images?.[0] ||
+                    selectedDesign.img
+                  }
+                  alt={selectedDesign.title}
+                  className="h-44 w-full rounded-2xl object-cover"
+                />
+              </div>
 
-              <div>
+              <div className="order-2 xl:order-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
                   Selected Design
                 </p>
@@ -295,6 +480,15 @@ function PackageTemplate({
                   </p>
                 )}
 
+                {selectedInsertId && (
+                  <p className="mt-2 text-sm text-gray-700">
+                    Selected insert:{' '}
+                    <span className="font-semibold text-orange-500">
+                      {selectedInsertId}
+                    </span>
+                  </p>
+                )}
+
                 <div className="mt-5">
                   <Link
                     to={browseDesignsLink}
@@ -306,15 +500,103 @@ function PackageTemplate({
               </div>
 
               {selectedProduct && (
-                <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50 p-4">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                    Order This Design
-                  </p>
+                <div className="order-4 xl:order-3 xl:row-span-2 rounded-[1.5rem] border border-orange-100 bg-orange-50 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
+                        {editItemId ? 'Update This Order' : 'PRICE PER SET'}
+                      </p>
 
-                  <p className="mt-3 text-2xl font-bold text-orange-500">
-                    ₱{Number(selectedProduct.price).toLocaleString()}
-                    <span className="ml-1 text-sm font-medium text-gray-500">
-                      / {selectedProduct.unit || 'set'}
+                      <p className="mt-3 text-2xl font-bold text-orange-500">
+                        ₱{Number(selectedProduct.price).toLocaleString()}
+                        <span className="ml-1 text-sm font-medium text-gray-500">
+                          / {selectedProduct.unit || 'set'}
+                        </span>
+                      </p>
+                    </div>
+
+                    {editItemId && (
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-orange-500">
+                        Editing
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-4 rounded-xl bg-white/80 p-3">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Order Summary
+                    </p>
+
+                    <div className="mt-2 space-y-1 text-sm text-gray-700">
+                      <p>
+                        <span className="font-medium">Design:</span>{' '}
+                        {selectedDesign.title}
+                      </p>
+
+                      {selectedColor && (
+                        <p>
+                          <span className="font-medium">Motif:</span>{' '}
+                          {selectedColor}
+                        </p>
+                      )}
+
+                      {selectedInsertId && (
+                        <p>
+                          <span className="font-medium">Insert:</span>{' '}
+                          {selectedInsertId}
+                        </p>
+                      )}
+
+                      <p>
+                        <span className="font-medium">Quantity:</span> {quantity}
+                      </p>
+
+                      <p>
+                        <span className="font-medium">Main Product:</span> ₱
+                        {totalSelectedProductPrice.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {addOns.length > 0 && (
+                    <div className="mt-3 rounded-xl bg-white/80 p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                          Add-ons selected
+                        </p>
+
+                        {hasSelectedAddOns && (
+                          <button
+                            type="button"
+                            onClick={clearAllAddOns}
+                            className="text-xs font-medium text-red-500 transition hover:underline"
+                          >
+                            Clear all
+                          </button>
+                        )}
+                      </div>
+
+                      <p className="mt-1 text-sm text-gray-700">
+                        {hasSelectedAddOns
+                          ? selectedAddOnsSummary
+                              .map(
+                                (item) =>
+                                  `${item.name} (${getAddOnQuantity(item.id)} ${item.unit || 'pc'})`
+                              )
+                              .join(', ')
+                          : 'No add-ons selected yet'}
+                      </p>
+
+                      <p className="mt-2 text-sm font-semibold text-orange-500">
+                        Add-ons Total: ₱{totalSelectedAddOnsPrice.toLocaleString()}
+                      </p>
+                    </div>
+                  )}
+
+                  <p className="mt-3 text-sm text-gray-600">
+                    Total with add-ons:{' '}
+                    <span className="font-semibold text-gray-900">
+                      ₱{combinedTotal.toLocaleString()}
                     </span>
                   </p>
 
@@ -345,10 +627,143 @@ function PackageTemplate({
 
                     <button
                       onClick={addSingleProduct}
-                      className="ml-auto rounded-full bg-orange-500 p-2.5 w-28 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      className="ml-auto hidden w-32 items-center justify-center rounded-full bg-orange-500 p-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 md:inline-flex"
                     >
-                      Add to Cart
+                      {editItemId ? 'Update Cart' : 'Add to Cart'}
                     </button>
+                  </div>
+
+                  <p className="mt-3 hidden text-xs text-gray-500 md:block">
+                    You can still review or edit add-ons before saving this order.
+                  </p>
+                </div>
+              )}
+
+              {addOns.length > 0 && (
+                <div className="order-3 xl:order-4 xl:col-span-2 overflow-hidden rounded-[2rem] border border-orange-100 bg-white shadow-sm">
+                  <div className="border-b border-orange-100 bg-gradient-to-r from-orange-50 to-white px-4 py-5 md:px-8">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                          Add-ons
+                        </p>
+
+                        <p className="mt-2 max-w-2xl text-sm text-gray-600">
+                          Add extra items like tags, ref magnets, vow cards, save
+                          the date cards, and more.
+                        </p>
+                      </div>
+
+                      {hasSelectedAddOns && (
+                        <button
+                          type="button"
+                          onClick={clearAllAddOns}
+                          className="hidden rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-medium text-red-500 transition hover:bg-red-50 sm:inline-flex"
+                        >
+                          Clear all
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto px-4 py-6 md:px-6">
+                    <div className="flex gap-4 pb-2">
+                      {addOns.map((addOn) => {
+                        const addOnQty = getAddOnQuantity(addOn.id)
+                        const addOnImage =
+                          addOn.image ||
+                          selectedDesign.cover ||
+                          selectedDesign.images?.[0] ||
+                          selectedDesign.img
+
+                        return (
+                          <div
+                            key={addOn.id}
+                            className="flex w-[220px] min-w-[220px] flex-shrink-0 flex-col rounded-[1.25rem] border border-gray-200 bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                          >
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPreviewImage({
+                                  src: addOnImage,
+                                  alt: addOn.name,
+                                })
+                              }
+                              className="group block overflow-hidden rounded-xl"
+                            >
+                              <img
+                                src={addOnImage}
+                                alt={addOn.name}
+                                className="h-28 w-full rounded-xl object-cover transition duration-300 group-hover:scale-105"
+                              />
+                            </button>
+
+                            <div className="mt-3">
+                              <p className="line-clamp-1 text-base font-bold text-gray-900">
+                                {addOn.name}
+                              </p>
+
+                              <p className="mt-1 text-lg font-bold text-orange-500">
+                                ₱{Number(addOn.price).toLocaleString()}
+                                <span className="ml-1 text-xs font-medium text-gray-500">
+                                  / {addOn.unit || 'pc'}
+                                </span>
+                              </p>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setPreviewImage({
+                                    src: addOnImage,
+                                    alt: addOn.name,
+                                  })
+                                }
+                                className="mt-1 text-xs font-medium text-orange-500 hover:text-orange-600"
+                              >
+                                View larger preview
+                              </button>
+                            </div>
+
+                            <div className="mt-3 flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => decreaseAddOnQuantity(addOn.id)}
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white text-base font-bold text-gray-700 transition hover:border-orange-300 hover:text-orange-500"
+                              >
+                                −
+                              </button>
+
+                              <input
+                                type="number"
+                                min="0"
+                                value={addOnQty}
+                                onChange={(e) =>
+                                  handleAddOnQuantityChange(addOn.id, e.target.value)
+                                }
+                                className="h-9 w-14 rounded-lg border border-gray-300 bg-white px-2 text-center text-sm text-gray-700 outline-none transition focus:border-orange-400"
+                              />
+
+                              <button
+                                type="button"
+                                onClick={() => increaseAddOnQuantity(addOn.id)}
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white text-base font-bold text-gray-700 transition hover:border-orange-300 hover:text-orange-500"
+                              >
+                                +
+                              </button>
+                            </div>
+
+                            <div className="mt-3 rounded-xl bg-orange-50 px-3 py-2 text-center">
+                              <p className="text-xs text-gray-500">Selected</p>
+                              <p className="text-sm font-semibold text-orange-500">
+                                {addOnQty > 0
+                                  ? `₱${(Number(addOn.price) * addOnQty).toLocaleString()}`
+                                  : 'Not added'}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
               )}
@@ -359,7 +774,7 @@ function PackageTemplate({
         {packages.length > 0 && (
           <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
             <div className="grid grid-cols-1 lg:grid-cols-4">
-              <div className="border-b border-gray-200 bg-gradient-to-b from-orange-50 to-white p-8 lg:border-b-0 lg:border-r flex flex-col items-center justify-center md:flex md:flex-col md:justify-left md:align-center">
+              <div className="flex flex-col items-center justify-center border-b border-gray-200 bg-gradient-to-b from-orange-50 to-white p-8 md:flex md:flex-col md:justify-left md:align-center lg:border-b-0 lg:border-r">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
                   Optional Packages
                 </p>
@@ -368,7 +783,7 @@ function PackageTemplate({
                   Package Options
                 </h2>
 
-                <p className="mt-4 text-sm leading-7 text-gray-600 text-center hidden md:block">
+                <p className="mt-4 hidden text-center text-sm leading-7 text-gray-600 md:block">
                   These are optional bundled sets in case you want a package
                   instead of ordering per product.
                 </p>
@@ -406,7 +821,7 @@ function PackageTemplate({
                           : 'bg-gray-900 text-white hover:bg-black'
                       }`}
                     >
-                      Add Package to Cart
+                      {editItemId ? 'Update Package' : 'Add Package to Cart'}
                     </button>
                   </div>
 
@@ -439,6 +854,39 @@ function PackageTemplate({
           </button>
         </div>
       </div>
+
+      {selectedDesign && selectedProduct && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-orange-200 bg-white/95 px-4 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] backdrop-blur md:hidden">
+          <div className="mx-auto flex max-w-7xl items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-orange-500">
+                {editItemId ? 'Updating Order' : 'Current Total'}
+              </p>
+
+              <p className="truncate text-lg font-bold text-gray-900">
+                ₱{combinedTotal.toLocaleString()}
+              </p>
+
+              <p className="text-xs text-gray-500">
+                Qty: {quantity}
+                {hasSelectedAddOns
+                  ? ` • ${selectedAddOnsSummary.length} add-on${
+                      selectedAddOnsSummary.length > 1 ? 's' : ''
+                    }`
+                  : ' • No add-ons'}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={addSingleProduct}
+              className="inline-flex shrink-0 items-center justify-center rounded-full bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+            >
+              {editItemId ? 'Update Cart' : 'Add to Cart'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
