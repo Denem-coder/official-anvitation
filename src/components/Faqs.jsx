@@ -42,7 +42,7 @@ function Faqs() {
 
   return (
     <section id="faqs" className="p-6 bg-white scroll-mt-50 pt-20 min-h-screen">
-      <h2 className="text-3xl font-bold text-center mb-8 text-orange-600">
+      <h2 className="text-3xl font-bold text-center mb-8 text-orange-600 tracking-[0.10em]">
         Frequently Asked Questions
       </h2>
 

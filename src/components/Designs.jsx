@@ -43,7 +43,7 @@ function Designs() {
       id="designs"
       className="bg-gradient-to-b from-orange-100 to-white flex flex-col items-center justify-center text-center p-6 pt-20"
     >
-      <h2 className="text-2xl font-bold mb-10 text-orange-600">
+      <h2 className="text-2xl font-bold mb-10 tracking-[0.10em]  text-orange-600">
         Explore Categories
       </h2>
 

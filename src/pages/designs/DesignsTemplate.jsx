@@ -615,18 +615,27 @@ function DesignsTemplate({
                     </style>
 
                     <div className="relative">
-                      <p className="mb-2 block text-sm font-semibold uppercase tracking-[0.20em] text-orange-500">
-                        Step 2: Choose Insert Design
-                      </p>
+                      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                          <p className="mb-2 block text-sm font-semibold uppercase tracking-[0.20em] text-orange-500">
+                            Step 2: Choose Insert Design
+                          </p>
 
-                      <h3 className="mt-2 text-2xl font-bold text-gray-900">
-                        {selectedColor} Insert Designs
-                      </h3>
+                          {/* <h3 className="mt-2 text-2xl font-bold text-gray-900">
+                            {selectedColor} Insert Designs
+                          </h3> */}
 
-                      <p className="mt-2 text-gray-600">
-                        Tap a card to select it. Use the button to view all insert
-                        details.
-                      </p>
+                          <p className="mt-2 text-gray-600">
+                            Tap a card to select it. Use the button to view all insert
+                            details.
+                          </p>
+                        </div>
+
+                        <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-orange-500">
+                          <span className="text-base">↔</span>
+                          <span>Swipe to browse</span>
+                        </div>
+                      </div>
 
                       {filteredInsertDesigns.length === 0 ? (
                         <div className="mt-6 rounded-2xl bg-gray-50 p-6 text-center">
@@ -639,7 +648,7 @@ function DesignsTemplate({
                           <button
                             type="button"
                             onClick={() => scrollInsertSlider('left')}
-                            className="absolute left-0 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500 lg:inline-flex"
+                            className="absolute left-0 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500 lg:inline-flex"
                             aria-label="Scroll inserts left"
                           >
                             ‹
@@ -648,89 +657,96 @@ function DesignsTemplate({
                           <button
                             type="button"
                             onClick={() => scrollInsertSlider('right')}
-                            className="absolute right-0 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500 lg:inline-flex"
+                            className="absolute right-0 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500 lg:inline-flex"
                             aria-label="Scroll inserts right"
                           >
                             ›
                           </button>
 
-                          <div
-                            ref={sliderRef}
-                            className="mt-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                            style={{ scrollBehavior: 'smooth' }}
-                          >
-                            <div className="flex gap-4 px-1 snap-x snap-mandatory">
-                              {filteredInsertDesigns.map((item) => {
-                                const isSelected = selectedInsert?.id === item.id
+                          <div className="relative mt-4">
 
-                                return (
-                                  <button
-                                    key={item.id}
-                                    type="button"
-                                    ref={(el) => {
-                                      insertCardRefs.current[item.id] = el
-                                    }}
-                                    onClick={() => handleSelectInsert(item)}
-                                    className={`relative min-w-[260px] max-w-[260px] shrink-0 snap-start overflow-hidden rounded-2xl border-2 bg-white text-left transition-all duration-300 sm:min-w-[300px] sm:max-w-[300px] ${
-                                      isSelected
-                                        ? 'border-orange-500 shadow-lg scale-[1.03] ring-2 ring-orange-300'
-                                        : 'border-gray-200 hover:border-orange-300 hover:scale-[1.02]'
-                                    }`}
-                                  >
-                                    {isSelected && (
-                                      <span className="absolute right-3 top-3 z-10 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white shadow-lg animate-pulse">
-                                        Selected
-                                      </span>
-                                    )}
+                            <div
+                              ref={sliderRef}
+                              className="overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                              style={{ scrollBehavior: 'smooth' }}
+                            >
+                              <div className="flex gap-4 px-1 snap-x snap-mandatory">
+                                {filteredInsertDesigns.map((item) => {
+                                  const isSelected = selectedInsert?.id === item.id
 
-                                    <img
-                                      src={item.cover}
-                                      alt={item.title}
-                                      className={`h-40 w-full object-cover transition duration-300 ${
-                                        isSelected ? 'scale-105' : 'group-hover:scale-105'
+                                  return (
+                                    <button
+                                      key={item.id}
+                                      type="button"
+                                      ref={(el) => {
+                                        insertCardRefs.current[item.id] = el
+                                      }}
+                                      onClick={() => handleSelectInsert(item)}
+                                      className={`relative min-w-[260px] max-w-[260px] shrink-0 snap-start overflow-hidden rounded-2xl border-2 bg-white text-left transition-all duration-300 sm:min-w-[300px] sm:max-w-[300px] ${
+                                        isSelected
+                                          ? 'border-orange-500 bg-orange-50'
+                                          : 'border-gray-200 hover:border-orange-300'
                                       }`}
-                                      loading="lazy"
-                                    />
-
-                                    <div className="p-4">
-                                      <h4 className="text-base font-semibold text-gray-900">
-                                        {item.title}
-                                      </h4>
-
-                                      {item.desc && (
-                                        <p className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600">
-                                          {item.desc}
-                                        </p>
+                                    >
+                                      {isSelected && (
+                                        <span className="absolute right-3 top-3 z-10 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+                                          Selected
+                                        </span>
                                       )}
 
-                                      <div className="mt-4 flex flex-col gap-2">
-                                        <span
-                                          className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold ${
-                                            isSelected
-                                              ? 'bg-orange-500 text-white'
-                                              : 'bg-gray-100 text-gray-700'
-                                          }`}
-                                        >
-                                          {isSelected
-                                            ? 'Selected Design'
-                                            : 'Tap card to select'}
-                                        </span>
+                                      <img
+                                        src={item.cover}
+                                        alt={item.title}
+                                        className="h-40 w-full object-cover"
+                                        loading="lazy"
+                                      />
 
-                                        <button
-                                          type="button"
-                                          onClick={(e) => {
-                                            e.stopPropagation()
-                                            openInsertPreview(item)
-                                          }}
-                                          className="inline-flex items-center justify-center rounded-full border border-orange-300 bg-white px-4 py-2 text-sm font-semibold text-orange-500 transition hover:bg-orange-50"
-                                        >
-                                          View Full Details
-                                        </button>
+                                      <div className="p-4">
+                                        <h4 className="text-base font-semibold text-gray-900">
+                                          {item.title}
+                                        </h4>
+
+                                        {item.desc && (
+                                          <p className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600">
+                                            {item.desc}
+                                          </p>
+                                        )}
+
+                                        <div className="mt-4 flex flex-col gap-2">
+                                          <span
+                                            className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold ${
+                                              isSelected
+                                                ? 'bg-orange-500 text-white'
+                                                : 'bg-gray-100 text-gray-700'
+                                            }`}
+                                          >
+                                            {isSelected
+                                              ? 'Selected Design'
+                                              : 'Tap card to select'}
+                                          </span>
+
+                                          <button
+                                            type="button"
+                                            onClick={(e) => {
+                                              e.stopPropagation()
+                                              openInsertPreview(item)
+                                            }}
+                                            className="inline-flex items-center justify-center rounded-full border border-orange-300 bg-white px-4 py-2 text-sm font-semibold text-orange-500 transition hover:bg-orange-50"
+                                          >
+                                            View Full Details
+                                          </button>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </button>
-                                )
-                              })}
+                                    </button>
+                                  )
+                                })}
+                              </div>
+                            </div>
+
+                            <div className="mt-4 flex justify-center">
+                              <div className="h-1.5 w-24 rounded-full bg-gray-200">
+                                <div className="h-1.5 w-10 rounded-full bg-orange-400" />
+                              </div>
                             </div>
                           </div>
                         </>
@@ -823,6 +839,16 @@ function DesignsTemplate({
 
                     {insertPageEntries.length > 0 && (
                       <div className="relative mt-4">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-orange-500">
+                            Swipe thumbnails
+                          </p>
+                          <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-[11px] font-semibold text-orange-500">
+                            <span className="text-sm">↔</span>
+                            <span>Browse pages</span>
+                          </div>
+                        </div>
+
                         {insertPageEntries.length > 2 && (
                           <>
                             <button
@@ -844,6 +870,9 @@ function DesignsTemplate({
                             </button>
                           </>
                         )}
+
+                        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-gray-50 to-transparent" />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-gray-50 to-transparent" />
 
                         <div
                           ref={insertThumbsRef}

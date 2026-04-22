@@ -40,7 +40,7 @@ function Reviews() {
       className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center text-center p-6"
     >
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-10">
+        <h2 className="text-3xl font-bold text-center mb-10 tracking-[0.10em]">
           What Our Clients Say
         </h2>
 
@@ -68,9 +68,14 @@ function Reviews() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300">
+          <a
+            href="https://www.facebook.com/ANv8e/reviews/?id=61563452485945&sk=reviews"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300 inline-block"
+          >
             See All Reviews
-          </button>
+          </a>
         </div>
       </div>
     </section>

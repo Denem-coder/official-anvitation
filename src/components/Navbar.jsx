@@ -133,7 +133,7 @@ function Navbar() {
       return;
     }
 
-    const sections = ['hero', 'designs', 'packages', 'gallery', 'reviews', 'faqs', 'contact'];
+    const sections = ['hero', 'howtoorder', 'designs', 'packages', 'gallery', 'reviews', 'faqs', 'contact'];
 
     const handleScroll = () => {
       let current = '';
@@ -379,8 +379,8 @@ function Navbar() {
               <span className="relative z-10">Reviews</span>
             </HashLink>
 
-            <HashLink smooth to="/#faqs" className={navLinkClass('faqs')} onClick={closeAllMenus}>
-              <span className="relative z-10">FAQs</span>
+            <HashLink smooth to="/#howtoorder" className={navLinkClass('howtoorder')} onClick={closeAllMenus}>
+              <span className="relative z-10">How to Order?</span>
             </HashLink>
 
             <Link
@@ -685,7 +685,7 @@ function Navbar() {
                 onClick={closeAllMenus}
                 className={mobileLinkClass('faqs')}
               >
-                FAQs
+                How to Order
               </HashLink>
             </div>
           </div>

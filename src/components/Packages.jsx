@@ -34,7 +34,7 @@ function Packages() {
       id="packages"
       className="min-h-screen flex flex-col items-center justify-center text-center p-6 pt-20 bg-gradient-to-b from-white to-orange-50"
     >
-      <h2 className="text-3xl font-bold mb-8 text-orange-600">
+      <h2 className="text-3xl font-bold mb-8 text-orange-600 tracking-[0.10em]">
         Our Packages
       </h2>
 

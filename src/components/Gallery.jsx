@@ -58,7 +58,7 @@ function Gallery() {
   return (
     <section id="gallery" className="bg-gradient-to-b from-orange-50 to-white py-20 overflow-hidden">
       <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-orange-600">Our Works</h2>
+        <h2 className="text-3xl font-bold text-orange-600 tracking-[0.10em]">Our Works</h2>
         <p className="text-black/50 mt-2">
           See our actual invitation outputs
         </p>
@@ -122,7 +122,7 @@ function Gallery() {
       <div className="mt-10 flex justify-center">
         <Link
           to="/gallery"
-          className="font-bold bg-white text-orange-600 border border-white px-10 py-3 rounded-full shadow-xl hover:scale-105 transition inline-flex items-center justify-center w-48"
+          className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-xl hover:scale-105 transition hover:bg-orange-500 hover:text-white"
         >
           View All
         </Link>

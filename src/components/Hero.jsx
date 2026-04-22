@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import hero1 from '../assets/img/hero-img/hero-1.png';
 import hero1Mobile from '../assets/img/hero-img/hero-1-mobile.png';
@@ -16,15 +17,12 @@ import hero3Mobile from '../assets/img/hero-img/hero-3-mobile.png';
 const buttonThemes = {
   orange: {
     primary: { bg: '#f97316', text: '#ffffff', border: '#f97316' },
-    secondary: { bg: '#ffffff', text: '#f97316', border: '#f97316' },
   },
   blue: {
     primary: { bg: '#3b82f6', text: '#ffffff', border: '#3b82f6' },
-    secondary: { bg: '#ffffff', text: '#3b82f6', border: '#3b82f6' },
   },
   dark: {
     primary: { bg: '#111827', text: '#ffffff', border: '#111827' },
-    secondary: { bg: 'transparent', text: '#111827', border: '#111827' },
   },
 };
 
@@ -35,28 +33,16 @@ const slides = [
   {
     image: hero1,
     mobileImage: hero1Mobile,
-    primaryBtnText: 'Browse Designs',
-    primaryBtnLink: '/designs',
-    secondaryBtnText: 'View Packages',
-    secondaryBtnLink: '/packages',
-    ...buttonThemes.orange,
+    ...buttonThemes.blue,
   },
   {
     image: hero2,
     mobileImage: hero2Mobile,
-    primaryBtnText: 'See Our Works',
-    primaryBtnLink: '/gallery',
-    secondaryBtnText: 'View Designs',
-    secondaryBtnLink: '/designs',
     ...buttonThemes.blue,
   },
   {
     image: hero3,
     mobileImage: hero3Mobile,
-    primaryBtnText: 'Shop Now',
-    primaryBtnLink: '/designs',
-    secondaryBtnText: 'View Packages',
-    secondaryBtnLink: '/packages',
     ...buttonThemes.blue,
   },
 ];
@@ -68,7 +54,6 @@ function Hero() {
 
   const minSwipeDistance = 50;
 
-  /* AUTO SLIDE */
   useEffect(() => {
     const interval = setInterval(() => {
       goToNextSlide();
@@ -85,7 +70,6 @@ function Hero() {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  /* SWIPE HANDLERS */
   const handleTouchStart = (e) => {
     setTouchEndX(null);
     setTouchStartX(e.targetTouches[0].clientX);
@@ -123,93 +107,70 @@ function Hero() {
             key={index}
             className={`absolute inset-0 transition-all duration-700 ease-in-out ${
               isActive
-                ? 'opacity-100 translate-y-0 z-20'
-                : 'opacity-0 translate-y-2 z-10'
+                ? 'translate-y-0 opacity-100 z-20'
+                : 'translate-y-2 opacity-0 z-10'
             }`}
           >
-            {/* DESKTOP IMAGE */}
             <img
               src={slide.image}
               alt={`Hero ${index + 1}`}
-              className="hidden md:block h-full w-full object-cover object-left"
+              className="hidden h-full w-full object-cover object-left md:block"
               draggable="false"
             />
 
-            {/* MOBILE IMAGE */}
             <img
               src={slide.mobileImage}
               alt={`Hero ${index + 1} mobile`}
-              className="block md:hidden h-full w-full object-cover"
+              className="block h-full w-full object-cover md:hidden"
               draggable="false"
             />
 
-            {/* BUTTONS */}
             <div
-              className={`absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2
-              md:left-16 md:top-auto md:bottom-16 md:translate-x-0 md:translate-y-0
-              transition-all duration-700 ${
-                isActive
-                  ? 'opacity-100 scale-100'
-                  : 'opacity-0 scale-95'
+              className={`absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 transition-all duration-700
+              md:left-16 md:top-auto md:bottom-16 md:translate-x-0 md:translate-y-0 ${
+                isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
               }`}
             >
-              <div className="flex flex-col items-center sm:flex-row sm:items-start gap-3">
-
-                {/* PRIMARY BUTTON */}
+              <div className="flex justify-center md:justify-start">
                 <Link
-                  to={slide.primaryBtnLink}
-                  className="font-bold px-6 py-3 md:px-8 rounded-full shadow-lg border hover:scale-105 transition duration-300 text-center text-sm md:text-base"
+                  to="/designs"
+                  className="mt-28 rounded-full border px-8 py-3 text-center text-sm font-bold shadow-lg transition duration-300 hover:scale-105 md:px-10 md:text-base"
                   style={{
                     backgroundColor: slide.primary.bg,
                     color: slide.primary.text,
                     borderColor: slide.primary.border,
                   }}
                 >
-                  {slide.primaryBtnText}
+                  Browse Designs
                 </Link>
-
-                {/* SECONDARY BUTTON */}
-                {slide.secondaryBtnText && (
-                  <Link
-                    to={slide.secondaryBtnLink}
-                    className="font-bold px-6 py-3 md:px-8 rounded-full shadow-lg border hover:scale-105 transition duration-300 text-center text-sm md:text-base"
-                    style={{
-                      backgroundColor: slide.secondary.bg,
-                      color: slide.secondary.text,
-                      borderColor: slide.secondary.border,
-                    }}
-                  >
-                    {slide.secondaryBtnText}
-                  </Link>
-                )}
               </div>
             </div>
           </div>
         );
       })}
 
+      {/* SUBTLE SWIPE HINT */}
+      <div className="pointer-events-none absolute bottom-9 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 text-xs text-white/70 md:text-sm font-bold md:font-bold">
+        <span>Swipe</span>
+        <span className="text-base">↔</span>
+      </div>
+
       {/* LEFT ARROW */}
       <button
         onClick={goToPrevSlide}
-        className="absolute left-3 md:left-4 top-1/2 z-40 -translate-y-1/2
-        w-12 h-12 md:w-14 md:h-14
-        flex items-center justify-center
-        rounded-full text-black text-3xl
-        hover:bg-black/50 transition"
+        aria-label="Previous slide"
+        className="absolute left-3 top-1/2 z-40 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-white/55 transition duration-300 hover:text-white/85 md:flex"
       >
-        ‹
+        <FaChevronLeft className="text-lg" />
       </button>
 
       {/* RIGHT ARROW */}
       <button
         onClick={goToNextSlide}
-        className="absolute right-3 md:right-4 top-1/2 z-40 -translate-y-1/2 
-        w-12 h-12 md:w-14 md:h-14
-        flex items-center justify-center
-        rounded-full px-3 py-2 md:px-4 text-black text-3xl 
-        hover:bg-black/50 transition"
+        aria-label="Next slide"
+        className="absolute right-3 top-1/2 z-40 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-white/55 transition duration-300 hover:text-white/85 md:flex"
       >
-        ›
+        <FaChevronRight className="text-lg" />
       </button>
 
       {/* DOTS */}
@@ -218,10 +179,9 @@ function Hero() {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
+            aria-label={`Go to slide ${index + 1}`}
             className={`h-3 w-3 rounded-full transition ${
-              index === currentSlide
-                ? 'bg-white scale-110'
-                : 'bg-white/60'
+              index === currentSlide ? 'scale-110 bg-white' : 'bg-white/60'
             }`}
           />
         ))}

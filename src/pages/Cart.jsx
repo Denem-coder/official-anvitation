@@ -373,7 +373,7 @@ Line Total: ₱${lineTotal.toLocaleString()}`
                 onClick={handleMessengerCheckout}
                 className="w-full rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-orange-600"
               >
-                Checkout via Messenger
+                Checkout
               </button>
 
               <button

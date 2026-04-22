@@ -1,7 +1,7 @@
 function Contact() {
   return (
     <section id="contact" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white  min-h-screen flex flex-col items-center justify-center text-center p-6">
-      <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
+      <h2 className="text-3xl font-bold mb-6 tracking-[0.10em] ">Contact Us</h2>
 
       <p className="mb-4">Message us for orders and inquiries</p>
 

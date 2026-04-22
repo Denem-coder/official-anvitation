@@ -1,50 +1,79 @@
 import img1 from '../assets/img/designs-img/design-1.png'
 import img2 from '../assets/img/designs-img/design-2.png'
+import img3 from '../assets/img/designs-img/design-3.png'
+import traditionalorange1 from '../assets/img/designs-img/design-1.png'
+import pulloutblue1 from '../assets/img/designs-img/design-2.png'
+import passportblue1 from '../assets/img/designs-img/design-3.png'
+import passportlavender1 from '../assets/img/designs-img/passport-lavender-1.png'
+import passportpink1 from '../assets/img/designs-img/passport-pink-1.png'
+import passportred1 from '../assets/img/designs-img/passport-red-1.png'
+
 
 const designsData = {
   wedding: [
     {
       slug: 'traditional',
       category: 'wedding',
-      cover: img1,
-      images: [img1, img2],
+      cover: traditionalorange1,
+      images: [traditionalorange1],
       colorImages: {
-        Blue: [img1, img2],
-        'Sage Green': [img1, img2],
-        Gold: [img1, img2],
-        Black: [img1, img2],
-        Orange: [img1, img2],
+        Blue: [traditionalorange1],
+        Red: [traditionalorange1],
+        Green: [traditionalorange1],  
+        Orange: [traditionalorange1],
+        Black: [traditionalorange1],  
       },
       title: 'Traditional Invitation',
       desc: 'Elegant traditional invitation.',
-      price: 60,
+      price: 70,
       tags: ['traditional'],
-      colors: ['Blue', 'Sage Green', 'Gold', 'Black', 'Orange'],
+      colors: ['Blue', 'Red', 'Green', 'Orange', 'Black'],
       inclusions: [
-        'A simple baronial envelope',
-        '4 inserts',
-        'Ribbon and sticker seal',
+        '1 Envelope',
+        '4 Inserts',
+        'Sticker seal',
       ],
     },
     {
       slug: 'pull-out',
       category: 'wedding',
-      cover: img2,
-      images: [img1, img2],
+      cover: pulloutblue1,
+      images: [pulloutblue1],
       colorImages: {
-        Blue: [img1, img2],
-        Pink: [img1, img2],
-        Beige: [img1, img2],
-        White: [img1, img2],
+        Blue: [pulloutblue1],
+        Pink: [pulloutblue1],
+        Beige: [pulloutblue1],
+        White: [pulloutblue1],
       },
       title: 'Pull-out Invitation',
       desc: 'Elegant pull-out invitation.',
-      price: 60,
+      price: 70,
       tags: ['pull-out'],
       colors: ['Blue', 'Pink', 'Beige', 'White'],
       inclusions: [
         'Envelope included',
         'Insert cards included',
+      ],
+    },
+     {
+      slug: 'passport',
+      category: 'wedding',
+      cover: passportblue1,
+      images: [passportblue1],
+      colorImages: {
+        Blue: [passportblue1],
+        Pink: [passportpink1],
+        Lavender: [passportlavender1],
+        Red: [passportred1],
+      },
+      title: 'Passport Invitation',
+      desc: 'Elegant passport invitation.',
+      price: 100,
+      tags: ['passport'],
+      colors: ['Blue', 'Pink', 'Beige', 'White'],
+      inclusions: [
+        '1 Passport booklet invitation',
+        '1 Boardpass for RSVP',
       ],
     },
   ],

@@ -1,4 +1,5 @@
 import Hero from '../components/Hero'
+import HowToOrder from '../components/HowToOrder'
 import Designs from '../components/Designs'
 import Packages from '../components/Packages'
 import Gallery from '../components/Gallery'
@@ -10,6 +11,7 @@ function HomePage() {
   return (
     <>
       <Hero />
+      <HowToOrder />
       <Designs />
       <Packages />
       <Gallery />
