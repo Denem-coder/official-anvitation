@@ -14,6 +14,8 @@ import passportlavender1 from '../assets/img/designs-img/passport-lavender-1.png
 import passportpink1 from '../assets/img/designs-img/passport-pink-1.png'
 import passportred1 from '../assets/img/designs-img/passport-red-1.png'
 
+import fanblue from '../assets/img/designs-img/fan-blue.png'
+
 
 const designsData = {
   wedding: [
@@ -21,7 +23,7 @@ const designsData = {
       slug: 'traditional',
       category: 'wedding',
       cover: traditionalorange,
-      images: [traditionalblue, traditionalred, traditionalgreen, traditionalorange, traditionalblack, traditionalgold],
+      images: [traditionalorange],
       colorImages: {
         Blue: [traditionalblue],
         Red: [traditionalred],
@@ -34,11 +36,18 @@ const designsData = {
       desc: 'Elegant traditional invitation.',
       price: 70,
       tags: ['traditional'],
-      colors: ['Blue', 'Red', 'Green', 'Orange', 'Black', 'Yellow/Gold'],
+      colors: [
+        { value: 'blue', label: 'Blue' },
+        { value: 'red', label: 'Red' },
+        { value: 'green', label: 'Green' },
+        { value: 'orange', label: 'Orange' },
+        { value: 'black', label: 'Black' },
+        { value: 'yellow', label: 'Yellow / Gold' },
+],
       inclusions: [
-        '1 Envelope',
-        '4 Inserts',
-        'Sticker seal',
+        'Premium Envelope',
+        '3–4 Printed Insert Pages',
+        'Custom Monogram Sticker Seal',
       ],
     },
     {
@@ -64,27 +73,49 @@ const designsData = {
         'Insert cards included',
       ],
     },
-     {
-      slug: 'passport',
-      category: 'wedding',
-      cover: passportblue1,
-      images: [passportblue1],
-      colorImages: {
-        Blue: [passportblue1],
-        Pink: [passportpink1],
-        Lavender: [passportlavender1],
-        Red: [passportred1],
+    {
+        slug: 'passport',
+        category: 'wedding',
+        cover: passportblue1,
+        images: [passportblue1],
+        colorImages: {
+          Blue: [passportblue1],
+          Pink: [passportpink1],
+          Lavender: [passportlavender1],
+          Red: [passportred1],
+        },
+        title: 'Passport Invitation',
+        desc: 'Elegant passport invitation.',
+        price: 100,
+        tags: ['passport'],
+        colors: ['Blue', 'Pink', 'Beige', 'White'],
+        inclusions: [
+          '1 Passport booklet invitation',
+          '1 Boardpass for RSVP',
+        ],
       },
-      title: 'Passport Invitation',
-      desc: 'Elegant passport invitation.',
-      price: 100,
-      tags: ['passport'],
-      colors: ['Blue', 'Pink', 'Beige', 'White'],
-      inclusions: [
-        '1 Passport booklet invitation',
-        '1 Boardpass for RSVP',
-      ],
-    },
+
+      {
+        slug: 'fan',
+        category: 'wedding',
+        cover: fanblue,
+        images: [fanblue],
+        colorImages: {
+          Blue: [fanblue],
+          Pink: [fanblue],
+          Lavender: [fanblue],
+          Red: [fanblue],
+        },
+        title: 'Fan Invitation',
+        desc: 'Elegant fan invitation.',
+        price: 100,
+        tags: ['fan'],
+        colors: ['Blue', 'Pink', 'Beige', 'White'],
+        inclusions: [
+          '1 fan envelope',
+          '1 back-to-back fan',
+        ],
+      },
   ],
 
   baptismal: [

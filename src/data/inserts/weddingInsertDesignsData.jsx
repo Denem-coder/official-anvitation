@@ -288,7 +288,7 @@ const weddingInsertDesignsData = [
     id: 'wedding-gold-set-1',
     category: 'wedding',
     designSlug: 'all',
-    motif: 'Gold',
+    motif: 'Yellow',
     title: 'Gold Inserts Set 1',
     desc: 'Elegant black-themed insert set for wedding invitations.',
 
@@ -302,7 +302,7 @@ const weddingInsertDesignsData = [
     // used in grid preview
     cover: goldInsert1Front,
 
-    colors: ['Yellow/Gold'],
+    colors: ['Gold'],
     isActive: true,
   },
 

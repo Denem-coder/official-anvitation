@@ -48,15 +48,56 @@ function DesignsTemplate({
     ? `https://m.me/ANv8e?text=${message}`
     : 'https://www.facebook.com/messages/t/ANv8e'
 
+  const normalizeColorValue = (color) => {
+    if (!color) return ''
+    if (typeof color === 'string') return color.trim().toLowerCase()
+    if (typeof color === 'object' && color.value) {
+      return String(color.value).trim().toLowerCase()
+    }
+    return ''
+  }
+
+  const getColorLabel = (color) => {
+    if (!color) return ''
+    if (typeof color === 'string') return color
+    if (typeof color === 'object' && color.label) return color.label
+    if (typeof color === 'object' && color.value) return color.value
+    return ''
+  }
+
+  const normalizedColors = useMemo(() => {
+    if (!selectedItem?.colors?.length) return []
+
+    return selectedItem.colors
+      .map((color) => ({
+        value: normalizeColorValue(color),
+        label: getColorLabel(color),
+      }))
+      .filter((color) => color.value && color.label)
+  }, [selectedItem])
+
+  const selectedColorObj = useMemo(() => {
+    return normalizedColors.find((color) => color.value === selectedColor) || null
+  }, [normalizedColors, selectedColor])
+
+  const normalizedColorImages = useMemo(() => {
+    if (!selectedItem?.colorImages) return {}
+
+    return Object.entries(selectedItem.colorImages).reduce((acc, [key, value]) => {
+      acc[String(key).trim().toLowerCase()] = value
+      return acc
+    }, {})
+  }, [selectedItem])
+
   const imageList = useMemo(() => {
     if (!selectedItem) return []
 
     if (
       selectedColor &&
-      selectedItem.colorImages &&
-      selectedItem.colorImages[selectedColor]?.length > 0
+      normalizedColorImages &&
+      normalizedColorImages[selectedColor]?.length > 0
     ) {
-      return selectedItem.colorImages[selectedColor]
+      return normalizedColorImages[selectedColor]
     }
 
     if (selectedItem.images?.length > 0) {
@@ -64,7 +105,7 @@ function DesignsTemplate({
     }
 
     return [selectedItem.cover || selectedItem.img].filter(Boolean)
-  }, [selectedItem, selectedColor])
+  }, [selectedItem, selectedColor, normalizedColorImages])
 
   const currentImage = imageList[activeImageIndex] || ''
 
@@ -79,7 +120,7 @@ function DesignsTemplate({
         item.designSlug === 'all' || item.designSlug === selectedItem.slug
 
       const matchesMotif =
-        item.motif?.toLowerCase() === selectedColor?.toLowerCase()
+        item.motif?.toLowerCase() === selectedColor
 
       return matchesCategory && matchesDesign && matchesMotif && item.isActive
     })
@@ -578,7 +619,7 @@ function DesignsTemplate({
                     {selectedItem.inclusions?.length > 0 && (
                       <div className="mt-6 rounded-2xl bg-orange-50 p-5">
                         <h3 className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                          Inclusions
+                          Each Set Includes:
                         </h3>
                         <ul className="mt-4 space-y-3 text-sm text-gray-700">
                           {selectedItem.inclusions.map((detail, index) => (
@@ -608,9 +649,9 @@ function DesignsTemplate({
                           className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-gray-700 outline-none transition focus:border-orange-400"
                         >
                           <option value="">Select a motif</option>
-                          {selectedItem.colors.map((color) => (
-                            <option key={color} value={color}>
-                              {color}
+                          {normalizedColors.map((color) => (
+                            <option key={color.value} value={color.value}>
+                              {color.label}
                             </option>
                           ))}
                         </select>
@@ -618,6 +659,15 @@ function DesignsTemplate({
                         {!selectedColor && (
                           <p className="mt-2 text-sm text-orange-500">
                             Please choose a color first before proceeding.
+                          </p>
+                        )}
+
+                        {selectedColorObj && (
+                          <p className="mt-2 text-sm text-gray-600">
+                            Selected motif:{' '}
+                            <span className="font-semibold text-orange-500">
+                              {selectedColorObj.label}
+                            </span>
                           </p>
                         )}
                       </div>
@@ -908,9 +958,6 @@ function DesignsTemplate({
                             </button>
                           </>
                         )}
-
-                        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-gray-50 to-transparent" />
-                        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-gray-50 to-transparent" />
 
                         <div
                           ref={insertThumbsRef}
