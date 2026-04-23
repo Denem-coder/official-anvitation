@@ -681,11 +681,11 @@ function Navbar() {
 
               <HashLink
                 smooth
-                to="/#faqs"
+                to="/#howtoorder"
                 onClick={closeAllMenus}
                 className={mobileLinkClass('faqs')}
               >
-                How to Order
+                How to Order?
               </HashLink>
             </div>
           </div>

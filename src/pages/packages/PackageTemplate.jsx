@@ -14,7 +14,7 @@ function PackageTemplate({
 }) {
   const location = useLocation()
   const navigate = useNavigate()
-  const { addToCart, updateCartItem } = useCart()
+  const { cart, addToCart, updateCartItem } = useCart()
 
   const params = useMemo(
     () => new URLSearchParams(location.search),
@@ -33,8 +33,10 @@ function PackageTemplate({
 
   const selectedProduct = products[0] || null
 
+  const [orderMode, setOrderMode] = useState('product')
   const [quantity, setQuantity] = useState(1)
   const [addOnQuantities, setAddOnQuantities] = useState({})
+  const [selectedPackage, setSelectedPackage] = useState(null)
   const [toast, setToast] = useState({
     show: false,
     message: '',
@@ -158,134 +160,49 @@ function PackageTemplate({
     setAddOnQuantities({})
   }
 
-  const choosePackage = (pkg) => {
-    if (!selectedDesign) return
+  const selectedAddOns = addOns
+    .map((addOn) => {
+      const qty = Math.max(0, Number(addOnQuantities[addOn.id]) || 0)
 
-    const cartItem = {
-      id:
-        editItemId ||
-        `${selectedDesign.slug}-${selectedColor || 'default'}-${pkg.id}-${Date.now()}`,
-      type: 'package',
-      category,
-      title: `${selectedDesign.title} - ${pkg.name}`,
-      desc: pkg.subtitle,
-      price: Number(pkg.price),
-      basePrice: Number(pkg.price),
-      quantity: 1,
-      packageName: pkg.name,
-      packageTitle: pkg.title,
-      packageFeatures: pkg.features,
-      designTitle: selectedDesign.title,
-      designSlug: selectedDesign.slug,
-      selectedColor: selectedColor || '',
-      selectedInsertId: selectedInsertId || '',
-      image:
-        selectedDesign.cover ||
-        selectedDesign.images?.[0] ||
-        selectedDesign.img ||
-        null,
-      selectedAddOns: [],
-      addOnsTotal: 0,
-      mainProductTotal: Number(pkg.price),
-    }
+      if (qty < 1) return null
 
-    if (editItemId) {
-      updateCartItem(editItemId, cartItem)
-      navigate('/cart')
-      return
-    }
+      return {
+        id: addOn.id,
+        name: addOn.name,
+        price: Number(addOn.price),
+        quantity: qty,
+        unit: addOn.unit || 'pc',
+        description: addOn.description || addOn.subtitle || '',
+        image: addOn.image || null,
+        subtotal: Number(addOn.price) * qty,
+      }
+    })
+    .filter(Boolean)
 
-    addToCart(cartItem)
-    showToast(`${pkg.name} added to cart`)
-  }
-
-  const addSingleProduct = () => {
-    if (!selectedDesign || !selectedProduct) return
-
-    const safeQuantity = Math.max(1, Number(quantity) || 1)
-
-    const selectedAddOns = addOns
-      .map((addOn) => {
-        const qty = Math.max(0, Number(addOnQuantities[addOn.id]) || 0)
-
-        if (qty < 1) return null
-
-        return {
-          id: addOn.id,
-          name: addOn.name,
-          price: Number(addOn.price),
-          quantity: qty,
-          unit: addOn.unit || 'pc',
-          description: addOn.description || addOn.subtitle || '',
-          image: addOn.image || null,
-          subtotal: Number(addOn.price) * qty,
-        }
-      })
-      .filter(Boolean)
-
-    const addOnsTotal = selectedAddOns.reduce(
-      (total, item) => total + item.subtotal,
-      0
-    )
-
-    const mainProductTotal = Number(selectedProduct.price) * safeQuantity
-    const totalPrice = mainProductTotal + addOnsTotal
-
-    const cartItem = {
-      id:
-        editItemId ||
-        `${selectedDesign.slug}-${selectedColor || 'default'}-${selectedProduct.id}-${Date.now()}`,
-      type: 'product-with-addons',
-      category,
-      title: `${selectedDesign.title} - ${selectedProduct.name}`,
-      desc: selectedProduct.description || selectedProduct.subtitle || '',
-      price: totalPrice,
-      basePrice: Number(selectedProduct.price),
-      quantity: safeQuantity,
-      productName: selectedProduct.name,
-      productId: selectedProduct.id,
-      unit: selectedProduct.unit || 'set',
-      designTitle: selectedDesign.title,
-      designSlug: selectedDesign.slug,
-      selectedColor: selectedColor || '',
-      selectedInsertId: selectedInsertId || '',
-      image:
-        selectedDesign.cover ||
-        selectedDesign.images?.[0] ||
-        selectedDesign.img ||
-        null,
-      selectedAddOns,
-      addOnsTotal,
-      mainProductTotal,
-    }
-
-    if (editItemId) {
-      updateCartItem(editItemId, cartItem)
-      navigate('/cart')
-      return
-    }
-
-    addToCart(cartItem)
-
-    const addOnSummary =
-      selectedAddOns.length > 0
-        ? ` with ${selectedAddOns.length} add-on${selectedAddOns.length > 1 ? 's' : ''}`
-        : ''
-
-    showToast(
-      `${safeQuantity} ${selectedProduct.unit || 'set'} of ${selectedProduct.name}${addOnSummary} added to cart`
-    )
-  }
-
-  const totalSelectedAddOnsPrice = addOns.reduce(
-    (total, item) => total + Number(item.price) * getAddOnQuantity(item.id),
+  const addOnsTotal = selectedAddOns.reduce(
+    (total, item) => total + item.subtotal,
     0
   )
 
-  const totalSelectedProductPrice =
-    Number(selectedProduct?.price || 0) * Math.max(1, Number(quantity) || 1)
+  const safeQuantity = Math.max(1, Number(quantity) || 1)
 
-  const combinedTotal = totalSelectedProductPrice + totalSelectedAddOnsPrice
+  const mainProductTotal =
+    orderMode === 'product' && selectedProduct
+      ? Number(selectedProduct.price || 0) * safeQuantity
+      : 0
+
+  const packageTotal =
+    orderMode === 'package' ? Number(selectedPackage?.price || 0) : 0
+
+  const currentBuilderTotal = mainProductTotal + packageTotal + addOnsTotal
+
+  const cartSubtotal = cart.reduce((total, item) => {
+    return total + (Number(item.price) || 0) * (Number(item.quantity) || 1)
+  }, 0)
+
+  const overallDisplayedTotal = editItemId
+    ? currentBuilderTotal
+    : cartSubtotal + currentBuilderTotal
 
   const selectedAddOnsSummary = addOns.filter(
     (item) => getAddOnQuantity(item.id) > 0
@@ -293,9 +210,107 @@ function PackageTemplate({
 
   const hasSelectedAddOns = selectedAddOnsSummary.length > 0
 
-  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(
-    navigator.userAgent
-  )
+  const canAddToCart =
+    selectedDesign &&
+    ((orderMode === 'product' && selectedProduct) ||
+      (orderMode === 'package' && selectedPackage))
+
+  const choosePackage = (pkg) => {
+    setSelectedPackage((prev) => (prev?.id === pkg.id ? null : pkg))
+  }
+
+  const handleAddToCart = () => {
+    if (!selectedDesign || !canAddToCart) return
+
+    const cartItem = {
+      id:
+        editItemId ||
+        `${selectedDesign.slug}-${selectedColor || 'default'}-${orderMode}-${Date.now()}`,
+      type: orderMode === 'package' ? 'package-order' : 'product-order',
+      category,
+      title:
+        orderMode === 'package'
+          ? `${selectedDesign.title} - ${selectedPackage.name}`
+          : `${selectedDesign.title} - ${selectedProduct.name}`,
+      desc:
+        orderMode === 'package'
+          ? selectedPackage?.subtitle || ''
+          : selectedProduct?.description || selectedProduct?.subtitle || '',
+      price: currentBuilderTotal,
+      basePrice:
+        orderMode === 'package'
+          ? Number(selectedPackage?.price || 0)
+          : Number(selectedProduct?.price || 0),
+      quantity: orderMode === 'package' ? 1 : safeQuantity,
+      unit: selectedProduct?.unit || 'set',
+      designTitle: selectedDesign.title,
+      designSlug: selectedDesign.slug,
+      selectedColor: selectedColor || '',
+      selectedInsertId: selectedInsertId || '',
+      image:
+        selectedDesign.cover ||
+        selectedDesign.images?.[0] ||
+        selectedDesign.img ||
+        null,
+
+      orderMode,
+
+      productName: orderMode === 'product' ? selectedProduct?.name || '' : '',
+      productId: orderMode === 'product' ? selectedProduct?.id || '' : '',
+      mainProductTotal,
+
+      selectedPackage:
+        orderMode === 'package' && selectedPackage
+          ? {
+              id: selectedPackage.id,
+              name: selectedPackage.name,
+              title: selectedPackage.title,
+              subtitle: selectedPackage.subtitle,
+              price: Number(selectedPackage.price),
+              features: selectedPackage.features || [],
+            }
+          : null,
+      packageName: orderMode === 'package' ? selectedPackage?.name || '' : '',
+      packageTotal,
+
+      selectedAddOns,
+      addOnsTotal,
+    }
+
+    if (editItemId) {
+      updateCartItem(editItemId, cartItem)
+      navigate('/cart')
+      return
+    }
+
+    addToCart(cartItem)
+
+    if (orderMode === 'package') {
+      showToast(
+        `${selectedPackage.name}${
+          selectedAddOns.length > 0
+            ? ` with ${selectedAddOns.length} extra${
+                selectedAddOns.length > 1 ? 's' : ''
+              }`
+            : ''
+        } added to cart`
+      )
+    } else {
+      showToast(
+        `${safeQuantity} ${selectedProduct.unit || 'set'} of ${selectedProduct.name}${
+          selectedAddOns.length > 0
+            ? ` with ${selectedAddOns.length} extra${
+                selectedAddOns.length > 1 ? 's' : ''
+              }`
+            : ''
+        } added to cart`
+      )
+    }
+  }
+
+  const isMobileDevice =
+    typeof navigator !== 'undefined' &&
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
 
   const messengerLink = isMobileDevice
     ? 'https://m.me/ANv8e?text=Hi%20I%20need%20help%20choosing%20a%20design'
@@ -368,7 +383,7 @@ function PackageTemplate({
             </h3>
 
             <p className="mt-4 text-gray-600">
-              We can help you choose the right design, motif, quantity, or package
+              We can help you choose the right design, quantity, extras, or package
               based on your event and budget.
             </p>
 
@@ -380,7 +395,7 @@ function PackageTemplate({
               <ul className="mt-3 space-y-2 text-sm text-gray-700">
                 <li>• Choosing the best design for your event theme</li>
                 <li>• Picking the right motif or color</li>
-                <li>• Recommending the best package for your budget</li>
+                <li>• Recommending the best order option for your budget</li>
                 <li>• Answering customization and order questions</li>
               </ul>
             </div>
@@ -446,161 +461,135 @@ function PackageTemplate({
         )}
 
         {selectedDesign && (
-          <div className="mb-10 rounded-[2rem] border border-orange-100 bg-white p-4 md:p-6 shadow-sm">
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[180px_1fr_340px] xl:items-start">
-              <div className="order-1 xl:order-1">
-                <img
-                  src={
-                    selectedDesign.cover ||
-                    selectedDesign.images?.[0] ||
-                    selectedDesign.img
-                  }
-                  alt={selectedDesign.title}
-                  className="h-44 w-full rounded-2xl object-cover"
-                />
-              </div>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 items-start">
+            <div className="min-w-0">
+              <div className="mb-8 rounded-[2rem] border border-orange-100 bg-white p-4 md:p-6 shadow-sm">
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-[180px_1fr] xl:items-start">
+                  <div>
+                    <img
+                      src={
+                        selectedDesign.cover ||
+                        selectedDesign.images?.[0] ||
+                        selectedDesign.img
+                      }
+                      alt={selectedDesign.title}
+                      className="h-44 w-full rounded-2xl object-cover"
+                    />
+                  </div>
 
-              <div className="order-2 xl:order-2">
-                <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                  Selected Design
-                </p>
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
+                      Selected Design
+                    </p>
 
-                <h2 className="mt-2 text-2xl font-bold text-gray-900">
-                  {selectedDesign.title}
-                </h2>
+                    <h2 className="mt-2 text-2xl font-bold text-gray-900">
+                      {selectedDesign.title}
+                    </h2>
 
-                <p className="mt-3 text-gray-600">{selectedDesign.desc}</p>
+                    <p className="mt-3 text-gray-600">{selectedDesign.desc}</p>
 
-                {selectedColor && (
-                  <p className="mt-3 text-sm text-gray-700">
-                    Chosen motif:{' '}
-                    <span className="font-semibold text-orange-500">
-                      {selectedColor}
-                    </span>
-                  </p>
-                )}
+                    {selectedColor && (
+                      <p className="mt-3 text-sm text-gray-700">
+                        Chosen motif:{' '}
+                        <span className="font-semibold text-orange-500">
+                          {selectedColor}
+                        </span>
+                      </p>
+                    )}
 
-                {selectedInsertId && (
-                  <p className="mt-2 text-sm text-gray-700">
-                    Selected insert:{' '}
-                    <span className="font-semibold text-orange-500">
-                      {selectedInsertId}
-                    </span>
-                  </p>
-                )}
+                    {selectedInsertId && (
+                      <p className="mt-2 text-sm text-gray-700">
+                        Selected insert:{' '}
+                        <span className="font-semibold text-orange-500">
+                          {selectedInsertId}
+                        </span>
+                      </p>
+                    )}
 
-                <div className="mt-5">
-                  <Link
-                    to={browseDesignsLink}
-                    className="inline-block rounded-full border border-orange-300 bg-white px-5 py-2.5 text-sm font-semibold text-orange-500 transition hover:bg-orange-500 hover:text-white"
-                  >
-                    Change Design
-                  </Link>
+                    <div className="mt-5">
+                      <Link
+                        to={browseDesignsLink}
+                        className="inline-block rounded-full border border-orange-300 bg-white px-5 py-2.5 text-sm font-semibold text-orange-500 transition hover:bg-orange-500 hover:text-white"
+                      >
+                        Change Design
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {selectedProduct && (
-                <div className="order-4 xl:order-3 xl:row-span-2 rounded-[1.5rem] border border-orange-100 bg-orange-50 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
-                        {editItemId ? 'Update This Order' : 'PRICE PER SET'}
-                      </p>
-
-                      <p className="mt-3 text-2xl font-bold text-orange-500">
-                        ₱{Number(selectedProduct.price).toLocaleString()}
-                        <span className="ml-1 text-sm font-medium text-gray-500">
-                          / {selectedProduct.unit || 'set'}
-                        </span>
-                      </p>
-                    </div>
-
-                    {editItemId && (
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-orange-500">
-                        Editing
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mt-4 rounded-xl bg-white/80 p-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Order Summary
-                    </p>
-
-                    <div className="mt-2 space-y-1 text-sm text-gray-700">
-                      <p>
-                        <span className="font-medium">Design:</span>{' '}
-                        {selectedDesign.title}
-                      </p>
-
-                      {selectedColor && (
-                        <p>
-                          <span className="font-medium">Motif:</span>{' '}
-                          {selectedColor}
-                        </p>
-                      )}
-
-                      {selectedInsertId && (
-                        <p>
-                          <span className="font-medium">Insert:</span>{' '}
-                          {selectedInsertId}
-                        </p>
-                      )}
-
-                      <p>
-                        <span className="font-medium">Quantity:</span> {quantity}
-                      </p>
-
-                      <p>
-                        <span className="font-medium">Main Product:</span> ₱
-                        {totalSelectedProductPrice.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-
-                  {addOns.length > 0 && (
-                    <div className="mt-3 rounded-xl bg-white/80 p-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Add-ons selected
-                        </p>
-
-                        {hasSelectedAddOns && (
-                          <button
-                            type="button"
-                            onClick={clearAllAddOns}
-                            className="text-xs font-medium text-red-500 transition hover:underline"
-                          >
-                            Clear all
-                          </button>
-                        )}
-                      </div>
-
-                      <p className="mt-1 text-sm text-gray-700">
-                        {hasSelectedAddOns
-                          ? selectedAddOnsSummary
-                              .map(
-                                (item) =>
-                                  `${item.name} (${getAddOnQuantity(item.id)} ${item.unit || 'pc'})`
-                              )
-                              .join(', ')
-                          : 'No add-ons selected yet'}
-                      </p>
-
-                      <p className="mt-2 text-sm font-semibold text-orange-500">
-                        Add-ons Total: ₱{totalSelectedAddOnsPrice.toLocaleString()}
-                      </p>
-                    </div>
-                  )}
-
-                  <p className="mt-3 text-sm text-gray-600">
-                    Total with add-ons:{' '}
-                    <span className="font-semibold text-gray-900">
-                      ₱{combinedTotal.toLocaleString()}
-                    </span>
+              <div className="mb-8 rounded-[2rem] border border-gray-200 bg-white p-4 md:p-6 shadow-sm">
+                <div className="text-center">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                    Step 1
                   </p>
+                  <h3 className="mt-2 text-2xl font-bold text-gray-900">
+                    Choose How You Want to Order
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">
+                    Pick one option so your order stays clear and easy to understand.
+                  </p>
+                </div>
 
-                  <div className="mt-4 flex items-center gap-2">
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setOrderMode('product')}
+                    className={`rounded-[1.5rem] border p-5 text-left transition ${
+                      orderMode === 'product'
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 bg-white hover:border-orange-300'
+                    }`}
+                  >
+                    <p className="text-lg font-bold text-gray-900">Build My Own</p>
+                    <p className="mt-2 text-sm text-gray-600">
+                      Choose your quantity and add only the extras you need.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setOrderMode('package')}
+                    className={`rounded-[1.5rem] border p-5 text-left transition ${
+                      orderMode === 'package'
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 bg-white hover:border-orange-300'
+                    }`}
+                  >
+                    <p className="text-lg font-bold text-gray-900">Package Deal</p>
+                    <p className="mt-2 text-sm text-gray-600">
+                      Choose a ready-made bundle for a faster and easier order.
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              {orderMode === 'product' && selectedProduct && (
+                <div className="mb-8 rounded-[2rem] border border-orange-100 bg-white p-4 md:p-6 shadow-sm">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        Step 2
+                      </p>
+                      <h3 className="mt-2 text-2xl font-bold text-gray-900">
+                        Build Your Own Order
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-600">
+                        Set your quantity, then add optional extras below.
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-orange-50 px-4 py-3">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Price Per {selectedProduct.unit || 'Set'}
+                      </p>
+                      <p className="mt-1 text-xl font-bold text-orange-500">
+                        ₱{Number(selectedProduct.price).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex items-center gap-2">
                     <button
                       type="button"
                       onClick={decreaseQuantity}
@@ -614,7 +603,7 @@ function PackageTemplate({
                       min="1"
                       value={quantity}
                       onChange={(e) => handleQuantityChange(e.target.value)}
-                      className="h-10 w-16 rounded-lg border border-gray-300 bg-white px-2 text-center text-sm text-gray-700 outline-none transition focus:border-orange-400"
+                      className="h-10 w-20 rounded-lg border border-gray-300 bg-white px-2 text-center text-sm text-gray-700 outline-none transition focus:border-orange-400"
                     />
 
                     <button
@@ -624,33 +613,116 @@ function PackageTemplate({
                     >
                       +
                     </button>
-
-                    <button
-                      onClick={addSingleProduct}
-                      className="ml-auto hidden w-32 items-center justify-center rounded-full bg-orange-500 p-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 md:inline-flex"
-                    >
-                      {editItemId ? 'Update Cart' : 'Add to Cart'}
-                    </button>
                   </div>
+                </div>
+              )}
 
-                  <p className="mt-3 hidden text-xs text-gray-500 md:block">
-                    You can still review or edit add-ons before saving this order.
-                  </p>
+              {orderMode === 'package' && packages.length > 0 && (
+                <div className="mb-8 overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+                  <div className="grid grid-cols-1 lg:grid-cols-4">
+                    <div className="flex flex-col items-center justify-center border-b border-gray-200 bg-gradient-to-b from-orange-50 to-white p-8 text-center lg:border-b-0 lg:border-r">
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        Step 2
+                      </p>
+
+                      <h2 className="mt-4 text-3xl font-bold leading-tight text-gray-900">
+                        Choose a Package
+                      </h2>
+
+                      <p className="mt-4 text-sm leading-7 text-gray-600">
+                        Pick one ready-made bundle that fits your event and budget.
+                      </p>
+                    </div>
+
+                    {packages.map((pkg) => {
+                      const isSelectedPackage = selectedPackage?.id === pkg.id
+
+                      return (
+                        <div
+                          key={pkg.id}
+                          className={`relative p-8 ${
+                            pkg.id !== packages[packages.length - 1]?.id
+                              ? 'border-b border-gray-200 lg:border-b-0 lg:border-r'
+                              : ''
+                          } ${
+                            isSelectedPackage
+                              ? 'bg-orange-100/70'
+                              : pkg.highlight
+                              ? 'bg-orange-50/70'
+                              : 'bg-white'
+                          }`}
+                        >
+                          {pkg.highlight && !isSelectedPackage && (
+                            <span className="absolute right-6 top-6 rounded-full bg-orange-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                              Popular
+                            </span>
+                          )}
+
+                          {isSelectedPackage && (
+                            <span className="absolute right-6 top-6 rounded-full bg-gray-900 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                              Selected
+                            </span>
+                          )}
+
+                          <div className="text-center">
+                            <h3 className="text-2xl font-bold text-gray-900">
+                              ₱{Number(pkg.price).toLocaleString()}
+                            </h3>
+                            <p className="mt-2 text-lg font-semibold text-gray-800">
+                              {pkg.name}
+                            </p>
+                            <p className="mt-1 text-sm text-gray-500">{pkg.subtitle}</p>
+
+                            <button
+                              type="button"
+                              onClick={() => choosePackage(pkg)}
+                              className={`mt-5 inline-block rounded-full px-6 py-2.5 text-sm font-semibold transition ${
+                                isSelectedPackage
+                                  ? 'bg-gray-900 text-white hover:bg-black'
+                                  : pkg.highlight
+                                  ? 'bg-orange-500 text-white hover:bg-orange-600'
+                                  : 'bg-gray-900 text-white hover:bg-black'
+                              }`}
+                            >
+                              {isSelectedPackage ? 'Selected' : 'Choose Package'}
+                            </button>
+                          </div>
+
+                          <div className="mt-8 space-y-4 text-center text-sm text-gray-700">
+                            {pkg.features.map((feature, i) => (
+                              <div
+                                key={i}
+                                className="flex min-h-[52px] items-center justify-center border-b border-gray-200 pb-3"
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <span className="text-green-500">✔</span>
+                                  <span>{feature}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               )}
 
               {addOns.length > 0 && (
-                <div className="order-3 xl:order-4 xl:col-span-2 overflow-hidden rounded-[2rem] border border-orange-100 bg-white shadow-sm">
+                <div className="mb-8 overflow-hidden rounded-[2rem] border border-orange-100 bg-white shadow-sm">
                   <div className="border-b border-orange-100 bg-gradient-to-r from-orange-50 to-white px-4 py-5 md:px-8">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                          Add-ons
+                          Step 3
                         </p>
 
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">
+                          Optional Extras
+                        </h3>
+
                         <p className="mt-2 max-w-2xl text-sm text-gray-600">
-                          Add extra items like tags, ref magnets, vow cards, save
-                          the date cards, and more.
+                          Add extra items only if you want to include them in this order.
                         </p>
                       </div>
 
@@ -767,84 +839,128 @@ function PackageTemplate({
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-        )}
 
-        {packages.length > 0 && (
-          <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-            <div className="grid grid-cols-1 lg:grid-cols-4">
-              <div className="flex flex-col items-center justify-center border-b border-gray-200 bg-gradient-to-b from-orange-50 to-white p-8 md:flex md:flex-col md:justify-left md:align-center lg:border-b-0 lg:border-r">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                  Optional Packages
-                </p>
-
-                <h2 className="mt-4 text-3xl font-bold leading-tight text-gray-900">
-                  Package Options
-                </h2>
-
-                <p className="mt-4 hidden text-center text-sm leading-7 text-gray-600 md:block">
-                  These are optional bundled sets in case you want a package
-                  instead of ordering per product.
-                </p>
-              </div>
-
-              {packages.map((pkg) => (
-                <div
-                  key={pkg.id}
-                  className={`relative p-8 ${
-                    pkg.id !== packages[packages.length - 1]?.id
-                      ? 'border-b border-gray-200 lg:border-b-0 lg:border-r'
-                      : ''
-                  } ${pkg.highlight ? 'bg-orange-50/70' : 'bg-white'}`}
+              <div className="mt-12 text-center">
+                <button
+                  type="button"
+                  onClick={() => setShowHelpModal(true)}
+                  className="inline-block rounded-full border border-orange-300 bg-white px-7 py-3 font-semibold text-orange-500 transition hover:bg-orange-50"
                 >
-                  {pkg.highlight && (
-                    <span className="absolute right-6 top-6 rounded-full bg-orange-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
-                      Popular
-                    </span>
-                  )}
-
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-gray-900">
-                      ₱{Number(pkg.price).toLocaleString()}
-                    </h3>
-                    <p className="mt-2 text-lg font-semibold text-gray-800">
-                      {pkg.name}
-                    </p>
-                    <p className="mt-1 text-sm text-gray-500">{pkg.subtitle}</p>
-
-                    <button
-                      onClick={() => choosePackage(pkg)}
-                      className={`mt-5 inline-block rounded-full px-6 py-2.5 text-sm font-semibold transition ${
-                        pkg.highlight
-                          ? 'bg-orange-500 text-white hover:bg-orange-600'
-                          : 'bg-gray-900 text-white hover:bg-black'
-                      }`}
-                    >
-                      {editItemId ? 'Update Package' : 'Add Package to Cart'}
-                    </button>
-                  </div>
-
-                  <div className="mt-8 space-y-4 text-center text-sm text-gray-700">
-                    {pkg.features.map((feature, i) => (
-                      <div
-                        key={i}
-                        className="flex min-h-[52px] items-center justify-center border-b border-gray-200 pb-3"
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-green-500">✔</span>
-                          <span>{feature}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                  Need Help Choosing?
+                </button>
+              </div>
             </div>
+
+            <aside className="hidden lg:block self-start sticky top-32">
+              <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50 p-4 shadow-sm">
+                <div className="rounded-[1.5rem] border border-orange-100 bg-orange-50 p-4 shadow-sm">
+                  <p className="text-sm font-semibold uppercase tracking-wide text-orange-500">
+                    Order Summary
+                  </p>
+
+                  <p className="mt-3 text-2xl font-bold text-orange-500">
+                    ₱{overallDisplayedTotal.toLocaleString()}
+                  </p>
+
+                  <div className="mt-4 rounded-xl bg-white/80 p-3">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Current Selection
+                    </p>
+
+                    <div className="mt-2 space-y-1 text-sm text-gray-700">
+                      <p>
+                        <span className="font-medium">Order Type:</span>{' '}
+                        {orderMode === 'product' ? 'Build My Own' : 'Package Deal'}
+                      </p>
+
+                      {orderMode === 'product' && selectedProduct && (
+                        <>
+                          <p>
+                            <span className="font-medium">Product:</span>{' '}
+                            {selectedProduct.name}
+                          </p>
+                          <p>
+                            <span className="font-medium">Quantity:</span> {quantity}
+                          </p>
+                          <p>
+                            <span className="font-medium">Product Total:</span> ₱
+                            {mainProductTotal.toLocaleString()}
+                          </p>
+                        </>
+                      )}
+
+                      {orderMode === 'package' && selectedPackage && (
+                        <>
+                          <p>
+                            <span className="font-medium">Package:</span>{' '}
+                            {selectedPackage.name}
+                          </p>
+                          <p>
+                            <span className="font-medium">Package Total:</span> ₱
+                            {packageTotal.toLocaleString()}
+                          </p>
+                        </>
+                      )}
+
+                      {hasSelectedAddOns && (
+                        <p>
+                          <span className="font-medium">Extras:</span> ₱
+                          {addOnsTotal.toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 space-y-1 text-sm text-gray-600">
+                    <p>
+                      Current selection:{' '}
+                      <span className="font-semibold text-gray-900">
+                        ₱{currentBuilderTotal.toLocaleString()}
+                      </span>
+                    </p>
+
+                    {!editItemId && cartSubtotal > 0 && (
+                      <p>
+                        Already in cart:{' '}
+                        <span className="font-semibold text-gray-900">
+                          ₱{cartSubtotal.toLocaleString()}
+                        </span>
+                      </p>
+                    )}
+
+                    <p className="text-base">
+                      Overall total:{' '}
+                      <span className="font-bold text-orange-500">
+                        ₱{overallDisplayedTotal.toLocaleString()}
+                      </span>
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={!canAddToCart}
+                    className={`mt-5 inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition ${
+                      canAddToCart
+                        ? 'bg-orange-500 text-white hover:bg-orange-600'
+                        : 'cursor-not-allowed bg-gray-200 text-gray-500'
+                    }`}
+                  >
+                    {editItemId ? 'Update Cart' : 'Add to Cart'}
+                  </button>
+
+                  {!canAddToCart && (
+                    <p className="mt-2 text-center text-xs text-gray-500">
+                      Complete your selection first.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </aside>
           </div>
         )}
 
-        <div className="mt-12 text-center">
+        {/* <div className="mt-12 text-center lg:hidden">
           <button
             type="button"
             onClick={() => setShowHelpModal(true)}
@@ -852,35 +968,44 @@ function PackageTemplate({
           >
             Need Help Choosing?
           </button>
-        </div>
+        </div> */}
       </div>
 
-      {selectedDesign && selectedProduct && (
+      {selectedDesign && (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-orange-200 bg-white/95 px-4 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] backdrop-blur md:hidden">
           <div className="mx-auto flex max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-orange-500">
-                {editItemId ? 'Updating Order' : 'Current Total'}
+                {editItemId ? 'Updating Order' : 'Overall Total'}
               </p>
 
               <p className="truncate text-lg font-bold text-gray-900">
-                ₱{combinedTotal.toLocaleString()}
+                ₱{overallDisplayedTotal.toLocaleString()}
               </p>
 
               <p className="text-xs text-gray-500">
-                Qty: {quantity}
+                {orderMode === 'product'
+                  ? `Build My Own • Qty: ${quantity}`
+                  : selectedPackage
+                  ? 'Package Deal • Package selected'
+                  : 'Package Deal'}
                 {hasSelectedAddOns
-                  ? ` • ${selectedAddOnsSummary.length} add-on${
+                  ? ` • ${selectedAddOnsSummary.length} extra${
                       selectedAddOnsSummary.length > 1 ? 's' : ''
                     }`
-                  : ' • No add-ons'}
+                  : ''}
               </p>
             </div>
 
             <button
               type="button"
-              onClick={addSingleProduct}
-              className="inline-flex shrink-0 items-center justify-center rounded-full bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+              onClick={handleAddToCart}
+              disabled={!canAddToCart}
+              className={`inline-flex shrink-0 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
+                canAddToCart
+                  ? 'bg-orange-500 text-white hover:bg-orange-600'
+                  : 'cursor-not-allowed bg-gray-200 text-gray-500'
+              }`}
             >
               {editItemId ? 'Update Cart' : 'Add to Cart'}
             </button>

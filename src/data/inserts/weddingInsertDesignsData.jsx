@@ -7,6 +7,14 @@ import blueInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/blu
 import blueInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-inside.png";
 import blueInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-third.png";
 import blueInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-last.png";
+import blueInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-front.png";
+import blueInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-inside.png";
+// import blueInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-third.png";
+import blueInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-last.png";
+import blueInsert3Front from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-front.png";
+import blueInsert3Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-inside.png";
+import blueInsert3Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-third.png";
+import blueInsert3Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-last.png";
 
 // RED INSERT DESIGNS
 import redInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/red-insert-1-front.png";
@@ -50,6 +58,12 @@ import blackInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/bl
 import blackInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-inside.png";
 import blackInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-third.png";
 import blackInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-last.png";
+
+// GOLD INSERT DESIGNS
+import goldInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-front.png";
+import goldInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-inside.png";
+// import goldInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-third.png";
+import goldInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-last.png";
 
 // 👉 (Optional: add inside/back images later)
 
@@ -267,6 +281,72 @@ const weddingInsertDesignsData = [
     cover: blackInsert2Front,
 
     colors: ['Black'],
+    isActive: true,
+  },
+
+  {
+    id: 'wedding-gold-set-1',
+    category: 'wedding',
+    designSlug: 'all',
+    motif: 'Gold',
+    title: 'Gold Inserts Set 1',
+    desc: 'Elegant black-themed insert set for wedding invitations.',
+
+    pages: {
+      front: goldInsert1Front,
+      inside: goldInsert1Inside,
+      third: null,
+      back: goldInsert1Last,
+    },
+
+    // used in grid preview
+    cover: goldInsert1Front,
+
+    colors: ['Yellow/Gold'],
+    isActive: true,
+  },
+
+   {
+    id: 'wedding-blue-set-2',
+    category: 'wedding',
+    designSlug: 'all',
+    motif: 'Blue',
+    title: 'Blue Inserts Set 2',
+    desc: 'Elegant blue-themed insert set for wedding invitations.',
+
+    pages: {
+      front: blueInsert2Front,
+      inside: blueInsert2Inside,
+      third: null,
+      back: blueInsert2Last,
+    },
+
+    // used in grid preview
+    cover: blueInsert2Front,
+
+    colors: ['Blue'],
+    isActive: true,
+  },
+
+   {
+    id: 'wedding-blue-set-3',
+    category: 'wedding',
+    designSlug: 'all',
+    motif: 'Blue',
+    title: 'Blue Inserts Set 3',
+    desc: 'Elegant blue-themed insert set for wedding invitations.',
+
+    pages: {
+      front: blueInsert3Front,
+      inside: blueInsert3Inside,
+      third: blueInsert3Third,
+      back: blueInsert3Last,
+    },
+
+    // used in grid preview
+    cover: blueInsert3Front,
+
+    colors: ['Blue'],
     isActive: true,
   },
 ]

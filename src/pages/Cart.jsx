@@ -138,7 +138,7 @@ Line Total: ₱${lineTotal.toLocaleString()}`
 
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                to="/designs/wedding"
+                to="/designs"
                 className="inline-flex items-center justify-center rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
               >
                 Start Ordering

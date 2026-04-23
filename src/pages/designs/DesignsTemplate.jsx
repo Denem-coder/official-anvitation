@@ -26,6 +26,8 @@ function DesignsTemplate({
   const [previewInsert, setPreviewInsert] = useState(null)
   const [activeInsertPageIndex, setActiveInsertPageIndex] = useState(0)
 
+  const [insertScrollProgress, setInsertScrollProgress] = useState(0)
+
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
 
@@ -106,6 +108,20 @@ function DesignsTemplate({
           selectedColor
         )}&insert=${encodeURIComponent(selectedInsert.id)}`
       : '#'
+
+  const updateInsertScrollProgress = () => {
+    if (!sliderRef.current) return
+
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current
+    const maxScroll = scrollWidth - clientWidth
+
+    if (maxScroll <= 0) {
+      setInsertScrollProgress(0)
+      return
+    }
+
+    setInsertScrollProgress(scrollLeft / maxScroll)
+  }
 
   useEffect(() => {
     document.body.style.overflow =
@@ -190,6 +206,20 @@ function DesignsTemplate({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [selectedItem, showHelpModal, showInsertPreviewModal, imageList, activeInsertPageIndex])
 
+  useEffect(() => {
+    const handleResize = () => updateInsertScrollProgress()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateInsertScrollProgress()
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [filteredInsertDesigns, selectedColor, selectedItem])
+
   const openModal = (item) => {
     setSelectedItem(item)
     setActiveImageIndex(0)
@@ -198,6 +228,7 @@ function DesignsTemplate({
     setPreviewInsert(null)
     setActiveInsertPageIndex(0)
     setShowInsertPreviewModal(false)
+    setInsertScrollProgress(0)
   }
 
   const closeModal = () => {
@@ -208,6 +239,7 @@ function DesignsTemplate({
     setPreviewInsert(null)
     setActiveInsertPageIndex(0)
     setShowInsertPreviewModal(false)
+    setInsertScrollProgress(0)
   }
 
   const nextImage = () => {
@@ -280,6 +312,10 @@ function DesignsTemplate({
       left: direction === 'left' ? -340 : 340,
       behavior: 'smooth',
     })
+
+    setTimeout(() => {
+      updateInsertScrollProgress()
+    }, 350)
   }
 
   const scrollInsertThumbs = (direction) => {
@@ -560,7 +596,7 @@ function DesignsTemplate({
                     {selectedItem.colors?.length > 0 && (
                       <div className="mt-6">
                         <label className="mb-2 block text-sm font-semibold uppercase tracking-[0.20em] text-orange-500">
-                          Step 1: Pick Your Motif
+                          Pick Your Motif
                         </label>
 
                         <select
@@ -618,12 +654,8 @@ function DesignsTemplate({
                       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                           <p className="mb-2 block text-sm font-semibold uppercase tracking-[0.20em] text-orange-500">
-                            Step 2: Choose Insert Design
+                            Choose Insert Design
                           </p>
-
-                          {/* <h3 className="mt-2 text-2xl font-bold text-gray-900">
-                            {selectedColor} Insert Designs
-                          </h3> */}
 
                           <p className="mt-2 text-gray-600">
                             Tap a card to select it. Use the button to view all insert
@@ -664,9 +696,9 @@ function DesignsTemplate({
                           </button>
 
                           <div className="relative mt-4">
-
                             <div
                               ref={sliderRef}
+                              onScroll={updateInsertScrollProgress}
                               className="overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                               style={{ scrollBehavior: 'smooth' }}
                             >
@@ -744,8 +776,14 @@ function DesignsTemplate({
                             </div>
 
                             <div className="mt-4 flex justify-center">
-                              <div className="h-1.5 w-24 rounded-full bg-gray-200">
-                                <div className="h-1.5 w-10 rounded-full bg-orange-400" />
+                              <div className="relative h-1.5 w-24 overflow-hidden rounded-full bg-gray-200">
+                                <div
+                                  className="absolute top-0 h-1.5 rounded-full bg-orange-400 transition-all duration-200"
+                                  style={{
+                                    width: '40%',
+                                    left: `${insertScrollProgress * 60}%`,
+                                  }}
+                                />
                               </div>
                             </div>
                           </div>

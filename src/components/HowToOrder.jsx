@@ -4,6 +4,7 @@ import {
   FaShoppingCart,
   FaFacebookMessenger,
 } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 function HowToOrder() {
   const steps = [
@@ -26,7 +27,7 @@ function HowToOrder() {
       desc: 'Check your selected design and order details, then save everything to your cart.',
     },
     {
-      id: 'STEP  4',
+      id: 'STEP 4',
       icon: <FaFacebookMessenger className="text-2xl" />,
       title: 'Checkout via Messenger',
       desc: 'Click checkout and send the pre-filled message on Messenger so we can confirm your order details.',
@@ -89,6 +90,15 @@ function HowToOrder() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <Link
+              to="/designs"
+              className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-xl hover:scale-105 transition hover:bg-orange-500 hover:text-white"
+            >
+              View All
+            </Link>
           </div>
         </div>
       </div>

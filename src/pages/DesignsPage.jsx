@@ -9,31 +9,35 @@ import souvenirs from '../assets/img/designs-img/design-4.png'
 function DesignsPage() {
   const designs = [
     {
-      title: "Wedding",
-      desc: "Elegant and timeless designs crafted for your special day.",
+      title: "Wedding Designs",
+      desc: "Elegant Designs.",
       img: wedding,
       strt: "Starts at ₱60 per set",
+      avail: "50+ designs available",
       link: "/designs/wedding",
     },
     {
-      title: "Birthday",
-      desc: "Fun, creative, and personalized invitations, perfect for all ages.",
+      title: "Birthday Designs",
+      desc: "Fun & colorful themes.",
       img: birthday,
       strt: "Starts at ₱56 per set",
+      avail: "50+ designs available",
       link: "/designs/birthday",
     },
     {
-      title: "Baptismal",
-      desc: "Soft and meaningful designs perfect for sacred celebrations.",
+      title: "Baptismal Designs",
+      desc: "Soft & meaningful styles.",
       img: baptismal,
       strt: "Starts at ₱50 per set",
+      avail: "50+ designs available",
       link: "/designs/baptismal",
     },
     {
-      title: "Souvenirs",
-      desc: "Memorable keepsakes your guests will truly appreciate.",
+      title: "Souvenir Designs",
+      desc: "Memorable keepsakes.",
       img: souvenirs,
       strt: "Starts at ₱100 per set",
+      avail: "20+ designs available",
       link: "/designs/souvenir",
     },
   ]
@@ -73,15 +77,19 @@ function DesignsPage() {
 
               {/* Content */}
               <div className="p-3 flex flex-col flex-grow">
-                <h2 className=" text-gray-900 text-[14px] md:text-base text-center md:text-start font-bold">
+                <h2 className=" text-gray-900 text-[14px] md:text-base text-left md:text-start font-bold">
                   {item.title}
                 </h2>
 
-                <p className="text-xs text-gray-600 mt-1 flex-grow hidden md:block">
+                <p className="text-xs text-gray-600 mt-1 flex-grow text-left">
                   {item.desc}
                 </p>
 
-                <p className="text-sm text-orange-600 mt-1 flex-grow font-bold">
+                <p className="mt-1 text-xs text-gray-400">
+                  {item.avail}
+                </p>
+
+                <p className="text-xs text-orange-600 mt-1 flex-grow font-bold text-left">
                   {item.strt}
                 </p>
 
@@ -90,7 +98,7 @@ function DesignsPage() {
                   to={item.link}
                   className="mt-3 text-center bg-orange-500 text-white px-3 py-2 rounded-2xl text-sm font-semibold hover:bg-orange-600 transition"
                 >
-                  View Designs
+                  View Designs →
                 </Link>
               </div>
             </div>
