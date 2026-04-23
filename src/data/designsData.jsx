@@ -34,7 +34,8 @@ const designsData = {
       },
       title: 'Traditional Invitation',
       desc: 'Elegant traditional invitation.',
-      price: 70,
+      price: 65,
+      micro: "Includes envelope + inserts + sticker seal",
       tags: ['traditional'],
       colors: [
         { value: 'blue', label: 'Blue' },
@@ -65,12 +66,13 @@ const designsData = {
       },
       title: 'Pull-out Invitation',
       desc: 'Elegant pull-out invitation.',
-      price: 70,
+      price: 75,
+      micro: "Includes pull-out envelope + inserts",
       tags: ['pull-out'],
       colors: ['Blue', 'Red', 'Green', 'Orange', 'Black', 'Gold'],
       inclusions: [
-        'Envelope included',
-        'Insert cards included',
+        'Elegant pull-out envelope included',
+        '3-4 insert cards included',
       ],
     },
     {
@@ -87,6 +89,7 @@ const designsData = {
         title: 'Passport Invitation',
         desc: 'Elegant passport invitation.',
         price: 100,
+        micro: "Includes passport + boardpass",
         tags: ['passport'],
         colors: ['Blue', 'Pink', 'Beige', 'White'],
         inclusions: [
@@ -108,7 +111,8 @@ const designsData = {
         },
         title: 'Fan Invitation',
         desc: 'Elegant fan invitation.',
-        price: 100,
+        price: 55,
+        micro: "Includes customized cover + fan insert with ribbon",
         tags: ['fan'],
         colors: ['Blue', 'Pink', 'Beige', 'White'],
         inclusions: [

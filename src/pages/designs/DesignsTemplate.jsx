@@ -417,6 +417,10 @@ function DesignsTemplate({
                       </p>
                     )}
 
+                    <p className="text-[12px] font-normal italic text-gray-500 md:text-xs">
+                      {item.micro}
+                    </p>
+
                     <span className="mt-3 inline-flex rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white">
                       View Details
                     </span>
