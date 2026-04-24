@@ -12,7 +12,7 @@ function DesignsTemplate({
   subtitle,
   designs = [],
   packageLink,
-  primaryCtaText = 'View Packages',
+  primaryCtaText = 'Go to Messenger',
   inquiryText = 'Need Help?',
 }) {
   const [selectedItem, setSelectedItem] = useState(null)
@@ -110,34 +110,50 @@ function DesignsTemplate({
   const currentImage = imageList[activeImageIndex] || ''
 
   const filteredInsertDesigns = useMemo(() => {
-    return insertDesignsData.filter((item) => {
-      if (!selectedItem || !selectedColor) return false
+  return insertDesignsData.filter((item) => {
+    if (!selectedItem || !selectedColor) return false
 
-      const matchesCategory =
-        item.category?.toLowerCase() === selectedItem.category?.toLowerCase()
+    const matchesCategory =
+      item.category?.toLowerCase() === selectedItem.category?.toLowerCase()
 
-      const matchesDesign =
-        item.designSlug === 'all' || item.designSlug === selectedItem.slug
+    const normalizedDesignSlugs = Array.isArray(item.designSlugs)
+      ? item.designSlugs.map((slug) => String(slug).trim().toLowerCase())
+      : item.designSlug
+      ? [String(item.designSlug).trim().toLowerCase()]
+      : []
 
-      const matchesMotif =
-        item.motif?.toLowerCase() === selectedColor
+    const matchesDesign = normalizedDesignSlugs.includes(
+      selectedItem.slug?.toLowerCase()
+    )
 
-      return matchesCategory && matchesDesign && matchesMotif && item.isActive
-    })
-  }, [selectedItem, selectedColor])
+    const matchesMotif = item.motif?.toLowerCase() === selectedColor
+
+    return matchesCategory && matchesDesign && matchesMotif && item.isActive
+  })
+}, [selectedItem, selectedColor])
 
   const insertPageEntries = useMemo(() => {
-    if (!previewInsert?.pages) return []
+  if (!previewInsert?.pages) return []
 
-    const orderedPages = [
-      { key: 'front', label: 'Front', src: previewInsert.pages.front },
-      { key: 'inside', label: 'Inside', src: previewInsert.pages.inside },
-      { key: 'third', label: 'Third', src: previewInsert.pages.third },
-      { key: 'back', label: 'Back', src: previewInsert.pages.back },
-    ]
+  const regularPages = [
+    { key: 'front', label: 'Front', src: previewInsert.pages.front },
+    { key: 'inside', label: 'Inside', src: previewInsert.pages.inside },
+    { key: 'third', label: 'Third', src: previewInsert.pages.third },
+    { key: 'back', label: 'Back', src: previewInsert.pages.back },
+  ]
 
-    return orderedPages.filter((page) => Boolean(page.src))
-  }, [previewInsert])
+  const passportPages = [
+    { key: 'cover', label: 'Passport Cover', src: previewInsert.pages.cover },
+    { key: 'page1', label: 'Page 1', src: previewInsert.pages.page1 },
+    { key: 'page2', label: 'Page 2', src: previewInsert.pages.page2 },
+    { key: 'page3', label: 'Page 3', src: previewInsert.pages.page3 },
+    { key: 'boardingPass', label: 'Boarding Pass', src: previewInsert.pages.boardingPass },
+  ]
+
+  const pages = previewInsert.type === 'passport' ? passportPages : regularPages
+
+  return pages.filter((page) => Boolean(page.src))
+}, [previewInsert])
 
   const currentInsertPage = insertPageEntries[activeInsertPageIndex]?.src || ''
 
@@ -389,8 +405,14 @@ function DesignsTemplate({
             {designs.map((item, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-lg bg-white shadow-md transition duration-300"
+                className="relative overflow-hidden rounded-lg bg-white shadow-md transition duration-300"
               >
+                {item.isBestSeller && (
+                  <span className="absolute left-2 top-2 z-10 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-md md:left-3 md:top-3 md:text-xs">
+                    Best Seller
+                  </span>
+                )}
+                
                 <button
                   type="button"
                   onClick={() => openModal(item)}
@@ -409,6 +431,14 @@ function DesignsTemplate({
                     <p className="line-clamp-2 text-sm font-semibold text-gray-900 md:text-base">
                       {item.title}
                     </p>
+
+                    {item.sold && (
+                      <p className="mt-1 text-xs text-gray-400 md:text-sm">
+                        {typeof item.sold === 'number'
+                          ? `${item.sold}+ sold`
+                          : `${item.sold} sold`}
+                      </p>
+                    )}
 
                     {item.price && (
                       <p className="mt-2 text-xl font-bold text-orange-500">
@@ -441,9 +471,9 @@ function DesignsTemplate({
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            {packageLink && (
+            {messengerLink && (
               <Link
-                to={packageLink}
+                to={messengerLink}
                 className="rounded-full bg-orange-500 px-7 py-3 font-semibold text-white transition hover:bg-orange-600"
               >
                 {primaryCtaText}

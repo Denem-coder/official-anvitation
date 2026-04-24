@@ -65,14 +65,27 @@ import goldInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/go
 // import goldInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-third.png";
 import goldInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-last.png";
 
+// BLUE PASSPORT LEAVES DESIGNS
+import bluePassport1Cover from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-cover.png";
+import bluePassport1Page1n6 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page1n6.png";
+import bluePassport1Page2n5 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page2n5.png";
+import bluePassport1Page3n4 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page3n4.png";
+import bluePassport1Boardpass from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-boardpass.png";
+
+// BLUE FAN DESIGNS
+import blueFan1Cover from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-cover.png";
+import blueFan1Insert from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-insert.png";
+import blueFan1Last from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-last.png";
+
 // 👉 (Optional: add inside/back images later)
 
 const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Orange',
+    type: 'traditional',
     title: 'Orange Inserts Set 1',
     desc: 'Elegant orange-themed insert set for wedding invitations.',
 
@@ -93,8 +106,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-2',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Orange',
+    type: 'traditional',
     title: 'Orange Inserts Set 2',
     desc: 'Modern orange insert layout for weddings.',
 
@@ -113,8 +127,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-3',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Orange',
+    type: 'traditional',
     title: 'Orange Inserts Set 3',
     desc: 'Clean and minimal wedding orange insert design.',
 
@@ -133,8 +148,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Green',
+    type: 'traditional',
     title: 'Green Inserts Set 1',
     desc: 'Elegant green-themed insert set for wedding invitations.',
 
@@ -155,8 +171,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-2',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Green',
+    type: 'traditional',
     title: 'Green Inserts Set 2',
     desc: 'Elegant green-themed insert set for wedding invitations.',
 
@@ -177,8 +194,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-3',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Green',
+    type: 'traditional',
     title: 'Green Inserts Set 3',
     desc: 'Elegant green-themed insert set for wedding invitations.',
 
@@ -199,8 +217,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-red-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Red',
+    type: 'traditional',
     title: 'Red Inserts Set 1',
     desc: 'Elegant red-themed insert set for wedding invitations.',
 
@@ -221,8 +240,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-blue-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Blue',
+    type: 'traditional',
     title: 'Blue Inserts Set 1',
     desc: 'Elegant blue-themed insert set for wedding invitations.',
 
@@ -243,8 +263,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-black-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Black',
+    type: 'traditional',
     title: 'Black Inserts Set 1',
     desc: 'Elegant black-themed insert set for wedding invitations.',
 
@@ -265,8 +286,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-black-set-2',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Black',
+    type: 'traditional',
     title: 'Black Inserts Set 2',
     desc: 'Elegant black-themed insert set for wedding invitations.',
 
@@ -287,8 +309,9 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-gold-set-1',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Yellow',
+    type: 'traditional',
     title: 'Gold Inserts Set 1',
     desc: 'Elegant black-themed insert set for wedding invitations.',
 
@@ -309,8 +332,9 @@ const weddingInsertDesignsData = [
    {
     id: 'wedding-blue-set-2',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Blue',
+    type: 'traditional',
     title: 'Blue Inserts Set 2',
     desc: 'Elegant blue-themed insert set for wedding invitations.',
 
@@ -331,8 +355,9 @@ const weddingInsertDesignsData = [
    {
     id: 'wedding-blue-set-3',
     category: 'wedding',
-    designSlug: 'all',
+    designSlugs: ['traditional', 'pull-out'],
     motif: 'Blue',
+    type: 'traditional',
     title: 'Blue Inserts Set 3',
     desc: 'Elegant blue-themed insert set for wedding invitations.',
 
@@ -345,6 +370,53 @@ const weddingInsertDesignsData = [
 
     // used in grid preview
     cover: blueInsert3Front,
+
+    colors: ['Blue'],
+    isActive: true,
+  },
+
+  {
+    id: 'passport-blue-set-1',
+    category: 'wedding',
+    designSlugs: ['passport'],
+    motif: 'Blue',
+    type: 'passport',
+    title: 'Blue Passport Inserts Set 1',
+    desc: 'Elegant blue-themed insert set for wedding invitations.',
+
+    pages: {
+      cover: bluePassport1Cover,
+      page1: bluePassport1Page1n6,
+      page2: bluePassport1Page2n5,
+      page3:bluePassport1Page3n4,
+      boardingPass: bluePassport1Boardpass,
+    },
+
+    // used in grid preview
+    cover: bluePassport1Cover,
+
+    colors: ['Blue'],
+    isActive: true,
+  },
+
+   {
+    id: 'fan-blue-set-1',
+    category: 'wedding',
+    designSlugs: ['fan'],
+    motif: 'Blue',
+    type: 'fan',
+    title: 'Blue Fan Inserts Set 1',
+    desc: 'Elegant blue-themed fan insert set for wedding invitations.',
+
+    pages: {
+      front: blueFan1Cover,
+      inside: blueFan1Insert,
+      third: null,
+      back: blueFan1Last,
+    },
+
+    // used in grid preview
+    cover: blueFan1Cover,
 
     colors: ['Blue'],
     isActive: true,

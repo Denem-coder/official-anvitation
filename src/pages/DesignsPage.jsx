@@ -13,7 +13,7 @@ function DesignsPage() {
       desc: "Elegant Designs.",
       img: wedding,
       strt: "Starts at ₱60 per set",
-      avail: "50+ designs available",
+      avail: "New Designs Coming Soon",
       link: "/designs/wedding",
     },
     {
@@ -21,7 +21,7 @@ function DesignsPage() {
       desc: "Fun & colorful themes.",
       img: birthday,
       strt: "Starts at ₱56 per set",
-      avail: "50+ designs available",
+      avail: "New Designs Coming Soon",
       link: "/designs/birthday",
     },
     {
@@ -29,7 +29,7 @@ function DesignsPage() {
       desc: "Soft & meaningful styles.",
       img: baptismal,
       strt: "Starts at ₱50 per set",
-      avail: "50+ designs available",
+      avail: "New Designs Coming Soon",
       link: "/designs/baptismal",
     },
     {
@@ -37,7 +37,7 @@ function DesignsPage() {
       desc: "Memorable keepsakes.",
       img: souvenirs,
       strt: "Starts at ₱100 per set",
-      avail: "20+ designs available",
+      avail: "New Designs Coming Soon",
       link: "/designs/souvenir",
     },
   ]
@@ -85,7 +85,7 @@ function DesignsPage() {
                   {item.desc}
                 </p>
 
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-1 text-[9px] text-gray-400">
                   {item.avail}
                 </p>
 
