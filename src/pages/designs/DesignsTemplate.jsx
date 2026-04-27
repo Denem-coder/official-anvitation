@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom'
 import BackButton from '../../components/BackButton'
 
 import weddingInsertDesignsData from '../../data/inserts/weddingInsertDesignsData'
+import birthdayInsertDesignsData from '../../data/inserts/birthdayInsertDesignsData'
 
-const insertDesignsData = [...weddingInsertDesignsData]
+const insertDesignsData = [
+  ...weddingInsertDesignsData,
+  ...birthdayInsertDesignsData,
+]
 
 function DesignsTemplate({
   badge,
@@ -135,24 +139,23 @@ function DesignsTemplate({
   const insertPageEntries = useMemo(() => {
   if (!previewInsert?.pages) return []
 
-  const regularPages = [
-    { key: 'front', label: 'Front', src: previewInsert.pages.front },
-    { key: 'inside', label: 'Inside', src: previewInsert.pages.inside },
-    { key: 'third', label: 'Third', src: previewInsert.pages.third },
-    { key: 'back', label: 'Back', src: previewInsert.pages.back },
-  ]
+  const insertPageOrder =
+    previewInsert.pageOrder?.length > 0
+      ? previewInsert.pageOrder
+      : [
+          { key: 'front', label: 'Front' },
+          { key: 'inside', label: 'Inside' },
+          { key: 'third', label: 'Third' },
+          { key: 'back', label: 'Back' },
+        ]
 
-  const passportPages = [
-    { key: 'cover', label: 'Passport Cover', src: previewInsert.pages.cover },
-    { key: 'page1', label: 'Page 1', src: previewInsert.pages.page1 },
-    { key: 'page2', label: 'Page 2', src: previewInsert.pages.page2 },
-    { key: 'page3', label: 'Page 3', src: previewInsert.pages.page3 },
-    { key: 'boardingPass', label: 'Boarding Pass', src: previewInsert.pages.boardingPass },
-  ]
-
-  const pages = previewInsert.type === 'passport' ? passportPages : regularPages
-
-  return pages.filter((page) => Boolean(page.src))
+  return insertPageOrder
+    .map((page) => ({
+      key: page.key,
+      label: page.label,
+      src: previewInsert.pages?.[page.key],
+    }))
+    .filter((page) => Boolean(page.src))
 }, [previewInsert])
 
   const currentInsertPage = insertPageEntries[activeInsertPageIndex]?.src || ''
@@ -408,7 +411,7 @@ function DesignsTemplate({
                 className="relative overflow-hidden rounded-lg bg-white shadow-md transition duration-300"
               >
                 {item.isBestSeller && (
-                  <span className="absolute left-2 top-2 z-10 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-md md:left-3 md:top-3 md:text-xs">
+                  <span className="absolute left-2 top-2 z-10 rounded-full bg-[#000080] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-md md:left-3 md:top-3 md:text-xs">
                     Best Seller
                   </span>
                 )}
@@ -463,11 +466,10 @@ function DesignsTemplate({
 
         <section className="mt-16 rounded-[2rem] bg-white p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.06)] md:p-12">
           <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Interested in this service?
+            Want a personalized design?
           </h3>
           <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-            Message us and we’ll help you choose the best option for your event,
-            style, and budget.
+             Message us and we’ll tailor it to match your event perfectly.
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">

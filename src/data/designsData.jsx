@@ -16,6 +16,11 @@ import passportred1 from '../assets/img/designs-img/passport-red-1.png'
 
 import fanblue from '../assets/img/designs-img/fan-blue.png'
 
+// BIRTHDAY
+import mickeymousetheme from '../assets/img/designs-img/birthday/traditional-1-mickey-cover.png'
+import onepiecetheme from '../assets/img/designs-img/birthday/traditional-2-onepiece-cover.png'
+
+
 
 const designsData = {
   wedding: [
@@ -132,27 +137,29 @@ const designsData = {
       },
   ],
 
-  baptismal: [
+  birthday: [
     {
       slug: 'traditional',
-      category: 'baptismal',
-      cover: traditionalorange,
-      images: [traditionalorange],
+      category: 'birthday',
+      cover: mickeymousetheme,
+      images: [mickeymousetheme],
       colorImages: {
-        Blue: [traditionalblue],
-        Red: [traditionalred],
-        Black: [traditionalblack],
+        mickey: [mickeymousetheme],
+        onepiece: [onepiecetheme],
       },
       title: 'Traditional Invitation',
-      desc: 'Elegant baptismal invitation.',
-      price: 60,
+      desc: 'Fun birthday invitation.',
+      price: 70,
       tags: ['traditional'],
-      colors: ['Blue', 'Pink', 'White'],
+      colors: [ // 👈 NOW USED AS "THEMES"
+        { value: 'mickey', label: 'Mickey Mouse' },
+        { value: 'onepiece', label: 'One Piece' },
+  ],
       inclusions: [],
     },
     {
       slug: 'pull-out',
-      category: 'baptismal',
+      category: 'birthday',
       cover: traditionalorange,
       images: [traditionalorange],
       colorImages: {
@@ -169,10 +176,10 @@ const designsData = {
     },
   ],
 
-  birthday: [
+  baptismal: [
     {
       slug: 'traditional',
-      category: 'birthday',
+      category: 'baptismal',
       cover: traditionalorange,
       images: [traditionalorange],
       colorImages: {
@@ -190,7 +197,7 @@ const designsData = {
     },
     {
       slug: 'pull-out',
-      category: 'birthday',
+      category: 'baptismal',
       cover: traditionalorange,
       images: [traditionalorange],
       colorImages: {

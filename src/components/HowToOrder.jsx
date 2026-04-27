@@ -97,7 +97,7 @@ function HowToOrder() {
               to="/designs"
               className="font-bold bg-white text-orange-600 border border-orange-700 px-10 py-3 mt-10 rounded-full shadow-xl hover:scale-105 transition hover:bg-orange-500 hover:text-white"
             >
-              View All
+              Start Browsing
             </Link>
           </div>
         </div>

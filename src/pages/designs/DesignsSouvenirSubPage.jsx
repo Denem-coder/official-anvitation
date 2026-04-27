@@ -9,7 +9,7 @@ import sample4 from '../../assets/img/gallery-img/birthday-invitation-2.png'
 function DesignsSouvenirSubPage() {
   return (
     <DesignsTemplate
-      badge="Birthday Invitations"
+      badge="Souvenir"
       title="Choose Your Design"
       subtitle="Browse our souvenir designs and choose your perfect match"
       packageLink="/packages/souvenir"
