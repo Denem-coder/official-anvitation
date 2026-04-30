@@ -1,6 +1,7 @@
 import img1 from '../assets/img/designs-img/design-1.png'
 import img2 from '../assets/img/designs-img/design-2.png'
 import img3 from '../assets/img/designs-img/design-3.png'
+
 import traditionalblue from '../assets/img/designs-img/traditional-blue.png'
 import traditionalred from '../assets/img/designs-img/traditional-red.png'
 import traditionalgreen from '../assets/img/designs-img/traditional-green.png'
@@ -19,8 +20,12 @@ import fanblue from '../assets/img/designs-img/fan-blue.png'
 // BIRTHDAY
 import mickeymousetheme from '../assets/img/designs-img/birthday/traditional-1-mickey-cover.png'
 import onepiecetheme from '../assets/img/designs-img/birthday/traditional-2-onepiece-cover.png'
+import babybosstheme from '../assets/img/designs-img/birthday/traditional-3-babyboss-cover.png'
+import astronauttheme from '../assets/img/designs-img/birthday/traditional-4-astronaut-cover.png'
+import robloxtheme from '../assets/img/designs-img/birthday/traditional-5-roblox-cover.png'
 
-
+// DEBUT
+import scrollgold1cover from '../assets/img/designs-img/debut/scroll-1-gold-cover.png'
 
 const designsData = {
   wedding: [
@@ -50,6 +55,7 @@ const designsData = {
         '3-4 Insert Cards',
       ],
     },
+
     {
         slug: 'passport',
         category: 'wedding',
@@ -146,6 +152,9 @@ const designsData = {
       colorImages: {
         mickey: [mickeymousetheme],
         onepiece: [onepiecetheme],
+        babyboss: [babybosstheme],
+        astronaut: [astronauttheme],
+        roblox: [robloxtheme],
       },
       title: 'Traditional Invitation',
       desc: 'Fun birthday invitation.',
@@ -154,25 +163,60 @@ const designsData = {
       colors: [ // 👈 NOW USED AS "THEMES"
         { value: 'mickey', label: 'Mickey Mouse' },
         { value: 'onepiece', label: 'One Piece' },
+        { value: 'babyboss', label: 'Baby Boss' },
+        { value: 'astronaut', label: 'Astronaut' },
+        { value: 'roblox', label: 'Roblox' },
   ],
       inclusions: [],
     },
-    {
-      slug: 'pull-out',
-      category: 'birthday',
-      cover: traditionalorange,
-      images: [traditionalorange],
+    // {
+    //   slug: 'pull-out',
+    //   category: 'birthday',
+    //   cover: traditionalorange,
+    //   images: [traditionalorange],
+    //   colorImages: {
+    //     Blue: [traditionalorange],
+    //     Yellow: [traditionalorange],
+    //     White: [traditionalorange],
+    //   },
+    //   title: 'Pull-out Invitation',
+    //   desc: 'Modern pull-out baptismal invitation.',
+    //   price: 60,
+    //   tags: ['pull-out'],
+    //   colors: ['Blue', 'Yellow', 'White'],
+    //   inclusions: [],
+    // },
+  ],
+
+  debut: [
+     {
+      slug: 'scroll',
+      category: 'debut',
+      cover: scrollgold1cover,
+      images: [scrollgold1cover],
       colorImages: {
-        Blue: [traditionalorange],
-        Yellow: [traditionalorange],
-        White: [traditionalorange],
+        Yellow: [scrollgold1cover]
       },
-      title: 'Pull-out Invitation',
-      desc: 'Modern pull-out baptismal invitation.',
-      price: 60,
-      tags: ['pull-out'],
-      colors: ['Blue', 'Yellow', 'White'],
-      inclusions: [],
+      title: 'Traditional Invitation',
+      desc: 'Elegant traditional invitation.',
+      price: 65,
+      isBestSeller: false,
+      sold: null,
+      micro: "Includes envelope + inserts + sticker seal",
+      tags: ['scroll'],
+      colors: [
+        // { value: 'blue', label: 'Blue' },
+        // { value: 'red', label: 'Red' },
+        // { value: 'green', label: 'Green' },
+        // { value: 'orange', label: 'Orange' },
+        // { value: 'black', label: 'Black' },
+        { value: 'yellow', label: 'Yellow / Gold' },
+      ],
+      inclusions: [
+        'Premium Envelope',
+        '3–4 Printed Insert Cards',
+        'Custom Monogram Sticker Seal',
+      ],
     },
   ],
 
@@ -195,6 +239,7 @@ const designsData = {
       colors: ['Blue', 'Pink', 'Red', 'Yellow'],
       inclusions: [],
     },
+
     {
       slug: 'pull-out',
       category: 'baptismal',

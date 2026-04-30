@@ -4,10 +4,16 @@ import BackButton from '../../components/BackButton'
 
 import weddingInsertDesignsData from '../../data/inserts/weddingInsertDesignsData'
 import birthdayInsertDesignsData from '../../data/inserts/birthdayInsertDesignsData'
+import debutInsertDesignsData from '../../data/inserts/debutInsertDesignsData'
+import baptismalInsertDesignsData from '../../data/inserts/baptismalInsertDesignsData'
+import souvenirInsertDesignsData from '../../data/inserts/souvenirDesignsData'
 
 const insertDesignsData = [
   ...weddingInsertDesignsData,
   ...birthdayInsertDesignsData,
+  ...debutInsertDesignsData,
+  ...baptismalInsertDesignsData,
+  ...souvenirInsertDesignsData,
 ]
 
 function DesignsTemplate({
@@ -25,16 +31,13 @@ function DesignsTemplate({
   const [showHelpModal, setShowHelpModal] = useState(false)
 
   const [selectedInsert, setSelectedInsert] = useState(null)
-
   const [showInsertPreviewModal, setShowInsertPreviewModal] = useState(false)
   const [previewInsert, setPreviewInsert] = useState(null)
   const [activeInsertPageIndex, setActiveInsertPageIndex] = useState(0)
-
   const [insertScrollProgress, setInsertScrollProgress] = useState(0)
 
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
-
   const insertTouchStartX = useRef(0)
   const insertTouchEndX = useRef(0)
 
@@ -114,49 +117,49 @@ function DesignsTemplate({
   const currentImage = imageList[activeImageIndex] || ''
 
   const filteredInsertDesigns = useMemo(() => {
-  return insertDesignsData.filter((item) => {
-    if (!selectedItem || !selectedColor) return false
+    return insertDesignsData.filter((item) => {
+      if (!selectedItem || !selectedColor) return false
 
-    const matchesCategory =
-      item.category?.toLowerCase() === selectedItem.category?.toLowerCase()
+      const matchesCategory =
+        item.category?.toLowerCase() === selectedItem.category?.toLowerCase()
 
-    const normalizedDesignSlugs = Array.isArray(item.designSlugs)
-      ? item.designSlugs.map((slug) => String(slug).trim().toLowerCase())
-      : item.designSlug
-      ? [String(item.designSlug).trim().toLowerCase()]
-      : []
+      const normalizedDesignSlugs = Array.isArray(item.designSlugs)
+        ? item.designSlugs.map((slug) => String(slug).trim().toLowerCase())
+        : item.designSlug
+          ? [String(item.designSlug).trim().toLowerCase()]
+          : []
 
-    const matchesDesign = normalizedDesignSlugs.includes(
-      selectedItem.slug?.toLowerCase()
-    )
+      const matchesDesign = normalizedDesignSlugs.includes(
+        selectedItem.slug?.toLowerCase()
+      )
 
-    const matchesMotif = item.motif?.toLowerCase() === selectedColor
+      const matchesMotif = item.motif?.toLowerCase() === selectedColor
 
-    return matchesCategory && matchesDesign && matchesMotif && item.isActive
-  })
-}, [selectedItem, selectedColor])
+      return matchesCategory && matchesDesign && matchesMotif && item.isActive
+    })
+  }, [selectedItem, selectedColor])
 
   const insertPageEntries = useMemo(() => {
-  if (!previewInsert?.pages) return []
+    if (!previewInsert?.pages) return []
 
-  const insertPageOrder =
-    previewInsert.pageOrder?.length > 0
-      ? previewInsert.pageOrder
-      : [
-          { key: 'front', label: 'Front' },
-          { key: 'inside', label: 'Inside' },
-          { key: 'third', label: 'Third' },
-          { key: 'back', label: 'Back' },
-        ]
+    const insertPageOrder =
+      previewInsert.pageOrder?.length > 0
+        ? previewInsert.pageOrder
+        : [
+            { key: 'front', label: 'Front' },
+            { key: 'inside', label: 'Inside' },
+            { key: 'third', label: 'Third' },
+            { key: 'back', label: 'Back' },
+          ]
 
-  return insertPageOrder
-    .map((page) => ({
-      key: page.key,
-      label: page.label,
-      src: previewInsert.pages?.[page.key],
-    }))
-    .filter((page) => Boolean(page.src))
-}, [previewInsert])
+    return insertPageOrder
+      .map((page) => ({
+        key: page.key,
+        label: page.label,
+        src: previewInsert.pages?.[page.key],
+      }))
+      .filter((page) => Boolean(page.src))
+  }, [previewInsert])
 
   const currentInsertPage = insertPageEntries[activeInsertPageIndex]?.src || ''
 
@@ -182,103 +185,6 @@ function DesignsTemplate({
 
     setInsertScrollProgress(scrollLeft / maxScroll)
   }
-
-  useEffect(() => {
-    document.body.style.overflow =
-      selectedItem || showHelpModal || showInsertPreviewModal ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [selectedItem, showHelpModal, showInsertPreviewModal])
-
-  useEffect(() => {
-    setActiveImageIndex(0)
-    setSelectedInsert(null)
-  }, [selectedColor])
-
-  useEffect(() => {
-    if (!selectedColor || !insertSectionRef.current) return
-
-    const timer = setTimeout(() => {
-      insertSectionRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }, 150)
-
-    return () => clearTimeout(timer)
-  }, [selectedColor])
-
-  useEffect(() => {
-    if (!selectedInsert || !sliderRef.current) return
-    const card = insertCardRefs.current[selectedInsert.id]
-    if (!card) return
-
-    card.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    })
-  }, [selectedInsert])
-
-  useEffect(() => {
-    if (!showInsertPreviewModal || !insertThumbsRef.current) return
-    const activeThumb = insertThumbsRef.current.querySelector(
-      `[data-insert-thumb="${activeInsertPageIndex}"]`
-    )
-    activeThumb?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    })
-  }, [activeInsertPageIndex, showInsertPreviewModal])
-
-  useEffect(() => {
-    if (!selectedItem && !showHelpModal && !showInsertPreviewModal) return
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        if (showInsertPreviewModal) {
-          closeInsertPreview()
-          return
-        }
-        if (showHelpModal) {
-          setShowHelpModal(false)
-          return
-        }
-        if (selectedItem) {
-          closeModal()
-        }
-      }
-
-      if (showInsertPreviewModal) {
-        if (e.key === 'ArrowRight') nextInsertPage()
-        if (e.key === 'ArrowLeft') prevInsertPage()
-        return
-      }
-
-      if (!imageList.length || imageList.length <= 1) return
-      if (e.key === 'ArrowRight') nextImage()
-      if (e.key === 'ArrowLeft') prevImage()
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [selectedItem, showHelpModal, showInsertPreviewModal, imageList, activeInsertPageIndex])
-
-  useEffect(() => {
-    const handleResize = () => updateInsertScrollProgress()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateInsertScrollProgress()
-    }, 100)
-
-    return () => clearTimeout(timer)
-  }, [filteredInsertDesigns, selectedColor, selectedItem])
 
   const openModal = (item) => {
     setSelectedItem(item)
@@ -368,6 +274,7 @@ function DesignsTemplate({
 
   const scrollInsertSlider = (direction) => {
     if (!sliderRef.current) return
+
     sliderRef.current.scrollBy({
       left: direction === 'left' ? -340 : 340,
       behavior: 'smooth',
@@ -380,15 +287,126 @@ function DesignsTemplate({
 
   const scrollInsertThumbs = (direction) => {
     if (!insertThumbsRef.current) return
+
     insertThumbsRef.current.scrollBy({
       left: direction === 'left' ? -220 : 220,
       behavior: 'smooth',
     })
   }
 
+  useEffect(() => {
+    document.body.style.overflow =
+      selectedItem || showHelpModal || showInsertPreviewModal ? 'hidden' : ''
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [selectedItem, showHelpModal, showInsertPreviewModal])
+
+  useEffect(() => {
+    setActiveImageIndex(0)
+    setSelectedInsert(null)
+  }, [selectedColor])
+
+  useEffect(() => {
+    if (!selectedColor || !insertSectionRef.current) return
+
+    const timer = setTimeout(() => {
+      insertSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 150)
+
+    return () => clearTimeout(timer)
+  }, [selectedColor])
+
+  useEffect(() => {
+    if (!selectedInsert || !sliderRef.current) return
+
+    const card = insertCardRefs.current[selectedInsert.id]
+    if (!card) return
+
+    card.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    })
+  }, [selectedInsert])
+
+  useEffect(() => {
+    if (!showInsertPreviewModal || !insertThumbsRef.current) return
+
+    const activeThumb = insertThumbsRef.current.querySelector(
+      `[data-insert-thumb="${activeInsertPageIndex}"]`
+    )
+
+    activeThumb?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    })
+  }, [activeInsertPageIndex, showInsertPreviewModal])
+
+  useEffect(() => {
+    if (!selectedItem && !showHelpModal && !showInsertPreviewModal) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showInsertPreviewModal) {
+          closeInsertPreview()
+          return
+        }
+
+        if (showHelpModal) {
+          setShowHelpModal(false)
+          return
+        }
+
+        if (selectedItem) {
+          closeModal()
+        }
+      }
+
+      if (showInsertPreviewModal) {
+        if (e.key === 'ArrowRight') nextInsertPage()
+        if (e.key === 'ArrowLeft') prevInsertPage()
+        return
+      }
+
+      if (!imageList.length || imageList.length <= 1) return
+      if (e.key === 'ArrowRight') nextImage()
+      if (e.key === 'ArrowLeft') prevImage()
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [
+    selectedItem,
+    showHelpModal,
+    showInsertPreviewModal,
+    imageList,
+    activeInsertPageIndex,
+  ])
+
+  useEffect(() => {
+    const handleResize = () => updateInsertScrollProgress()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateInsertScrollProgress()
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [filteredInsertDesigns, selectedColor, selectedItem])
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 pt-28 pb-16">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-6">
           <BackButton />
         </div>
@@ -397,17 +415,17 @@ function DesignsTemplate({
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
             {badge}
           </p>
-          <h1 className="mt-3 text-3xl md:text-5xl font-bold text-gray-900">
+          <h1 className="mt-3 text-3xl font-bold text-gray-900 md:text-5xl">
             {title}
           </h1>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
+          <p className="mx-auto mt-4 max-w-2xl text-gray-600">{subtitle}</p>
         </section>
 
         <section className="mt-10">
           <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
             {designs.map((item, index) => (
               <div
-                key={index}
+                key={`${item.slug || item.title}-${index}`}
                 className="relative overflow-hidden rounded-lg bg-white shadow-md transition duration-300"
               >
                 {item.isBestSeller && (
@@ -415,7 +433,7 @@ function DesignsTemplate({
                     Best Seller
                   </span>
                 )}
-                
+
                 <button
                   type="button"
                   onClick={() => openModal(item)}
@@ -461,6 +479,35 @@ function DesignsTemplate({
                 </button>
               </div>
             ))}
+
+            <div className="relative overflow-hidden rounded-lg border-2 border-dashed border-orange-200 bg-white p-4 shadow-md transition duration-300">
+              <div className="flex h-full min-h-[280px] flex-col items-center justify-center text-center">
+                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-2xl text-orange-500">
+                  +
+                </div>
+
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-orange-500">
+                  More Designs Soon
+                </p>
+
+                <h3 className="mt-3 text-base font-bold text-gray-900 md:text-lg">
+                  New styles are coming
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-gray-500">
+                  We’re adding more invitation designs. Message us if you want a
+                  custom one.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => setShowHelpModal(true)}
+                  className="mt-5 rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
+                >
+                  Request a Design
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -469,17 +516,19 @@ function DesignsTemplate({
             Want a personalized design?
           </h3>
           <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-             Message us and we’ll tailor it to match your event perfectly.
+            Message us and we’ll tailor it to match your event perfectly.
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-4">
             {messengerLink && (
-              <Link
-                to={messengerLink}
+              <a
+                href={messengerLink}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-full bg-orange-500 px-7 py-3 font-semibold text-white transition hover:bg-orange-600"
               >
                 {primaryCtaText}
-              </Link>
+              </a>
             )}
 
             <button
@@ -502,6 +551,7 @@ function DesignsTemplate({
               onClick={(e) => e.stopPropagation()}
             >
               <button
+                type="button"
                 onClick={() => setShowHelpModal(false)}
                 className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                 aria-label="Close modal"
@@ -512,9 +562,11 @@ function DesignsTemplate({
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
                 Need Help?
               </p>
+
               <h3 className="mt-3 text-2xl font-bold text-gray-900 md:text-3xl">
                 Need help choosing a design?
               </h3>
+
               <p className="mt-4 leading-7 text-gray-600">
                 Message us on Messenger and we’ll help you choose the best design,
                 motif, and option based on your event, style, and budget.
@@ -553,6 +605,7 @@ function DesignsTemplate({
               onClick={(e) => e.stopPropagation()}
             >
               <button
+                type="button"
                 onClick={closeModal}
                 className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                 aria-label="Close modal"
@@ -578,13 +631,16 @@ function DesignsTemplate({
                       {imageList.length > 1 && (
                         <>
                           <button
+                            type="button"
                             onClick={prevImage}
                             className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                             aria-label="Previous image"
                           >
                             ‹
                           </button>
+
                           <button
+                            type="button"
                             onClick={nextImage}
                             className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                             aria-label="Next image"
@@ -595,10 +651,13 @@ function DesignsTemplate({
                           <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-full bg-black/35 px-3 py-2 backdrop-blur-sm">
                             {imageList.map((_, index) => (
                               <button
-                                key={index}
+                                key={`main-dot-${index}`}
+                                type="button"
                                 onClick={() => setActiveImageIndex(index)}
                                 className={`h-2.5 w-2.5 rounded-full transition ${
-                                  activeImageIndex === index ? 'bg-white' : 'bg-white/50'
+                                  activeImageIndex === index
+                                    ? 'bg-white'
+                                    : 'bg-white/50'
                                 }`}
                                 aria-label={`Go to image ${index + 1}`}
                               />
@@ -612,7 +671,8 @@ function DesignsTemplate({
                       <div className="mt-4 grid grid-cols-4 gap-3">
                         {imageList.map((img, index) => (
                           <button
-                            key={index}
+                            key={`thumb-${index}`}
+                            type="button"
                             onClick={() => setActiveImageIndex(index)}
                             className={`overflow-hidden rounded-2xl border-2 transition ${
                               activeImageIndex === index
@@ -657,9 +717,10 @@ function DesignsTemplate({
                         <h3 className="text-sm font-semibold uppercase tracking-wide text-orange-500">
                           Each Set Includes:
                         </h3>
+
                         <ul className="mt-4 space-y-3 text-sm text-gray-700">
                           {selectedItem.inclusions.map((detail, index) => (
-                            <li key={index} className="flex items-start gap-3">
+                            <li key={`inclusion-${index}`} className="flex items-start gap-3">
                               <span className="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-orange-500 shadow-sm">
                                 ✔
                               </span>
@@ -744,8 +805,8 @@ function DesignsTemplate({
                           </p>
 
                           <p className="mt-2 text-gray-600">
-                            Tap a card to select it. Use the button to view all insert
-                            details.
+                            Tap a card to select it. Use the button to view all
+                            insert details.
                           </p>
                         </div>
 
@@ -788,19 +849,26 @@ function DesignsTemplate({
                               className="overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                               style={{ scrollBehavior: 'smooth' }}
                             >
-                              <div className="flex gap-4 px-1 snap-x snap-mandatory">
+                              <div className="flex snap-x snap-mandatory gap-4 px-1">
                                 {filteredInsertDesigns.map((item) => {
                                   const isSelected = selectedInsert?.id === item.id
 
                                   return (
-                                    <button
+                                    <div
                                       key={item.id}
-                                      type="button"
                                       ref={(el) => {
                                         insertCardRefs.current[item.id] = el
                                       }}
+                                      role="button"
+                                      tabIndex={0}
                                       onClick={() => handleSelectInsert(item)}
-                                      className={`relative min-w-[260px] max-w-[260px] shrink-0 snap-start overflow-hidden rounded-2xl border-2 bg-white text-left transition-all duration-300 sm:min-w-[300px] sm:max-w-[300px] ${
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                          e.preventDefault()
+                                          handleSelectInsert(item)
+                                        }
+                                      }}
+                                      className={`relative min-w-[260px] max-w-[260px] shrink-0 cursor-pointer snap-start overflow-hidden rounded-2xl border-2 bg-white text-left transition-all duration-300 sm:min-w-[300px] sm:max-w-[300px] ${
                                         isSelected
                                           ? 'border-orange-500 bg-orange-50'
                                           : 'border-gray-200 hover:border-orange-300'
@@ -855,7 +923,7 @@ function DesignsTemplate({
                                           </button>
                                         </div>
                                       </div>
-                                    </button>
+                                    </div>
                                   )
                                 })}
                               </div>
@@ -892,7 +960,9 @@ function DesignsTemplate({
                           : 'cursor-not-allowed bg-gray-200 text-gray-500'
                       }`}
                     >
-                      {selectedInsert ? 'Next: Order Details' : 'Choose an Insert First'}
+                      {selectedInsert
+                        ? 'Next: Order Details'
+                        : 'Choose an Insert First'}
                     </Link>
 
                     <button
@@ -919,6 +989,7 @@ function DesignsTemplate({
               onClick={(e) => e.stopPropagation()}
             >
               <button
+                type="button"
                 onClick={closeInsertPreview}
                 className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                 aria-label="Close insert preview modal"
@@ -936,7 +1007,10 @@ function DesignsTemplate({
                     >
                       <img
                         src={currentInsertPage || previewInsert.cover}
-                        alt={`${previewInsert.title} - ${insertPageEntries[activeInsertPageIndex]?.label || 'Preview'}`}
+                        alt={`${previewInsert.title} - ${
+                          insertPageEntries[activeInsertPageIndex]?.label ||
+                          'Preview'
+                        }`}
                         className="h-[280px] w-full select-none object-cover sm:h-[360px] lg:h-[420px]"
                         draggable="false"
                       />
@@ -944,13 +1018,16 @@ function DesignsTemplate({
                       {insertPageEntries.length > 1 && (
                         <>
                           <button
+                            type="button"
                             onClick={prevInsertPage}
                             className="absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                             aria-label="Previous insert page"
                           >
                             ‹
                           </button>
+
                           <button
+                            type="button"
                             onClick={nextInsertPage}
                             className="absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
                             aria-label="Next insert page"
@@ -967,6 +1044,7 @@ function DesignsTemplate({
                           <p className="text-xs font-semibold uppercase tracking-wide text-orange-500">
                             Swipe thumbnails
                           </p>
+
                           <div className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-[11px] font-semibold text-orange-500">
                             <span className="text-sm">↔</span>
                             <span>Browse pages</span>
@@ -1019,6 +1097,7 @@ function DesignsTemplate({
                                   className="h-24 w-full object-cover"
                                   loading="lazy"
                                 />
+
                                 <div className="px-3 py-2">
                                   <p className="text-xs font-semibold text-gray-900">
                                     {page.label}
@@ -1052,11 +1131,15 @@ function DesignsTemplate({
                         <h4 className="text-sm font-semibold uppercase tracking-wide text-orange-500">
                           Current Page
                         </h4>
+
                         <p className="mt-2 text-sm text-gray-700">
-                          {insertPageEntries[activeInsertPageIndex]?.label || 'Preview'}
+                          {insertPageEntries[activeInsertPageIndex]?.label ||
+                            'Preview'}
                         </p>
+
                         <p className="mt-1 text-sm text-gray-500">
-                          Swipe the big image or tap any thumbnail below it to change the preview.
+                          Swipe the big image or tap any thumbnail below it to
+                          change the preview.
                         </p>
                       </div>
                     )}

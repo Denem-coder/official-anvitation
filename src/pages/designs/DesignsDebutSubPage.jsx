@@ -6,16 +6,16 @@ import sample2 from '../../assets/img/gallery-img/wedding-invitation-2.png'
 import sample3 from '../../assets/img/gallery-img/wedding-invitation-3.png'
 import sample4 from '../../assets/img/gallery-img/birthday-invitation-2.png'
 
-function DesignsBirthdaySubPage() {
+function DesignsDebutSubPage() {
   return (
     <DesignsTemplate
-      badge="Birthday Invitations"
+      badge="Debut Invitations"
       title="Choose Your Invitation"
-      subtitle="Browse our birthday invitation designs and find the perfect one for your celebration"
-      packageLink="/packages/birthday"
-      designs={designsData.birthday}
+      subtitle="Browse our debut designs and choose your perfect match"
+      packageLink="/packages/debut"
+      designs={designsData.debut} // ✅ USE CENTRAL DATA
     />
   )
 }
 
-export default DesignsBirthdaySubPage
+export default DesignsDebutSubPage

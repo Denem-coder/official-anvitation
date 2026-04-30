@@ -16,14 +16,14 @@ import scrollgold1front from "../../assets/img/insert-designs-img/debut/scroll-g
 
 // 👉 (Optional: add inside/back images later)
 
-const souvenirInsertDesignsData = [
+const debutInsertDesignsData = [
    {
-  id: 'souvenir-1',
-  category: 'souvenir',
-  designSlugs: ['souvenir'],
+  id: 'scroll-insert-1',
+  category: 'debut',
+  designSlugs: ['scroll'],
   motif: 'yellow',
   layout: 'regular',
-  title: 'Souvenir 1',
+  title: 'Scroll Insert Template 1',
   desc: 'Elegant scroll insert set perfect for debut celebrations.',
 
   pageOrder: [
@@ -34,7 +34,7 @@ const souvenirInsertDesignsData = [
   ],
 
   pages: {
-    front: onepieceTraditionalFront,
+    front: scrollgold1front,
     inside: null,
     third: null,
     back: null,
@@ -45,4 +45,4 @@ const souvenirInsertDesignsData = [
 },
 ]
 
-export default souvenirInsertDesignsData
+export default debutInsertDesignsData

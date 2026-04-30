@@ -9,36 +9,44 @@ import souvenirs from '../assets/img/designs-img/design-4.png'
 function DesignsPage() {
   const designs = [
     {
-      title: "Wedding Designs",
-      desc: "Elegant Designs.",
+      title: 'Wedding Designs',
+      desc: 'Elegant Designs.',
       img: wedding,
-      strt: "Starts at ₱60 per set",
-      avail: "New Designs Coming Soon",
-      link: "/designs/wedding",
+      strt: 'Starts at ₱60 per set',
+      avail: 'New Designs Coming Soon',
+      link: '/designs/wedding',
     },
     {
-      title: "Birthday Designs",
-      desc: "Fun & colorful themes.",
+      title: 'Birthday Designs',
+      desc: 'Fun & colorful themes.',
       img: birthday,
-      strt: "Starts at ₱56 per set",
-      avail: "New Designs Coming Soon",
-      link: "/designs/birthday",
+      strt: 'Starts at ₱56 per set',
+      avail: 'New Designs Coming Soon',
+      link: '/designs/birthday',
     },
     {
-      title: "Baptismal Designs",
-      desc: "Soft & meaningful styles.",
+      title: 'Debut Designs',
+      desc: 'Fun & colorful themes.',
+      img: birthday,
+      strt: 'Starts at ₱56 per set',
+      avail: 'New Designs Coming Soon',
+      link: '/designs/debut',
+    },
+    {
+      title: 'Baptismal Designs',
+      desc: 'Soft & meaningful styles.',
       img: baptismal,
-      strt: "Starts at ₱50 per set",
-      avail: "New Designs Coming Soon",
-      link: "/designs/baptismal",
+      strt: 'Starts at ₱50 per set',
+      avail: 'New Designs Coming Soon',
+      link: '/designs/baptismal',
     },
     {
-      title: "Souvenir Designs",
-      desc: "Memorable keepsakes.",
+      title: 'Souvenir Designs',
+      desc: 'Memorable keepsakes.',
       img: souvenirs,
-      strt: "Starts at ₱100 per set",
-      avail: "New Designs Coming Soon",
-      link: "/designs/souvenir",
+      strt: 'Starts at ₱100 per set',
+      avail: 'New Designs Coming Soon',
+      link: '/designs/souvenir',
     },
   ]
 
@@ -48,40 +56,41 @@ function DesignsPage() {
         <BackButton />
 
         {/* HERO */}
-        <div className="text-center mt-6 mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
+        <div className="mt-6 mb-12 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 md:text-5xl">
             Our Designs
           </h1>
-          <p className="mt-4 text-gray-600 max-w-xl mx-auto">
-            Premium invitations and souvenirs designed to make your events unforgettable.
+
+          <p className="mx-auto mt-4 max-w-xl text-gray-600">
+            Premium invitations and souvenirs designed to make your events
+            unforgettable.
           </p>
         </div>
 
         {/* DESIGNS GRID */}
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {designs.map((item, index) => (
-            <Link  to={item.link}>
-            <div
-              key={index}
-              className="group bg-white rounded-lg shadow-sm hover:shadow-md transition duration-200 overflow-hidden flex flex-col border border-gray-100"
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+          {designs.map((item) => (
+            <Link
+              key={item.title}
+              to={item.link}
+              className="group block overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition duration-200 hover:shadow-md"
             >
               {/* Image */}
               <div className="overflow-hidden rounded-t-lg">
                 <img
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-40 object-cover group-hover:scale-105 transition duration-300"
+                  className="h-40 w-full object-cover transition duration-300 group-hover:scale-105"
                 />
               </div>
 
               {/* Content */}
-              <div className="p-3 flex flex-col flex-grow">
-                <h2 className=" text-gray-900 text-[14px] md:text-base text-left md:text-start font-bold">
+              <div className="flex flex-col p-3">
+                <h2 className="text-left text-[14px] font-bold text-gray-900 md:text-start md:text-base">
                   {item.title}
                 </h2>
 
-                <p className="text-xs text-gray-600 mt-1 flex-grow text-left">
+                <p className="mt-1 text-left text-xs text-gray-600">
                   {item.desc}
                 </p>
 
@@ -89,37 +98,31 @@ function DesignsPage() {
                   {item.avail}
                 </p>
 
-                <p className="text-xs text-orange-600 mt-1 flex-grow font-bold text-left">
+                <p className="mt-2 text-left text-xs font-bold text-orange-600">
                   {item.strt}
                 </p>
 
-                {/* CTA */}
-                <Link
-                  to={item.link}
-                  className="mt-3 text-center bg-orange-500 text-white px-3 py-2 rounded-2xl text-sm font-semibold hover:bg-orange-600 transition"
-                >
+                <span className="mt-3 inline-flex items-center justify-center rounded-2xl bg-orange-500 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-orange-600">
                   View Designs →
-                </Link>
+                </span>
               </div>
-            </div>
             </Link>
           ))}
         </div>
-        
-        
 
         {/* CTA SECTION */}
         <div className="mt-16 text-center">
           <h3 className="text-xl font-semibold text-gray-900">
             Not sure what to choose?
           </h3>
-          <p className="text-gray-600 mt-2">
+
+          <p className="mt-2 text-gray-600">
             Let us help you find the perfect design for your event.
           </p>
 
           <Link
             to="/#contact"
-            className="inline-block mt-6 bg-orange-500 text-white px-6 py-3 rounded-full font-bold shadow-md hover:scale-105 transition"
+            className="mt-6 inline-block rounded-full bg-orange-500 px-6 py-3 font-bold text-white shadow-md transition hover:scale-105"
           >
             Contact Us
           </Link>

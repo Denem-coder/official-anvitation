@@ -3,79 +3,79 @@
 import { GiThirdEye } from 'react-icons/gi'
 
 // BLUE INSERT DESIGNS
-import blueInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-front.png";
-import blueInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-inside.png";
-import blueInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-third.png";
-import blueInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-1-last.png";
-import blueInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-front.png";
-import blueInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-inside.png";
-// import blueInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-third.png";
-import blueInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-2-last.png";
-import blueInsert3Front from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-front.png";
-import blueInsert3Inside from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-inside.png";
-import blueInsert3Third from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-third.png";
-import blueInsert3Last from "../../assets/img/insert-designs-img/wedding/pc/blue-insert-3-last.png";
+import blueInsert1Front from "../../assets/img/insert-designs-img/wedding/blue-insert-1-front.png";
+import blueInsert1Inside from "../../assets/img/insert-designs-img/wedding/blue-insert-1-inside.png";
+import blueInsert1Third from "../../assets/img/insert-designs-img/wedding/blue-insert-1-third.png";
+import blueInsert1Last from "../../assets/img/insert-designs-img/wedding/blue-insert-1-last.png";
+import blueInsert2Front from "../../assets/img/insert-designs-img/wedding/blue-insert-2-front.png";
+import blueInsert2Inside from "../../assets/img/insert-designs-img/wedding/blue-insert-2-inside.png";
+// import blueInsert2Third from "../../assets/img/insert-designs-img/wedding/blue-insert-2-third.png";
+import blueInsert2Last from "../../assets/img/insert-designs-img/wedding/blue-insert-2-last.png";
+import blueInsert3Front from "../../assets/img/insert-designs-img/wedding/blue-insert-3-front.png";
+import blueInsert3Inside from "../../assets/img/insert-designs-img/wedding/blue-insert-3-inside.png";
+import blueInsert3Third from "../../assets/img/insert-designs-img/wedding/blue-insert-3-third.png";
+import blueInsert3Last from "../../assets/img/insert-designs-img/wedding/blue-insert-3-last.png";
 
 // RED INSERT DESIGNS
-import redInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/red-insert-1-front.png";
-import redInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/red-insert-1-inside.png";
-import redInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/red-insert-1-third.png";
-import redInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/red-insert-1-last.png";
+import redInsert1Front from "../../assets/img/insert-designs-img/wedding/red-insert-1-front.png";
+import redInsert1Inside from "../../assets/img/insert-designs-img/wedding/red-insert-1-inside.png";
+import redInsert1Third from "../../assets/img/insert-designs-img/wedding/red-insert-1-third.png";
+import redInsert1Last from "../../assets/img/insert-designs-img/wedding/red-insert-1-last.png";
 
 // GREEN INSERT DESIGNS
-import greenInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/green-insert-1-front.png";
-import greenInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/green-insert-1-inside.png";
-import greenInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/green-insert-1-third.png";
-import greenInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/green-insert-1-last.png";
-import greenInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/green-insert-2-front.png";
-import greenInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/green-insert-2-inside.png";
-import greenInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/green-insert-2-third.png";
-import greenInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/green-insert-2-last.png";
-import greenInsert3Front from "../../assets/img/insert-designs-img/wedding/pc/green-insert-3-front.png";
-import greenInsert3Inside from "../../assets/img/insert-designs-img/wedding/pc/green-insert-3-inside.png";
-import greenInsert3Last from "../../assets/img/insert-designs-img/wedding/pc/green-insert-3-last.png";
+import greenInsert1Front from "../../assets/img/insert-designs-img/wedding/green-insert-1-front.png";
+import greenInsert1Inside from "../../assets/img/insert-designs-img/wedding/green-insert-1-inside.png";
+import greenInsert1Third from "../../assets/img/insert-designs-img/wedding/green-insert-1-third.png";
+import greenInsert1Last from "../../assets/img/insert-designs-img/wedding/green-insert-1-last.png";
+import greenInsert2Front from "../../assets/img/insert-designs-img/wedding/green-insert-2-front.png";
+import greenInsert2Inside from "../../assets/img/insert-designs-img/wedding/green-insert-2-inside.png";
+import greenInsert2Third from "../../assets/img/insert-designs-img/wedding/green-insert-2-third.png";
+import greenInsert2Last from "../../assets/img/insert-designs-img/wedding/green-insert-2-last.png";
+import greenInsert3Front from "../../assets/img/insert-designs-img/wedding/green-insert-3-front.png";
+import greenInsert3Inside from "../../assets/img/insert-designs-img/wedding/green-insert-3-inside.png";
+import greenInsert3Last from "../../assets/img/insert-designs-img/wedding/green-insert-3-last.png";
 
 // ORANGE INSERT DESIGNS
-import orangeInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-1-front.png";
-import orangeInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-1-inside.png";
-import orangeInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-1-third.png";
-import orangeInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-1-last.png";
-import orangeInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-2-front.png";
-import orangeInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-2-inside.png";
-import orangeInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-2-third.png";
-import orangeInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-2-last.png";
-import orangeInsert3Front from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-3-front.png";
-import orangeInsert3Inside from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-3-inside.png";
-import orangeInsert3Third from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-3-third.png";
-import orangeInsert3Last from "../../assets/img/insert-designs-img/wedding/pc/orange-insert-3-last.png";
+import orangeInsert1Front from "../../assets/img/insert-designs-img/wedding/orange-insert-1-front.png";
+import orangeInsert1Inside from "../../assets/img/insert-designs-img/wedding/orange-insert-1-inside.png";
+import orangeInsert1Third from "../../assets/img/insert-designs-img/wedding/orange-insert-1-third.png";
+import orangeInsert1Last from "../../assets/img/insert-designs-img/wedding/orange-insert-1-last.png";
+import orangeInsert2Front from "../../assets/img/insert-designs-img/wedding/orange-insert-2-front.png";
+import orangeInsert2Inside from "../../assets/img/insert-designs-img/wedding/orange-insert-2-inside.png";
+import orangeInsert2Third from "../../assets/img/insert-designs-img/wedding/orange-insert-2-third.png";
+import orangeInsert2Last from "../../assets/img/insert-designs-img/wedding/orange-insert-2-last.png";
+import orangeInsert3Front from "../../assets/img/insert-designs-img/wedding/orange-insert-3-front.png";
+import orangeInsert3Inside from "../../assets/img/insert-designs-img/wedding/orange-insert-3-inside.png";
+import orangeInsert3Third from "../../assets/img/insert-designs-img/wedding/orange-insert-3-third.png";
+import orangeInsert3Last from "../../assets/img/insert-designs-img/wedding/orange-insert-3-last.png";
 
 // BLACK INSERT DESIGNS
-import blackInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/black-insert-1-front.png";
-import blackInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/black-insert-1-inside.png";
-// import blackInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/black-insert-1-third.png";
-import blackInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/black-insert-1-last.png";
-import blackInsert2Front from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-front.png";
-import blackInsert2Inside from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-inside.png";
-import blackInsert2Third from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-third.png";
-import blackInsert2Last from "../../assets/img/insert-designs-img/wedding/pc/black-insert-2-last.png";
+import blackInsert1Front from "../../assets/img/insert-designs-img/wedding/black-insert-1-front.png";
+import blackInsert1Inside from "../../assets/img/insert-designs-img/wedding/black-insert-1-inside.png";
+// import blackInsert1Third from "../../assets/img/insert-designs-img/wedding/black-insert-1-third.png";
+import blackInsert1Last from "../../assets/img/insert-designs-img/wedding/black-insert-1-last.png";
+import blackInsert2Front from "../../assets/img/insert-designs-img/wedding/black-insert-2-front.png";
+import blackInsert2Inside from "../../assets/img/insert-designs-img/wedding/black-insert-2-inside.png";
+import blackInsert2Third from "../../assets/img/insert-designs-img/wedding/black-insert-2-third.png";
+import blackInsert2Last from "../../assets/img/insert-designs-img/wedding/black-insert-2-last.png";
 
 // GOLD INSERT DESIGNS
-import goldInsert1Front from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-front.png";
-import goldInsert1Inside from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-inside.png";
-// import goldInsert1Third from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-third.png";
-import goldInsert1Last from "../../assets/img/insert-designs-img/wedding/pc/gold-insert-1-last.png";
+import goldInsert1Front from "../../assets/img/insert-designs-img/wedding/gold-insert-1-front.png";
+import goldInsert1Inside from "../../assets/img/insert-designs-img/wedding/gold-insert-1-inside.png";
+// import goldInsert1Third from "../../assets/img/insert-designs-img/wedding/gold-insert-1-third.png";
+import goldInsert1Last from "../../assets/img/insert-designs-img/wedding/gold-insert-1-last.png";
 
 // BLUE PASSPORT LEAVES DESIGNS
-import bluePassport1Cover from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-cover.png";
-import bluePassport1Page1n6 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page1n6.png";
-import bluePassport1Page2n5 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page2n5.png";
-import bluePassport1Page3n4 from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-page3n4.png";
-import bluePassport1Boardpass from "../../assets/img/insert-designs-img/wedding/pc/passport-1-blue-boardpass.png";
+import bluePassport1Cover from "../../assets/img/insert-designs-img/wedding/passport-1-blue-cover.png";
+import bluePassport1Page1n6 from "../../assets/img/insert-designs-img/wedding/passport-1-blue-page1n6.png";
+import bluePassport1Page2n5 from "../../assets/img/insert-designs-img/wedding/passport-1-blue-page2n5.png";
+import bluePassport1Page3n4 from "../../assets/img/insert-designs-img/wedding/passport-1-blue-page3n4.png";
+import bluePassport1Boardpass from "../../assets/img/insert-designs-img/wedding/passport-1-blue-boardpass.png";
 
 // BLUE FAN DESIGNS
-import blueFan1Cover from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-cover.png";
-import blueFan1Insert from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-insert.png";
-import blueFan1Last from "../../assets/img/insert-designs-img/wedding/pc/fan-blue-1-last.png";
+import blueFan1Cover from "../../assets/img/insert-designs-img/wedding/fan-blue-1-cover.png";
+import blueFan1Insert from "../../assets/img/insert-designs-img/wedding/fan-blue-1-insert.png";
+import blueFan1Last from "../../assets/img/insert-designs-img/wedding/fan-blue-1-last.png";
 
 // 👉 (Optional: add inside/back images later)
 

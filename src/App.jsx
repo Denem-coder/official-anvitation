@@ -8,8 +8,9 @@ import { useCart } from './context/CartContext'
 import HomePage from './pages/HomePage'
 import DesignsPage from './pages/DesignsPage'
 import DesignsWeddingSubPage from './pages/designs/DesignsWeddingSubPage'
-import DesignsBaptismalSubPage from './pages/designs/DesignsBaptismalSubPage'
 import DesignsBirthdaySubPage from './pages/designs/DesignsBirthdaySubPage'
+import DesignsDebutSubPage from './pages/designs/DesignsDebutSubPage'
+import DesignsBaptismalSubPage from './pages/designs/DesignsBaptismalSubPage'
 import DesignsSouvenirSubPage from './pages/designs/DesignsSouvenirSubPage'
 
 import PackagesPage from './pages/PackagesPage'
@@ -17,6 +18,7 @@ import GalleryPage from './pages/GalleryPage'
 
 import WeddingPackagePage from './pages/packages/WeddingPackagePage'
 import BirthdayPackagePage from './pages/packages/BirthdayPackagePage'
+import DebutPackagePage from './pages/packages/DebutPackagePage'
 import BaptismalPackagePage from './pages/packages/BaptismalPackagePage'
 import SouvenirPackagePage from './pages/packages/SouvenirPackagePage'
 import DesignsPrintingSuppliesSubPage from './pages/designs/DesignsPrintingSuppliesSubPage'
@@ -42,14 +44,16 @@ function App() {
 
           <Route path="/designs" element={<DesignsPage />} />
           <Route path="/designs/wedding" element={<DesignsWeddingSubPage />} />
-          <Route path="/designs/baptismal" element={<DesignsBaptismalSubPage />} />
           <Route path="/designs/birthday" element={<DesignsBirthdaySubPage />} />
+          <Route path="/designs/debut" element={<DesignsDebutSubPage />} />
+          <Route path="/designs/baptismal" element={<DesignsBaptismalSubPage />} />
           <Route path="/designs/souvenir" element={<DesignsSouvenirSubPage />} />
           <Route path="/designs/printingsupplies" element={<DesignsPrintingSuppliesSubPage />} />
 
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/packages/wedding" element={<WeddingPackagePage />} />
           <Route path="/packages/birthday" element={<BirthdayPackagePage />} />
+          <Route path="/packages/debut" element={<DebutPackagePage />} />
           <Route path="/packages/baptismal" element={<BaptismalPackagePage />} />
           <Route path="/packages/souvenir" element={<SouvenirPackagePage />} />
 
