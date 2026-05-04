@@ -53,7 +53,26 @@ const addOnsData = {
     },
   ],
 
-  birthday: [],
+  birthday: [
+    {
+      id: 'additional-card',
+      name: 'Additional Card',
+      price: 8,
+      unit: 'pc',
+      image: additionalcard,
+      description:
+        'Add an extra insert card for directions, reminders, gift notes, or other wedding details.',
+    },
+    {
+      id: 'rsvp-card',
+      name: 'RSVP Card',
+      price: 4,
+      unit: 'pc',
+      image: rsvpcard,
+      description:
+        'A dedicated RSVP card where guests can confirm their attendance and response details.',
+    },
+  ],
   baptismal: [],
   souvenirs: [],
 }

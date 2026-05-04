@@ -1,48 +1,72 @@
 // src/data/insertDesignsData.jsx
 
-import { GiThirdEye } from 'react-icons/gi'
-
-//MICKEY MOUSE TRADITIONAL INSERT DESIGNS
-import mickeyTraditionalFront from "../../assets/img/insert-designs-img/birthday/mickey-insert-front.png";
-import mickeyTraditionalInside from "../../assets/img/insert-designs-img/birthday/mickey-insert-inside.png";
-import mickeyTraditionalThird from "../../assets/img/insert-designs-img/birthday/mickey-insert-third.png";
-import mickeyTraditionalBack from "../../assets/img/insert-designs-img/birthday/mickey-insert-back.png";
-
-import onepieceTraditionalCover from "../../assets/img/insert-designs-img/birthday/traditional-2-onepiece-cover.png";
-import onepieceTraditionalFront from "../../assets/img/insert-designs-img/birthday/onepiece-insert-1-front.png";
-
-import scrollgold1cover from "../../assets/img/insert-designs-img/debut/scroll-1-gold-cover.png";
-import scrollgold1front from "../../assets/img/insert-designs-img/debut/scroll-gold-1-front.png";
-
-// 👉 (Optional: add inside/back images later)
+import cardholderCover from "../../assets/img/insert-designs-img/souvenir/souvenir-cardholder.png";
+import refmagnetAcrylicCover from "../../assets/img/insert-designs-img/souvenir/souvenir-refmagnet-acrylic.png";
+import refmagnetFacecutCover from "../../assets/img/insert-designs-img/souvenir/souvenir-refmagnet-facecut.png";
 
 const souvenirInsertDesignsData = [
-   {
-  id: 'souvenir-1',
-  category: 'souvenir',
-  designSlugs: ['souvenir'],
-  motif: 'yellow',
-  layout: 'regular',
-  title: 'Souvenir 1',
-  desc: 'Elegant scroll insert set perfect for debut celebrations.',
+  {
+    id: 'souvenir-acrylic-refmagnet',
+    category: 'souvenir',
+    designSlugs: ['acrylic-refmagnet'],
+    motif: 'black',
+    layout: 'single',
+    title: 'Acrylic Ref Magnet Design',
+    desc: 'A glossy acrylic ref magnet layout made for elegant and memorable souvenirs.',
 
-  pageOrder: [
-    { key: 'front', label: 'Front' },
-    { key: 'inside', label: 'Inside' },
-    { key: 'third', label: 'Third' },
-    { key: 'back', label: 'Back' },
-  ],
+    pageOrder: [
+      { key: 'front', label: 'Preview' },
+    ],
 
-  pages: {
-    front: onepieceTraditionalFront,
-    inside: null,
-    third: null,
-    back: null,
+    pages: {
+      front: refmagnetAcrylicCover,
+    },
+
+    cover: refmagnetAcrylicCover,
+    isActive: true,
   },
 
-  cover: scrollgold1front,
-  isActive: true,
-},
+  {
+    id: 'souvenir-cardholder',
+    category: 'souvenir',
+    designSlugs: ['cardholder'],
+    motif: 'brown',
+    layout: 'single',
+    title: 'Card Holder Souvenir Design',
+    desc: 'A practical card holder souvenir layout with a clean and personalized event design.',
+
+    pageOrder: [
+      { key: 'front', label: 'Preview' },
+    ],
+
+    pages: {
+      front: cardholderCover,
+    },
+
+    cover: cardholderCover,
+    isActive: true,
+  },
+
+  {
+    id: 'souvenir-facecut-refmagnet',
+    category: 'souvenir',
+    designSlugs: ['facecut-refmagnet'],
+    motif: 'blue',
+    layout: 'single',
+    title: 'Face-Cut Ref Magnet Design',
+    desc: 'A fun personalized face-cut ref magnet layout perfect for birthdays, baptismals, and special events.',
+
+    pageOrder: [
+      { key: 'front', label: 'Preview' },
+    ],
+
+    pages: {
+      front: refmagnetFacecutCover,
+    },
+
+    cover: refmagnetFacecutCover,
+    isActive: true,
+  },
 ]
 
 export default souvenirInsertDesignsData

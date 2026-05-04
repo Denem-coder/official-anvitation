@@ -32,6 +32,41 @@ function PackageTemplate({
     designsCatalog.find((item) => item.slug === designSlug) || null
 
   const selectedProduct = products[0] || null
+  const priceParam = params.get('price')
+
+  const selectedDesignPrice = priceParam
+    ? Number(priceParam)
+    : selectedProduct?.price || 0
+
+  const selectedDesignImage = useMemo(() => {
+    if (!selectedDesign) return null
+
+    const normalizedColor = selectedColor?.trim().toLowerCase()
+
+    const matchedColorImage = Object.entries(selectedDesign.colorImages || {}).find(
+      ([key]) => key.trim().toLowerCase() === normalizedColor
+    )
+
+    if (matchedColorImage?.[1]?.length > 0) {
+      return matchedColorImage[1][0]
+    }
+
+    return selectedDesign.cover || selectedDesign.images?.[0] || selectedDesign.img
+  }, [selectedDesign, selectedColor])
+
+  const selectedDesignType = selectedDesign?.slug || ''
+
+const filteredPackages = useMemo(() => {
+  if (!selectedDesignType) return packages
+
+  return packages.filter((pkg) => {
+    if (!pkg.designSlugs || pkg.designSlugs.length === 0) return true
+
+    return pkg.designSlugs
+      .map((slug) => String(slug).trim().toLowerCase())
+      .includes(selectedDesignType.toLowerCase())
+  })
+}, [packages, selectedDesignType])
 
   const [orderMode, setOrderMode] = useState('product')
   const [quantity, setQuantity] = useState(1)
@@ -194,9 +229,9 @@ function PackageTemplate({
   const safeQuantity = Math.max(1, Number(quantity) || 1)
 
   const mainProductTotal =
-    selectedDesign && orderMode === 'product' && selectedProduct
-      ? Number(selectedProduct.price || 0) * safeQuantity
-      : 0
+  selectedDesign && orderMode === 'product'
+    ? Number(selectedDesignPrice || 0) * safeQuantity
+    : 0
 
   const packageTotal =
     selectedDesign && orderMode === 'package'
@@ -258,7 +293,7 @@ function PackageTemplate({
       selectedColor: selectedColor || '',
       selectedInsertId: selectedInsertId || '',
       image:
-        selectedDesign.cover ||
+        selectedDesignImage ||
         selectedDesign.images?.[0] ||
         selectedDesign.img ||
         null,
@@ -478,7 +513,7 @@ function PackageTemplate({
                   <div>
                     <img
                       src={
-                        selectedDesign.cover ||
+                        selectedDesignImage ||
                         selectedDesign.images?.[0] ||
                         selectedDesign.img
                       }
@@ -601,13 +636,14 @@ function PackageTemplate({
                   </div>
 
                   <div className="rounded-2xl bg-orange-50 px-4 py-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Price Per {selectedProduct.unit || 'Set'}
-                    </p>
-                    <p className="mt-1 text-xl font-bold text-orange-500">
-                      ₱{Number(selectedProduct.price).toLocaleString()}
-                    </p>
-                  </div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Price Per {selectedProduct?.unit || 'Set'}
+                  </p>
+
+                  <p className="mt-1 text-xl font-bold text-orange-500">
+                    ₱{Number(selectedDesignPrice).toLocaleString()}
+                  </p>
+                </div>
                 </div>
 
                 <div className="mt-6 flex items-center gap-2">
@@ -653,7 +689,7 @@ function PackageTemplate({
               </div>
             )}
 
-            {orderMode === 'package' && packages.length > 0 && (
+            {orderMode === 'package' && filteredPackages.length > 0 && (
               <div
                 className={`mb-8 overflow-hidden rounded-[2rem] border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)] ${
                   selectedDesign ? 'border-gray-200' : 'border-gray-200 opacity-85'
@@ -680,14 +716,14 @@ function PackageTemplate({
                     )}
                   </div>
 
-                  {packages.map((pkg) => {
+                  {filteredPackages.map((pkg) => {
                     const isSelectedPackage = selectedPackage?.id === pkg.id
 
                     return (
                       <div
                         key={pkg.id}
                         className={`relative p-8 ${
-                          pkg.id !== packages[packages.length - 1]?.id
+                          pkg.id !== filteredPackages[filteredPackages.length - 1]?.id
                             ? 'border-b border-gray-200 lg:border-b-0 lg:border-r'
                             : ''
                         } ${

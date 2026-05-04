@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 
-import wedding from '../assets/img/designs-img/design-1.png'
-import baptismal from '../assets/img/designs-img/design-2.png'
-import birthday from '../assets/img/designs-img/design-3.png'
-import souvenirs from '../assets/img/designs-img/design-4.png'
+import wedding from '../assets/img/designs-img/wedding/trifold-1-sagegreen-front.png';
+import birthday from '../assets/img/designs-img/birthday/traditional-4-astronaut-cover.png';
+import debut from '../assets/img/designs-img/debut/scroll-1-gold-cover.png';
+import baptismal from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png';
+import souvenir from '../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png';
 
 function DesignsPage() {
   const designs = [
@@ -20,14 +21,14 @@ function DesignsPage() {
       title: 'Birthday Designs',
       desc: 'Fun & colorful themes.',
       img: birthday,
-      strt: 'Starts at ₱56 per set',
+      strt: 'Starts at ₱70 per set',
       avail: 'New Designs Coming Soon',
       link: '/designs/birthday',
     },
     {
       title: 'Debut Designs',
       desc: 'Fun & colorful themes.',
-      img: birthday,
+      img: debut,
       strt: 'Starts at ₱56 per set',
       avail: 'New Designs Coming Soon',
       link: '/designs/debut',
@@ -43,7 +44,7 @@ function DesignsPage() {
     {
       title: 'Souvenir Designs',
       desc: 'Memorable keepsakes.',
-      img: souvenirs,
+      img: souvenir,
       strt: 'Starts at ₱100 per set',
       avail: 'New Designs Coming Soon',
       link: '/designs/souvenir',

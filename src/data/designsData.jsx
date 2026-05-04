@@ -27,6 +27,15 @@ import robloxtheme from '../assets/img/designs-img/birthday/traditional-5-roblox
 // DEBUT
 import scrollgold1cover from '../assets/img/designs-img/debut/scroll-1-gold-cover.png'
 
+// BAPTISMAL
+import donaldduckcover from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png'
+import mickeymousecover from '../assets/img/designs-img/baptismal/traditional-2-mickey-cover.png'
+
+// SOUVENIR
+import cardholderCover from "../assets/img/designs-img/souvenir/souvenir-1-cardholder.png";
+import refmagnetAcrylicCover from "../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png";
+import refmagnetFacecutCover from "../assets/img/designs-img/souvenir/souvenir-3-refmagnet-facecut.png";
+
 const designsData = {
   wedding: [
     {
@@ -144,31 +153,38 @@ const designsData = {
   ],
 
   birthday: [
-    {
-      slug: 'traditional',
-      category: 'birthday',
-      cover: mickeymousetheme,
-      images: [mickeymousetheme],
-      colorImages: {
-        mickey: [mickeymousetheme],
-        onepiece: [onepiecetheme],
-        babyboss: [babybosstheme],
-        astronaut: [astronauttheme],
-        roblox: [robloxtheme],
-      },
-      title: 'Traditional Invitation',
-      desc: 'Fun birthday invitation.',
-      price: 70,
-      tags: ['traditional'],
-      colors: [ // 👈 NOW USED AS "THEMES"
-        { value: 'mickey', label: 'Mickey Mouse' },
-        { value: 'onepiece', label: 'One Piece' },
-        { value: 'babyboss', label: 'Baby Boss' },
-        { value: 'astronaut', label: 'Astronaut' },
-        { value: 'roblox', label: 'Roblox' },
-  ],
-      inclusions: [],
+     {
+    slug: 'traditional',
+    category: 'birthday',
+    cover: mickeymousetheme,
+    images: [mickeymousetheme],
+    colorImages: {
+      mickey: [mickeymousetheme],
+      onepiece: [onepiecetheme],
+      babyboss: [babybosstheme],
+      astronaut: [astronauttheme],
+      roblox: [robloxtheme],
     },
+    title: 'Traditional Invitation',
+    desc: 'Fun and colorful birthday invitation perfect for themed celebrations.',
+    price: 70,
+    isBestSeller: true,
+    sold: null,
+    micro: 'Includes themed envelope + insert cards',
+    tags: ['traditional'],
+    colors: [
+      { value: 'mickey', label: 'Mickey Mouse' },
+      { value: 'onepiece', label: 'One Piece' },
+      { value: 'babyboss', label: 'Baby Boss' },
+      { value: 'astronaut', label: 'Astronaut' },
+      { value: 'roblox', label: 'Roblox' },
+    ],
+    inclusions: [
+      'Themed Invitation Card',
+      'Matching Envelope',
+      'Printed Insert Card',
+    ],
+  },
     // {
     //   slug: 'pull-out',
     //   category: 'birthday',
@@ -189,112 +205,151 @@ const designsData = {
   ],
 
   debut: [
-     {
-      slug: 'scroll',
-      category: 'debut',
-      cover: scrollgold1cover,
-      images: [scrollgold1cover],
-      colorImages: {
-        Yellow: [scrollgold1cover]
-      },
-      title: 'Traditional Invitation',
-      desc: 'Elegant traditional invitation.',
-      price: 65,
-      isBestSeller: false,
-      sold: null,
-      micro: "Includes envelope + inserts + sticker seal",
-      tags: ['scroll'],
-      colors: [
-        // { value: 'blue', label: 'Blue' },
-        // { value: 'red', label: 'Red' },
-        // { value: 'green', label: 'Green' },
-        // { value: 'orange', label: 'Orange' },
-        // { value: 'black', label: 'Black' },
-        { value: 'yellow', label: 'Yellow / Gold' },
-      ],
-      inclusions: [
-        'Premium Envelope',
-        '3–4 Printed Insert Cards',
-        'Custom Monogram Sticker Seal',
-      ],
+      {
+    slug: 'scroll',
+    category: 'debut',
+    cover: scrollgold1cover,
+    images: [scrollgold1cover],
+    colorImages: {
+      Yellow: [scrollgold1cover],
     },
+    title: 'Scroll Invitation',
+    desc: 'Elegant debut invitation with a luxurious scroll-inspired design.',
+    price: 65,
+    isBestSeller: false,
+    sold: null,
+    micro: 'Includes scroll layout + premium envelope',
+    tags: ['scroll'],
+    colors: [
+      { value: 'yellow', label: 'Yellow / Gold' },
+    ],
+    inclusions: [
+      'Premium Scroll Invitation',
+      'Elegant Envelope',
+      'Printed Insert Details',
+    ],
+  },
   ],
 
   baptismal: [
-    {
-      slug: 'traditional',
-      category: 'baptismal',
-      cover: traditionalorange,
-      images: [traditionalorange],
-      colorImages: {
-        Blue: [traditionalorange],
-        Pink: [traditionalorange],
-        Red: [traditionalorange],
-        Yellow: [traditionalorange],
-      },
-      title: 'Traditional Invitation',
-      desc: 'Fun traditional birthday invitation.',
-      price: 60,
-      tags: ['traditional'],
-      colors: ['Blue', 'Pink', 'Red', 'Yellow'],
-      inclusions: [],
+     {
+    slug: 'traditional',
+    category: 'baptismal',
+    cover: donaldduckcover,
+    images: [donaldduckcover],
+    colorImages: {
+      donaldduck: [donaldduckcover],
+      mickey: [mickeymousecover],
     },
+    title: 'Traditional Invitation',
+    desc: 'Cute and charming baptismal invitation designed for memorable celebrations.',
+    price: 70,
+    isBestSeller: false,
+    sold: null,
+    micro: 'Includes themed envelope + insert cards',
+    tags: ['traditional'],
+    colors: [
+      { value: 'donaldduck', label: 'Donald Duck' },
+      { value: 'mickey', label: 'Mickey Mouse' },
+    ],
+    inclusions: [
+      'Themed Invitation Card',
+      'Matching Envelope',
+      'Printed Insert Card',
+    ],
+  },
 
-    {
-      slug: 'pull-out',
-      category: 'baptismal',
-      cover: traditionalorange,
-      images: [traditionalorange],
-      colorImages: {
-        Blue: [traditionalorange],
-        Purple: [traditionalorange],
-        Orange: [traditionalorange],
-      },
-      title: 'Pull-out Invitation',
-      desc: 'Creative pull-out birthday invitation.',
-      price: 60,
-      tags: ['pull-out'],
-      colors: ['Blue', 'Purple', 'Orange'],
-      inclusions: [],
-    },
+    // {
+    //   slug: 'pull-out',
+    //   category: 'baptismal',
+    //   cover: traditionalorange,
+    //   images: [traditionalorange],
+    //   colorImages: {
+    //     Blue: [traditionalorange],
+    //     Purple: [traditionalorange],
+    //     Orange: [traditionalorange],
+    //   },
+    //   title: 'Pull-out Invitation',
+    //   desc: 'Creative pull-out birthday invitation.',
+    //   price: 60,
+    //   tags: ['pull-out'],
+    //   colors: ['Blue', 'Purple', 'Orange'],
+    //   inclusions: [],
+    // },
   ],
 
-  souvenir: [
-    {
-      slug: 'traditional',
-      category: 'souvenir',
-      cover: traditionalorange,
-      images: [traditionalorange],
-      colorImages: {
-        Blue: [traditionalorange],
-        Gold: [traditionalorange],
-        White: [traditionalorange],
-      },
-      title: 'Traditional Souvenir',
-      desc: 'Elegant traditional souvenir.',
-      price: 60,
-      tags: ['traditional'],
-      colors: ['Blue', 'Gold', 'White'],
-      inclusions: [],
+ souvenir: [
+  {
+    slug: 'acrylic-refmagnet',
+    category: 'souvenir',
+    cover: refmagnetAcrylicCover,
+    images: [refmagnetAcrylicCover],
+    colorImages: {
+      Acrylic: [refmagnetAcrylicCover],
     },
-    {
-      slug: 'pull-out',
-      category: 'souvenir',
-      cover: traditionalorange,
-      images: [traditionalorange],
-      colorImages: {
-        Blue: [traditionalorange],
-        Pink: [traditionalorange],
-        White: [traditionalorange],
-      },
-      title: 'Pull-out Souvenir',
-      desc: 'Creative pull-out souvenir.',
-      price: 60,
-      tags: ['pull-out'],
-      colors: ['Blue', 'Pink', 'White'],
-      inclusions: [],
+    title: 'Acrylic Ref Magnet',
+    desc: 'Premium acrylic ref magnet souvenir with a clean and glossy finish.',
+    price: 60,
+    isBestSeller: false,
+    sold: null,
+    micro: 'Glossy acrylic souvenir magnet',
+    tags: ['ref-magnet', 'acrylic'],
+    colors: [
+    { value: 'black', label: 'Black' },
+    ],
+    inclusions: [
+      'Customized Acrylic Ref Magnet',
+      'Glossy Photo Print',
+      'Magnetic Backing',
+    ],
+  },
+  {
+    slug: 'cardholder',
+    category: 'souvenir',
+    cover: cardholderCover,
+    images: [cardholderCover],
+    colorImages: {
+      Brown: [cardholderCover],
     },
-  ],
+    title: 'Card Holder',
+    desc: 'Elegant card holder souvenir designed as a useful keepsake for guests.',
+    price: 60,
+    isBestSeller: false,
+    sold: null,
+    micro: 'Practical souvenir with custom design',
+    tags: ['card-holder'],
+    colors: ['Brown'],
+    inclusions: [
+      'Customized Card Holder',
+      'Personalized Event Layout',
+      'Ready-to-Give Souvenir Piece',
+    ],
+  },
+  {
+    slug: 'facecut-refmagnet',
+    category: 'souvenir',
+    cover: refmagnetFacecutCover,
+    images: [refmagnetFacecutCover],
+    colorImages: {
+      Facecut: [refmagnetFacecutCover],
+    },
+    title: 'Face-Cut Ref Magnet',
+    desc: 'Fun and personalized face-cut ref magnet souvenir made for memorable events.',
+    price: 60,
+    isBestSeller: false,
+    sold: null,
+    micro: 'Personalized face-cut magnet',
+    tags: ['ref-magnet', 'face-cut'],
+    colors: [
+      { value: 'blue', label: 'Blue' },
+    ],
+    inclusions: [
+      'Customized Face-Cut Ref Magnet',
+      'Personalized Character Layout',
+      'Magnetic Backing',
+    ],
+  },
+],
 }
 
 export default designsData

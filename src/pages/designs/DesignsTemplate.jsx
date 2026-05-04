@@ -164,13 +164,15 @@ function DesignsTemplate({
   const currentInsertPage = insertPageEntries[activeInsertPageIndex]?.src || ''
 
   const finalBuyLink =
-    selectedItem?.slug && selectedColor && selectedInsert
-      ? `${packageLink}?design=${encodeURIComponent(
-          selectedItem.slug
-        )}&color=${encodeURIComponent(
-          selectedColor
-        )}&insert=${encodeURIComponent(selectedInsert.id)}`
-      : '#'
+  selectedItem?.slug && selectedColor && selectedInsert
+    ? `${packageLink}?design=${encodeURIComponent(
+        selectedItem.slug
+      )}&color=${encodeURIComponent(
+        selectedColor
+      )}&insert=${encodeURIComponent(
+        selectedInsert.id
+      )}&price=${encodeURIComponent(selectedItem.price)}`
+    : '#'
 
   const updateInsertScrollProgress = () => {
     if (!sliderRef.current) return

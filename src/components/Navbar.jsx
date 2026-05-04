@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import logo from '../assets/img/navbar-img/anvitation-logo.png';
 
-import weddingDesigns from '../assets/img/designs-img/design-1.png';
-import birthdayDesigns from '../assets/img/designs-img/design-2.png';
-import souvenirDesigns from '../assets/img/designs-img/design-3.png';
-import baptismalDesigns from '../assets/img/designs-img/design-2.png';
+import weddingDesigns from '../assets/img/designs-img/wedding/trifold-1-sagegreen-front.png';
+import birthdayDesigns from '../assets/img/designs-img/birthday/traditional-4-astronaut-cover.png';
+import souvenirDesigns from '../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png';
+import baptismalDesigns from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png';
 
-import work1 from '../assets/img/gallery-img/wedding-invitation-1.png';
-import work2 from '../assets/img/gallery-img/wedding-invitation-2.png';
-import work3 from '../assets/img/gallery-img/wedding-invitation-3.png';
-import work4 from '../assets/img/gallery-img/birthday-invitation-2.png';
+import work1 from '../assets/img/gallery-img/wedding-flap-peach-1.jpg';
+import work2 from '../assets/img/gallery-img/birthday-invitation-1.png';
+import work3 from '../assets/img/gallery-img/baptismal-invitation-1.png';
+import work4 from '../assets/img/gallery-img/souvenir-1.png';
 
-import package1 from '../assets/img/designs-img/design-1.png';
-import package2 from '../assets/img/designs-img/design-2.png';
-import package3 from '../assets/img/designs-img/design-3.png';
-import package4 from '../assets/img/designs-img/design-1.png';
+import package1 from '../assets/img/designs-img/wedding/flap-1-peach-cover.png';
+import package2 from '../assets/img/designs-img/birthday/traditional-3-babyboss-cover.png';
+import package3 from '../assets/img/designs-img/baptismal/traditional-2-mickey-cover.png';
+import package4 from '../assets/img/designs-img/souvenir/souvenir-1-cardholder.png';
 
 import { Link, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -90,22 +90,22 @@ function Navbar() {
   const worksMenu = [
     {
       label: 'Wedding Samples',
-      to: '/gallery',
+      to: '/gallery?category=wedding',
       img: work1,
     },
     {
       label: 'Birthday Samples',
-      to: '/gallery',
+      to: '/gallery?category=birthday',
       img: work2,
     },
     {
       label: 'Baptismal Samples',
-      to: '/gallery',
+      to: '/gallery?category=baptismal',
       img: work3,
     },
     {
       label: 'Souvenir Samples',
-      to: '/gallery',
+      to: '/gallery?category=souvenir',
       img: work4,
     },
   ];
