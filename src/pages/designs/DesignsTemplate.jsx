@@ -6,14 +6,12 @@ import weddingInsertDesignsData from '../../data/inserts/weddingInsertDesignsDat
 import birthdayInsertDesignsData from '../../data/inserts/birthdayInsertDesignsData'
 import debutInsertDesignsData from '../../data/inserts/debutInsertDesignsData'
 import baptismalInsertDesignsData from '../../data/inserts/baptismalInsertDesignsData'
-import souvenirInsertDesignsData from '../../data/inserts/souvenirDesignsData'
 
 const insertDesignsData = [
   ...weddingInsertDesignsData,
   ...birthdayInsertDesignsData,
   ...debutInsertDesignsData,
   ...baptismalInsertDesignsData,
-  ...souvenirInsertDesignsData,
 ]
 
 function DesignsTemplate({

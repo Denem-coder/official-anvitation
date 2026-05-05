@@ -1,30 +1,35 @@
 import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 
+import weddingImg from '../assets/img/packages-img/wedding-package-img.png'
+import birthdayImg from '../assets/img/packages-img/birthday-package-img.png'
+import baptismalImg from '../assets/img/packages-img/baptismal-package-img.png'
+import souvenirImg from '../assets/img/packages-img/souvenir-package-img.png'
+
 function PackagesPage() {
   const packages = [
     {
       title: 'Wedding Packages',
       desc: 'Complete invitation and souvenir bundles for your big day.',
-      img: '/images/project1.jpg',
+      img: weddingImg,
       link: '/packages/wedding',
     },
     {
       title: 'Birthday Packages',
       desc: 'Fun and affordable sets perfect for birthday celebrations.',
-      img: '/images/project2.jpg',
+      img: birthdayImg,
       link: '/packages/birthday',
     },
     {
       title: 'Baptismal Packages',
       desc: 'Thoughtfully designed bundles for meaningful occasions.',
-      img: '/images/project3.jpg',
+      img: baptismalImg,
       link: '/packages/baptismal',
     },
     {
       title: 'Souvenir Packages',
       desc: 'Memorable keepsakes bundled for your special events.',
-      img: '/images/project4.jpg',
+      img: souvenirImg,
       link: '/packages/souvenir',
     },
   ]
@@ -50,30 +55,34 @@ function PackagesPage() {
               key={index}
               className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col"
             >
-              <div className="overflow-hidden">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition duration-500"
-                />
-              </div>
-
-              <div className="p-5 flex flex-col flex-grow">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {item.title}
-                </h2>
-
-                <p className="text-sm text-gray-600 mt-2 flex-grow">
-                  {item.desc}
-                </p>
-
                 <Link
+                  key={item.title}
                   to={item.link}
-                  className="mt-5 inline-block text-center bg-orange-500 text-white px-4 py-2.5 rounded-full font-semibold hover:bg-orange-600 transition"
+                  className="group block overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
-                  View Packages
+                  <div className="aspect-[4/3] overflow-hidden bg-gray-100">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-gray-900">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-2 text-sm text-gray-600">
+                      {item.desc}
+                    </p>
+
+                    <span className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition group-hover:bg-orange-600">
+                      View Package →
+                    </span>
+                  </div>
                 </Link>
-              </div>
+             
             </div>
           ))}
         </div>

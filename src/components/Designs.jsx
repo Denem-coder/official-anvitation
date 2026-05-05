@@ -30,11 +30,6 @@ const categories = [
     title: 'Souvenirs',
     link: '/designs/souvenir',
   },
-  {
-    img: printingSupplies,
-    title: 'Printing Supplies',
-    link: '/designs/printingsupplies',
-  },
 ]
 
 function Designs() {

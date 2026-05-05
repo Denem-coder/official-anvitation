@@ -33,6 +33,14 @@ function SouvenirsPage() {
         avail: 'More designs coming soon',
         link: '/souvenirs/designs?category=glass-cup',
     },
+    {
+        title: 'Keychain',
+        desc: 'Small but memory-filled keychain your guests can keep.',
+        img: keychain,
+        strt: 'Starts at ₱15 per set',
+        avail: 'More designs coming soon',
+        link: '/souvenirs/designs?category=keychain',
+    },
     ]
 
   return (
@@ -47,8 +55,11 @@ function SouvenirsPage() {
           </h1>
 
           <p className="mx-auto mt-4 max-w-xl text-gray-600">
-            Memorable keepsakes made to match your celebration and leave a
-            lasting impression on your guests.
+            Memorable keepsakes crafted to match your celebration and leave a lasting impression on your guests.
+          </p>
+
+          <p className="mx-auto mt-3 max-w-xl text-sm text-gray-500">
+            Perfect for weddings, birthdays, baptisms, and debuts.
           </p>
         </div>
 

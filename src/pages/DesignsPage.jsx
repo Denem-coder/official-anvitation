@@ -41,14 +41,6 @@ function DesignsPage() {
       avail: 'New Designs Coming Soon',
       link: '/designs/baptismal',
     },
-    {
-      title: 'Souvenirs',
-      desc: 'Memorable keepsakes.',
-      img: souvenir,
-      strt: 'Starts at ₱100 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/souvenir',
-    },
   ]
 
   return (

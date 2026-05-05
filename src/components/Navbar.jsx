@@ -6,7 +6,13 @@ import birthdayInvitations from '../assets/img/designs-img/birthday/traditional-
 import debutInvitations from '../assets/img/designs-img/debut/scroll-1-gold-cover.png'
 import baptismalInvitations from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png';
 
-import souvenirs from '../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png';
+import cardholder from '../assets/img/souvenirs-img/souvenir-1-cardholder.png'
+import acrylicRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-acrylic.png'
+import facecutRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-facecut.png'
+import atmRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-atmsized.png'
+import glassCupCover from '../assets/img/souvenirs-img/souvenir-3-glasscup.png'
+import glassCupInside from '../assets/img/souvenirs-img/souvenir-3-glasscup-inside.png'
+import keychain from '../assets/img/souvenirs-img/souvenir-4-keychain.png'
 
 import work1 from '../assets/img/gallery-img/wedding-flap-peach-1.jpg';
 import work2 from '../assets/img/gallery-img/birthday-invitation-1.png';
@@ -63,22 +69,28 @@ function Navbar() {
 
   const souvenirsMenu = [
     {
-      label: 'Souvenir Designs',
-      desc: 'Browse our available souvenir designs',
-      to: '/souvenirs/designs',
-      img: souvenirs,
+      label: 'Ref Magnet',
+      desc: 'Custom photo magnets in acrylic, facecut, and ATM styles',
+      to: '/souvenirs?category=ref-magnet',
+      img: acrylicRefmagnet,
     },
     {
-      label: 'Souvenir Packages',
-      desc: 'Bundled keepsakes for special events',
-      to: '/packages/souvenir',
-      img: package4,
+      label: 'Card Holder',
+      desc: 'Practical keepsakes your guests can use every day',
+      to: '/souvenirs?category=card-holder',
+      img: cardholder,
     },
     {
-      label: 'Souvenir Samples',
-      desc: 'View our finished souvenir projects',
-      to: '/gallery?category=souvenir',
-      img: work4,
+      label: 'Glass Cup with Sip',
+      desc: 'Reusable glass cups with personalized designs',
+      to: '/souvenirs?category=glass-cup',
+      img: glassCupCover,
+    },
+    {
+      label: 'Keychain',
+      desc: 'Personalized keychains perfect for memorable giveaways',
+      to: '/souvenirs?category=keychain',
+      img: keychain,
     },
   ]
 

@@ -117,7 +117,7 @@ const souvenirsData = [
     minQty: 20,
     image: keychain,
     description: 'Personalized keychain souvenir.',
-    colors: ['Gold', 'Silver', 'Black'],
+    colors: ['Red'],
     designs: [
       {
         id: 'keychain-standard',
