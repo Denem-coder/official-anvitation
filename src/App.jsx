@@ -11,7 +11,9 @@ import DesignsWeddingSubPage from './pages/designs/DesignsWeddingSubPage'
 import DesignsBirthdaySubPage from './pages/designs/DesignsBirthdaySubPage'
 import DesignsDebutSubPage from './pages/designs/DesignsDebutSubPage'
 import DesignsBaptismalSubPage from './pages/designs/DesignsBaptismalSubPage'
-import DesignsSouvenirSubPage from './pages/designs/DesignsSouvenirSubPage'
+
+import SouvenirsPage from './pages/SouvenirsPage'
+import SouvenirsSubPage from './pages/souvenirs/SouvenirsSubPage'
 
 import PackagesPage from './pages/PackagesPage'
 import GalleryPage from './pages/GalleryPage'
@@ -47,8 +49,10 @@ function App() {
           <Route path="/designs/birthday" element={<DesignsBirthdaySubPage />} />
           <Route path="/designs/debut" element={<DesignsDebutSubPage />} />
           <Route path="/designs/baptismal" element={<DesignsBaptismalSubPage />} />
-          <Route path="/designs/souvenir" element={<DesignsSouvenirSubPage />} />
           <Route path="/designs/printingsupplies" element={<DesignsPrintingSuppliesSubPage />} />
+
+          <Route path="/souvenirs" element={<SouvenirsPage />} />
+          <Route path="/souvenirs/designs" element={<SouvenirsSubPage />} />
 
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/packages/wedding" element={<WeddingPackagePage />} />

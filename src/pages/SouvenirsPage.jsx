@@ -1,82 +1,65 @@
 import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 
-import wedding from '../assets/img/designs-img/wedding/trifold-1-sagegreen-front.png';
-import birthday from '../assets/img/designs-img/birthday/traditional-4-astronaut-cover.png';
-import debut from '../assets/img/designs-img/debut/scroll-1-gold-cover.png';
-import baptismal from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png';
-import souvenir from '../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png';
+import refMagnet from '../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png'
+import cardHolder from '../assets/img/designs-img/souvenir/souvenir-1-cardholder.png'
+import glassCupCover from '../assets/img/souvenirs-img/souvenir-3-glasscup.png'
+import glassCupInside from '../assets/img/souvenirs-img/souvenir-3-glasscup-inside.png'
+import keychain from '../assets/img/souvenirs-img/souvenir-4-keychain.png'
 
-function DesignsPage() {
-  const designs = [
+function SouvenirsPage() {
+  const souvenirs = [
     {
-      title: 'Wedding Invitations',
-      desc: 'Elegant Designs.',
-      img: wedding,
-      strt: 'Starts at ₱55 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/wedding',
+        title: 'Ref Magnet',
+        desc: 'Personalized keepsakes perfect for birthdays, weddings, and baptismal events.',
+        img: refMagnet,
+        strt: 'Starts at ₱100 per set',
+        avail: '3 Designs Available',
+        link: '/souvenirs/designs?category=ref-magnets',
     },
     {
-      title: 'Birthday Invitations',
-      desc: 'Fun & colorful themes.',
-      img: birthday,
-      strt: 'Starts at ₱70 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/birthday',
+        title: 'Card Holder',
+        desc: 'Simple and useful souvenirs your guests can keep and use.',
+        img: cardHolder,
+        strt: 'Starts at ₱100 per set',
+        avail: 'More designs coming soon',
+        link: '/souvenirs/designs?category=card-holder',
     },
     {
-      title: 'Debut Invitations',
-      desc: 'Fun & colorful themes.',
-      img: debut,
-      strt: 'Starts at ₱56 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/debut',
+        title: 'Glass Cup with Sip',
+        desc: 'Simple and useful souvenirs your guests can keep and use.',
+        img: glassCupCover,
+        strt: 'Starts at ₱100 per set',
+        avail: 'More designs coming soon',
+        link: '/souvenirs/designs?category=glass-cup',
     },
-    {
-      title: 'Baptismal Invitations',
-      desc: 'Soft & meaningful styles.',
-      img: baptismal,
-      strt: 'Starts at ₱50 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/baptismal',
-    },
-    {
-      title: 'Souvenirs',
-      desc: 'Memorable keepsakes.',
-      img: souvenir,
-      strt: 'Starts at ₱100 per set',
-      avail: 'New Designs Coming Soon',
-      link: '/designs/souvenir',
-    },
-  ]
+    ]
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <BackButton />
 
         {/* HERO */}
         <div className="mt-6 mb-12 text-center">
           <h1 className="text-3xl font-bold text-gray-900 md:text-5xl">
-            Our Invitations
+            Our Souvenirs
           </h1>
 
           <p className="mx-auto mt-4 max-w-xl text-gray-600">
-            Premium invitations and souvenirs designed to make your events
-            unforgettable.
+            Memorable keepsakes made to match your celebration and leave a
+            lasting impression on your guests.
           </p>
         </div>
 
-        {/* DESIGNS GRID */}
+        {/* SOUVENIRS GRID */}
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
-          {designs.map((item) => (
+          {souvenirs.map((item) => (
             <Link
               key={item.title}
               to={item.link}
               className="group block overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition duration-200 hover:shadow-md"
             >
-              {/* Image */}
               <div className="overflow-hidden rounded-t-lg">
                 <img
                   src={item.img}
@@ -85,9 +68,8 @@ function DesignsPage() {
                 />
               </div>
 
-              {/* Content */}
               <div className="flex flex-col p-3">
-                <h2 className="text-left text-[14px] font-bold text-gray-900 md:text-start md:text-base">
+                <h2 className="text-left text-[14px] font-bold text-gray-900 md:text-base">
                   {item.title}
                 </h2>
 
@@ -104,7 +86,7 @@ function DesignsPage() {
                 </p>
 
                 <span className="mt-3 inline-flex items-center justify-center rounded-2xl bg-orange-500 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-orange-600">
-                  View Designs →
+                  View Souvenirs →
                 </span>
               </div>
             </Link>
@@ -114,11 +96,11 @@ function DesignsPage() {
         {/* CTA SECTION */}
         <div className="mt-16 text-center">
           <h3 className="text-xl font-semibold text-gray-900">
-            Not sure what to choose?
+            Want matching souvenirs for your event?
           </h3>
 
           <p className="mt-2 text-gray-600">
-            Let us help you find the perfect design for your event.
+            Message us and we’ll help you choose the best souvenir style for your celebration.
           </p>
 
           <Link
@@ -133,4 +115,4 @@ function DesignsPage() {
   )
 }
 
-export default DesignsPage
+export default SouvenirsPage

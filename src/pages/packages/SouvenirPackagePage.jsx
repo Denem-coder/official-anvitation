@@ -1,18 +1,12 @@
-import PackageTemplate from './PackageTemplate'
-import designsData from '../../data/designsData'
+import SouvenirPackageTemplate from './SouvenirPackageTemplate'
 import packagesData from '../../data/packagesData'
-import productsData from '../../data/productsData'
 
 function SouvenirPackagePage() {
   return (
-    <PackageTemplate
-      badge="Souvenir Packages"
-      title="Customize Your Order"
-      subtitle="Choose individual items or select a package that best fits your event and budget."
-      designsCatalog={designsData.souvenir}
-      products={productsData.souvenir}
+    <SouvenirPackageTemplate
+      title="Customize Your Souvenir Order"
+      subtitle="Choose your souvenir quantity or select a package that fits your event and budget."
       packages={packagesData.souvenir}
-      category="souvenir"
     />
   )
 }
