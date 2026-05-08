@@ -349,12 +349,18 @@ Please send me the details. Thank you!`
             </div>
 
             <p className="mb-4 mt-6 text-center text-sm text-gray-600">
-              You’ll be redirected to Messenger.
+              When you click{' '}
+              <span className="font-semibold text-orange-500">Checkout</span>, you’ll be
+              redirected to Messenger.
               <br />
-              Just click{' '}
+              Your order details will be copied automatically.
+              <br />
+              Simply{' '}
+              <span className="font-semibold text-orange-500">paste</span>{' '}
+              the message and tap{' '}
               <span className="font-semibold text-orange-500">Send</span>{' '}
-              to confirm your order.
-            </p>
+              to place your order.
+          </p>
 
             <div className="mt-6 flex flex-col gap-4 md:flex-row">
               <button
