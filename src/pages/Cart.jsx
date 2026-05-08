@@ -64,40 +64,68 @@ function Cart() {
   }
 
   const handleMessengerCheckout = () => {
-    if (cart.length === 0) return
+  if (cart.length === 0) return
 
-    const orderList = cart
-      .map((item, index) => {
-        const itemLineTotal = getItemLineTotal(item)
+  const orderList = cart
+    .map((item, index) => {
+      const itemLineTotal = getItemLineTotal(item)
 
-        const orderTypeText =
-          item.orderMode === 'package'
-            ? `Package: ${item.packageName || item.selectedPackage?.name || 'Package Order'}`
-            : `Product: ${item.productName || 'Build My Own'}`
+      const orderTypeText =
+        item.orderMode === 'package'
+          ? `Package: ${
+              item.packageName ||
+              item.selectedPackage?.name ||
+              'Package Order'
+            }`
+          : `Product: ${item.productName || 'Build My Own'}`
 
-        const addOnsText =
-          item.selectedAddOns?.length > 0
-            ? `\nAdd-ons:\n${item.selectedAddOns
-                .map((addOn) => `- ${addOn.name} x${addOn.quantity}`)
-                .join('\n')}`
-            : ''
+      const addOnsText =
+        item.selectedAddOns?.length > 0
+          ? `\nAdd-ons:\n${item.selectedAddOns
+              .map((addOn) => `- ${addOn.name} x${addOn.quantity}`)
+              .join('\n')}`
+          : ''
 
-        return `${index + 1}. ${item.title}
+      return `${index + 1}. ${item.title}
 ${item.selectedColor ? `Motif/Color: ${item.selectedColor}\n` : ''}${orderTypeText}
 Quantity: ${item.quantity}${addOnsText}
 Total: ₱${itemLineTotal.toLocaleString()}`
-      })
-      .join('\n\n')
+    })
+    .join('\n\n')
 
-    const message = encodeURIComponent(
-      `Hello! I would like to place an order:\n\n${orderList}\n\nTotal Items: ${totalItems}\nCart Total: ₱${cartSubtotal.toLocaleString()}\n\nPlease send me the details. Thank you!`
+  const message = `Hello! I would like to place an order:
+
+${orderList}
+
+Total Items: ${totalItems}
+Cart Total: ₱${cartSubtotal.toLocaleString()}
+
+Please send me the details. Thank you!`
+
+  navigator.clipboard.writeText(message).catch((error) => {
+    console.log('Clipboard failed:', error)
+  })
+
+  const isMobile =
+    /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(
+      navigator.userAgent
     )
 
-    window.open(
-      `https://www.facebook.com/messages/t/61563452485945?text=${message}`,
-      '_blank'
-    )
+  if (isMobile) {
+    // Open Messenger app on mobile
+    window.location.href = 'https://www.m.me/61563452485945'
+
+    // Fallback if app doesn't open
+    setTimeout(() => {
+      window.location.href = 'https://m.me/ANv8e'
+    }, 800)
+
+    return
   }
+
+  // Open Facebook page on desktop
+  window.open('https://www.facebook.com/messages/e2ee/t/9404079399701394', '_blank')
+}
 
   return (
     <div className="min-h-screen bg-orange-50 px-6 pt-28 pb-12">
