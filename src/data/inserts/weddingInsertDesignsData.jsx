@@ -22,6 +22,12 @@ import redInsert1Inside from "../../assets/img/insert-designs-img/wedding/red-in
 import redInsert1Third from "../../assets/img/insert-designs-img/wedding/red-insert-1-third.png";
 import redInsert1Last from "../../assets/img/insert-designs-img/wedding/red-insert-1-last.png";
 
+// PINK INSERT DESIGNS
+import peachInsert1Front from "../../assets/img/insert-designs-img/wedding/peach-insert-1-front.png";
+import peachInsert1Inside from "../../assets/img/insert-designs-img/wedding/peach-insert-1-inside.png";
+import peachInsert1Third from "../../assets/img/insert-designs-img/wedding/peach-insert-1-third.png";
+import peachInsert1Last from "../../assets/img/insert-designs-img/wedding/peach-insert-1-last.png";
+
 // GREEN INSERT DESIGNS
 import greenInsert1Front from "../../assets/img/insert-designs-img/wedding/green-insert-1-front.png";
 import greenInsert1Inside from "../../assets/img/insert-designs-img/wedding/green-insert-1-inside.png";
@@ -83,7 +89,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Orange',
     type: 'traditional',
     title: 'Orange Inserts Set 1',
@@ -106,7 +112,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-2',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Orange',
     type: 'traditional',
     title: 'Orange Inserts Set 2',
@@ -127,7 +133,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-orange-set-3',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Orange',
     type: 'traditional',
     title: 'Orange Inserts Set 3',
@@ -148,7 +154,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Green',
     type: 'traditional',
     title: 'Green Inserts Set 1',
@@ -171,7 +177,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-2',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Green',
     type: 'traditional',
     title: 'Green Inserts Set 2',
@@ -194,7 +200,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-green-set-3',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Green',
     type: 'traditional',
     title: 'Green Inserts Set 3',
@@ -217,7 +223,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-red-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Red',
     type: 'traditional',
     title: 'Red Inserts Set 1',
@@ -240,7 +246,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-blue-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Blue',
     type: 'traditional',
     title: 'Blue Inserts Set 1',
@@ -263,7 +269,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-black-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Black',
     type: 'traditional',
     title: 'Black Inserts Set 1',
@@ -286,7 +292,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-black-set-2',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Black',
     type: 'traditional',
     title: 'Black Inserts Set 2',
@@ -309,7 +315,7 @@ const weddingInsertDesignsData = [
   {
     id: 'wedding-gold-set-1',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Yellow',
     type: 'traditional',
     title: 'Gold Inserts Set 1',
@@ -332,7 +338,7 @@ const weddingInsertDesignsData = [
    {
     id: 'wedding-blue-set-2',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Blue',
     type: 'traditional',
     title: 'Blue Inserts Set 2',
@@ -355,7 +361,7 @@ const weddingInsertDesignsData = [
    {
     id: 'wedding-blue-set-3',
     category: 'wedding',
-    designSlugs: ['traditional', 'pull-out'],
+    designSlugs: ['traditional', 'pull-out', 'flap'],
     motif: 'Blue',
     type: 'traditional',
     title: 'Blue Inserts Set 3',
@@ -372,6 +378,29 @@ const weddingInsertDesignsData = [
     cover: blueInsert3Front,
 
     colors: ['Blue'],
+    isActive: true,
+  },
+
+   {
+    id: 'wedding-peach-set-1',
+    category: 'wedding',
+    designSlugs: ['traditional', 'pull-out', 'flap'],
+    motif: 'Pink',
+    type: 'traditional',
+    title: 'Peach Inserts Set 1',
+    desc: 'Elegant peach-themed insert set for wedding invitations.',
+
+    pages: {
+      front: peachInsert1Front,
+      inside: peachInsert1Inside,
+      third: peachInsert1Third,
+      back: peachInsert1Last,
+    },
+
+    // used in grid preview
+    cover: peachInsert1Front,
+
+    colors: ['Peach'],
     isActive: true,
   },
 

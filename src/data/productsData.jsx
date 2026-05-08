@@ -68,6 +68,16 @@ const productsData = {
     },
   ],
 
+   debut: [
+    {
+      id: 'debut-invitation-card',
+      name: 'Debut Invitation Card',
+      price: 120,
+      unit: 'set',
+      description: 'Customized debut invitation card.',
+    },
+  ],
+
   baptismal: [
     {
       id: 'baptismal-invitation',

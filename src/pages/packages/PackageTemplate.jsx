@@ -27,6 +27,10 @@ function PackageTemplate({
   const addOnsParam = params.get('addons')
   const editItemId = params.get('editItemId')
   const selectedInsertId = params.get('insert')
+  
+  const [editingUnitPrice, setEditingUnitPrice] = useState(null)
+  const [orderMode, setOrderMode] = useState('product')
+  const [selectedPackage, setSelectedPackage] = useState(null)
 
   const selectedDesign =
     designsCatalog.find((item) => item.slug === designSlug) || null
@@ -34,9 +38,12 @@ function PackageTemplate({
   const selectedProduct = products[0] || null
   const priceParam = params.get('price')
 
-  const selectedDesignPrice = priceParam
-    ? Number(priceParam)
-    : selectedProduct?.price || 0
+  const selectedDesignPrice =
+    orderMode === 'product'
+      ? priceParam
+        ? Number(priceParam)
+        : selectedProduct?.price || 0
+      : selectedPackage?.price || 0
 
   const selectedDesignImage = useMemo(() => {
     if (!selectedDesign) return null
@@ -68,16 +75,43 @@ const filteredPackages = useMemo(() => {
   })
 }, [packages, selectedDesignType])
 
-  const [orderMode, setOrderMode] = useState('product')
-  const [quantity, setQuantity] = useState(1)
+  
+  const MIN_PRODUCT_QUANTITY = 10
+  const [quantity, setQuantity] = useState(MIN_PRODUCT_QUANTITY)
   const [addOnQuantities, setAddOnQuantities] = useState({})
-  const [selectedPackage, setSelectedPackage] = useState(null)
   const [toast, setToast] = useState({
     show: false,
     message: '',
   })
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [previewImage, setPreviewImage] = useState(null)
+  const [isAddedToCart, setIsAddedToCart] = useState(false)
+  
+
+  useEffect(() => {
+    if (!editItemId) return
+
+    const cartItem = cart.find((item) => item.id === editItemId)
+    if (!cartItem) return
+
+    setOrderMode(cartItem.orderMode || 'product')
+    setQuantity(Number(cartItem.quantity) || MIN_PRODUCT_QUANTITY)
+    setEditingUnitPrice(Number(cartItem.unitPrice) || null)
+
+    if (cartItem.orderMode === 'package' && cartItem.selectedPackage) {
+      setSelectedPackage(cartItem.selectedPackage)
+    }
+
+    if (cartItem.selectedAddOns?.length > 0) {
+      const restoredAddOns = {}
+
+      cartItem.selectedAddOns.forEach((addOn) => {
+        restoredAddOns[addOn.id] = Number(addOn.quantity) || 0
+      })
+
+      setAddOnQuantities(restoredAddOns)
+    }
+  }, [editItemId, cart])
 
   const browseDesignsLink = useMemo(() => {
     const baseLink =
@@ -123,7 +157,10 @@ const filteredPackages = useMemo(() => {
   }, [showHelpModal, previewImage])
 
   useEffect(() => {
-    const parsedQty = Math.max(1, parseInt(qtyParam || '1', 10) || 1)
+    const parsedQty = Math.max(
+      MIN_PRODUCT_QUANTITY,
+      parseInt(qtyParam || String(MIN_PRODUCT_QUANTITY), 10) || MIN_PRODUCT_QUANTITY
+    )
     setQuantity(parsedQty)
 
     if (!addOnsParam) {
@@ -153,7 +190,7 @@ const filteredPackages = useMemo(() => {
   }
 
   const decreaseQuantity = () => {
-    setQuantity((prev) => Math.max(1, Number(prev) - 1))
+    setQuantity((prev) => Math.max(MIN_PRODUCT_QUANTITY, Number(prev) - 1))
   }
 
   const increaseQuantity = () => {
@@ -162,7 +199,11 @@ const filteredPackages = useMemo(() => {
 
   const handleQuantityChange = (value) => {
     const qty = parseInt(value, 10)
-    setQuantity(Number.isNaN(qty) ? 1 : Math.max(1, qty))
+    setQuantity(
+      Number.isNaN(qty)
+        ? MIN_PRODUCT_QUANTITY
+        : Math.max(MIN_PRODUCT_QUANTITY, qty)
+    )
   }
 
   const getAddOnQuantity = (id) => {
@@ -226,7 +267,10 @@ const filteredPackages = useMemo(() => {
     ? selectedAddOns.reduce((total, item) => total + item.subtotal, 0)
     : 0
 
-  const safeQuantity = Math.max(1, Number(quantity) || 1)
+  const safeQuantity = Math.max(
+    MIN_PRODUCT_QUANTITY,
+    Number(quantity) || MIN_PRODUCT_QUANTITY
+  )
 
   const mainProductTotal =
   selectedDesign && orderMode === 'product'
@@ -241,12 +285,17 @@ const filteredPackages = useMemo(() => {
   const currentBuilderTotal = mainProductTotal + packageTotal + addOnsTotal
 
   const cartSubtotal = cart.reduce((total, item) => {
-    return total + (Number(item.price) || 0) * (Number(item.quantity) || 1)
-  }, 0)
+  const itemTotal =
+    Number(item.lineTotal) ||
+    Number(item.mainProductTotal) ||
+    Number(item.packageTotal) ||
+    Number(item.price) ||
+    0
 
-  const overallDisplayedTotal = editItemId
-    ? currentBuilderTotal
-    : cartSubtotal + currentBuilderTotal
+  return total + itemTotal
+}, 0)
+
+  const overallDisplayedTotal = currentBuilderTotal
 
   const selectedAddOnsSummary = addOns.filter(
     (item) => getAddOnQuantity(item.id) > 0
@@ -282,10 +331,10 @@ const filteredPackages = useMemo(() => {
           ? selectedPackage?.subtitle || ''
           : selectedProduct?.description || selectedProduct?.subtitle || '',
       price: currentBuilderTotal,
-      basePrice:
+      unitPrice:
         orderMode === 'package'
           ? Number(selectedPackage?.price || 0)
-          : Number(selectedProduct?.price || 0),
+          : Number(selectedDesignPrice || 0),
       quantity: orderMode === 'package' ? 1 : safeQuantity,
       unit: selectedProduct?.unit || 'set',
       designTitle: selectedDesign.title,
@@ -329,6 +378,12 @@ const filteredPackages = useMemo(() => {
     }
 
     addToCart(cartItem)
+
+    setIsAddedToCart(true)
+
+    setTimeout(() => {
+      setIsAddedToCart(false)
+    }, 2000)
 
     if (orderMode === 'package') {
       showToast(
@@ -551,6 +606,10 @@ const filteredPackages = useMemo(() => {
                       </p>
                     )}
 
+                    <p className="mt-2 text-sm text-red-500 font-semibold">
+                      Minimum Order: 10
+                    </p>
+
                     <div className="mt-5">
                       <Link
                         to={browseDesignsLink}
@@ -580,7 +639,10 @@ const filteredPackages = useMemo(() => {
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => setOrderMode('product')}
+                  onClick={() => {
+                    setOrderMode('product')
+                    setSelectedPackage(null)
+                  }}
                   className={`rounded-[1.5rem] border p-5 text-left transition ${
                     orderMode === 'product'
                       ? 'border-orange-500 bg-orange-50'
@@ -595,7 +657,9 @@ const filteredPackages = useMemo(() => {
 
                 <button
                   type="button"
-                  onClick={() => setOrderMode('package')}
+                  onClick={() => {
+                    setOrderMode('package')
+                  }}
                   className={`rounded-[1.5rem] border p-5 text-left transition ${
                     orderMode === 'package'
                       ? 'border-orange-500 bg-orange-50'
@@ -662,7 +726,7 @@ const filteredPackages = useMemo(() => {
 
                   <input
                     type="number"
-                    min="1"
+                    min={MIN_PRODUCT_QUANTITY}
                     disabled={!selectedDesign}
                     value={quantity}
                     onChange={(e) => handleQuantityChange(e.target.value)}
@@ -741,7 +805,7 @@ const filteredPackages = useMemo(() => {
                         )}
 
                         {isSelectedPackage && selectedDesign && (
-                          <span className="absolute right-6 top-6 rounded-full bg-gray-900 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                          <span className="absolute right-6 top-6 rounded-full bg-green-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
                             Selected
                           </span>
                         )}
@@ -763,9 +827,9 @@ const filteredPackages = useMemo(() => {
                             onClick={() => choosePackage(pkg)}
                             className={`mt-5 inline-block rounded-full px-6 py-2.5 text-sm font-semibold transition ${
                               !selectedDesign
-                                ? 'cursor-not-allowed bg-gray-200 text-gray-500'
+                                ? 'cursor-not-allowed bg-gray-200 text-green-500'
                                 : isSelectedPackage
-                                ? 'bg-gray-900 text-white hover:bg-black'
+                                ? 'bg-green-500 text-white hover:bg-green-600'
                                 : pkg.highlight
                                 ? 'bg-orange-500 text-white hover:bg-orange-600'
                                 : 'bg-gray-900 text-white hover:bg-black'
@@ -1059,17 +1123,8 @@ const filteredPackages = useMemo(() => {
                   </span>
                 </p>
 
-                {!editItemId && cartSubtotal > 0 && (
-                  <p>
-                    Already in cart:{' '}
-                    <span className="font-semibold text-gray-900">
-                      ₱{cartSubtotal.toLocaleString()}
-                    </span>
-                  </p>
-                )}
-
                 <p className="text-base">
-                  Overall total:{' '}
+                  Total:{' '}
                   <span className="font-bold text-orange-500">
                     ₱{overallDisplayedTotal.toLocaleString()}
                   </span>
@@ -1082,11 +1137,17 @@ const filteredPackages = useMemo(() => {
                 disabled={!canAddToCart}
                 className={`mt-5 inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition ${
                   canAddToCart
-                    ? 'bg-orange-500 text-white hover:bg-orange-600'
-                    : 'cursor-not-allowed bg-gray-200 text-gray-500'
+                  ? isAddedToCart
+                    ? 'bg-green-500 text-white'
+                    : 'bg-orange-500 text-white hover:bg-orange-600'
+                  : 'cursor-not-allowed bg-gray-200 text-gray-500'
                 }`}
               >
-                {editItemId ? 'Update Cart' : 'Add to Cart'}
+                {editItemId
+                  ? 'Update Cart'
+                  : isAddedToCart
+                  ? 'Added to Cart ✓'
+                  : 'Add to Cart'}
               </button>
 
               {!canAddToCart && (

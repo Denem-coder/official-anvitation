@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 const CartContext = createContext()
 
+const MIN_PRODUCT_QUANTITY = 10
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart')
@@ -13,8 +15,12 @@ export function CartProvider({ children }) {
   }, [cart])
 
   const recalculateCartItem = (item) => {
-    const safeQuantity = Math.max(1, Number(item.quantity) || 1)
-    const basePrice = Number(item.basePrice ?? item.price) || 0
+    const isPackageOrder = item.orderMode === 'package'
+    const safeQuantity = isPackageOrder
+      ? 1
+      : Math.max(MIN_PRODUCT_QUANTITY, Number(item.quantity) || MIN_PRODUCT_QUANTITY)
+
+    const unitPrice = Number(item.unitPrice) || 0
 
     const selectedAddOns = (item.selectedAddOns || []).map((addOn) => {
       const addOnPrice = Number(addOn.price) || 0
@@ -33,16 +39,18 @@ export function CartProvider({ children }) {
       0
     )
 
-    const mainProductTotal = basePrice * safeQuantity
-    const lineTotal = mainProductTotal + addOnsTotal
+    const mainProductTotal = isPackageOrder ? 0 : unitPrice * safeQuantity
+    const packageTotal = isPackageOrder ? unitPrice : 0
+    const lineTotal = mainProductTotal + packageTotal + addOnsTotal
 
     return {
       ...item,
       quantity: safeQuantity,
-      basePrice,
+      unitPrice,
       selectedAddOns,
-      addOnsTotal,
       mainProductTotal,
+      packageTotal,
+      addOnsTotal,
       lineTotal,
       price: lineTotal,
     }
@@ -57,9 +65,12 @@ export function CartProvider({ children }) {
       if (existingItem) {
         const mergedItem = {
           ...existingItem,
+          ...incomingItem,
           quantity:
-            (Number(existingItem.quantity) || 1) +
-            (Number(incomingItem.quantity) || 1),
+            incomingItem.orderMode === 'package'
+              ? 1
+              : (Number(existingItem.quantity) || MIN_PRODUCT_QUANTITY) +
+                (Number(incomingItem.quantity) || MIN_PRODUCT_QUANTITY),
         }
 
         return prevCart.map((item) =>
@@ -90,7 +101,10 @@ export function CartProvider({ children }) {
         item.id === id
           ? recalculateCartItem({
               ...item,
-              quantity: (Number(item.quantity) || 1) + 1,
+              quantity:
+                item.orderMode === 'package'
+                  ? 1
+                  : (Number(item.quantity) || MIN_PRODUCT_QUANTITY) + 1,
             })
           : item
       )
@@ -99,16 +113,20 @@ export function CartProvider({ children }) {
 
   const decreaseQuantity = (id) => {
     setCart((prevCart) =>
-      prevCart
-        .map((item) =>
-          item.id === id
-            ? recalculateCartItem({
-                ...item,
-                quantity: (Number(item.quantity) || 1) - 1,
-              })
-            : item
-        )
-        .filter((item) => item.quantity > 0)
+      prevCart.map((item) =>
+        item.id === id
+          ? recalculateCartItem({
+              ...item,
+              quantity:
+                item.orderMode === 'package'
+                  ? 1
+                  : Math.max(
+                      MIN_PRODUCT_QUANTITY,
+                      (Number(item.quantity) || MIN_PRODUCT_QUANTITY) - 1
+                    ),
+            })
+          : item
+      )
     )
   }
 
@@ -120,7 +138,10 @@ export function CartProvider({ children }) {
         const updatedAddOns = (item.selectedAddOns || [])
           .map((addOn) =>
             addOn.id === addOnId
-              ? { ...addOn, quantity: Math.max(0, Number(nextQuantity) || 0) }
+              ? {
+                  ...addOn,
+                  quantity: Math.max(0, Number(nextQuantity) || 0),
+                }
               : addOn
           )
           .filter((addOn) => addOn.quantity > 0)
@@ -221,6 +242,7 @@ export function CartProvider({ children }) {
         removeFromCart,
         clearCart,
         totalItems,
+        MIN_PRODUCT_QUANTITY,
       }}
     >
       {children}

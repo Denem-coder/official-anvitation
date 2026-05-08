@@ -208,7 +208,7 @@ function SouvenirsTemplate({
                   </p>
 
                   {selectedProduct.minQty && (
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-l text-black font-semibold">
                       Minimum order: {selectedProduct.minQty} pcs
                     </p>
                   )}

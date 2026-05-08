@@ -17,6 +17,9 @@ import passportred1 from '../assets/img/designs-img/passport-red-1.png'
 
 import fanblue from '../assets/img/designs-img/fan-blue.png'
 
+import flappeach from '../assets/img/designs-img/wedding/flap-1-peach-cover.png'
+import flapsagegreen from '../assets/img/designs-img/wedding/flap-2-sagegreen-cover.png'
+
 // BIRTHDAY
 import mickeymousetheme from '../assets/img/designs-img/birthday/traditional-1-mickey-cover.png'
 import onepiecetheme from '../assets/img/designs-img/birthday/traditional-2-onepiece-cover.png'
@@ -30,11 +33,6 @@ import scrollgold1cover from '../assets/img/designs-img/debut/scroll-1-gold-cove
 // BAPTISMAL
 import donaldduckcover from '../assets/img/designs-img/baptismal/traditional-1-donaldduck-cover.png'
 import mickeymousecover from '../assets/img/designs-img/baptismal/traditional-2-mickey-cover.png'
-
-// SOUVENIR
-import cardholderCover from "../assets/img/designs-img/souvenir/souvenir-1-cardholder.png";
-import refmagnetAcrylicCover from "../assets/img/designs-img/souvenir/souvenir-2-refmagnet-acrylic.png";
-import refmagnetFacecutCover from "../assets/img/designs-img/souvenir/souvenir-3-refmagnet-facecut.png";
 
 const designsData = {
   wedding: [
@@ -150,6 +148,42 @@ const designsData = {
           'Double-Sided Fan Invitation',
         ],
       },
+      {
+        slug: 'flap',
+        category: 'wedding',
+        cover: flapsagegreen,
+        images: [flapsagegreen, flappeach],
+        colorImages: {
+          // Blue: [flapsagegreen],
+          // Red: [flapsagegreen],
+          Pink: [flappeach],
+          Green: [flapsagegreen],  
+          // Orange: [flapsagegreen],
+          // Black: [flapsagegreen],  
+          // Yellow: [flapsagegreen]
+        },
+        title: 'Flap Invitation',
+        desc: 'A stylish flap-style wedding invitation with an elegant cover and insert card, perfect for a clean and modern look.',
+        price: 60,
+        isBestSeller: false,
+        sold: null,
+        micro: 'Includes customized flap cover, printed insert card, and ribbon accent',
+        tags: ['flap'],
+        colors: [
+          // { value: 'blue', label: 'Blue' },
+          // { value: 'red', label: 'Red' },
+          { value: 'pink', label: 'Pink / Peach' },
+          { value: 'green', label: 'Green / Sage Green' },
+          // { value: 'orange', label: 'Orange' },
+          // { value: 'black', label: 'Black' },
+          // { value: 'yellow', label: 'Yellow / Gold' },
+        ],
+        inclusions: [
+          'Customized Flap Cover',
+          'Printed Invitation Insert',
+          'Ribbon Accent',
+        ],
+      },
   ],
 
   birthday: [
@@ -215,7 +249,7 @@ const designsData = {
     },
     title: 'Scroll Invitation',
     desc: 'Elegant debut invitation with a luxurious scroll-inspired design.',
-    price: 65,
+    price: 120,
     isBestSeller: false,
     sold: null,
     micro: 'Includes scroll layout + premium envelope',
@@ -277,79 +311,6 @@ const designsData = {
     //   inclusions: [],
     // },
   ],
-
- souvenir: [
-  {
-    slug: 'acrylic-refmagnet',
-    category: 'souvenir',
-    cover: refmagnetAcrylicCover,
-    images: [refmagnetAcrylicCover],
-    colorImages: {
-      Acrylic: [refmagnetAcrylicCover],
-    },
-    title: 'Acrylic Ref Magnet',
-    desc: 'Premium acrylic ref magnet souvenir with a clean and glossy finish.',
-    price: 60,
-    isBestSeller: false,
-    sold: null,
-    micro: 'Glossy acrylic souvenir magnet',
-    tags: ['ref-magnet', 'acrylic'],
-    colors: [
-    { value: 'black', label: 'Black' },
-    ],
-    inclusions: [
-      'Customized Acrylic Ref Magnet',
-      'Glossy Photo Print',
-      'Magnetic Backing',
-    ],
-  },
-  {
-    slug: 'cardholder',
-    category: 'souvenir',
-    cover: cardholderCover,
-    images: [cardholderCover],
-    colorImages: {
-      Brown: [cardholderCover],
-    },
-    title: 'Card Holder',
-    desc: 'Elegant card holder souvenir designed as a useful keepsake for guests.',
-    price: 60,
-    isBestSeller: false,
-    sold: null,
-    micro: 'Practical souvenir with custom design',
-    tags: ['card-holder'],
-    colors: ['Brown'],
-    inclusions: [
-      'Customized Card Holder',
-      'Personalized Event Layout',
-      'Ready-to-Give Souvenir Piece',
-    ],
-  },
-  {
-    slug: 'facecut-refmagnet',
-    category: 'souvenir',
-    cover: refmagnetFacecutCover,
-    images: [refmagnetFacecutCover],
-    colorImages: {
-      Facecut: [refmagnetFacecutCover],
-    },
-    title: 'Face-Cut Ref Magnet',
-    desc: 'Fun and personalized face-cut ref magnet souvenir made for memorable events.',
-    price: 60,
-    isBestSeller: false,
-    sold: null,
-    micro: 'Personalized face-cut magnet',
-    tags: ['ref-magnet', 'face-cut'],
-    colors: [
-      { value: 'blue', label: 'Blue' },
-    ],
-    inclusions: [
-      'Customized Face-Cut Ref Magnet',
-      'Personalized Character Layout',
-      'Magnetic Backing',
-    ],
-  },
-],
 }
 
 export default designsData
