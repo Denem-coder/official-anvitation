@@ -827,7 +827,7 @@ const filteredPackages = useMemo(() => {
                             onClick={() => choosePackage(pkg)}
                             className={`mt-5 inline-block rounded-full px-6 py-2.5 text-sm font-semibold transition ${
                               !selectedDesign
-                                ? 'cursor-not-allowed bg-gray-200 text-green-500'
+                                ? 'cursor-not-allowed bg-gray-200 text-red-500'
                                 : isSelectedPackage
                                 ? 'bg-green-500 text-white hover:bg-green-600'
                                 : pkg.highlight

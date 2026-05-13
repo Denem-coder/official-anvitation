@@ -1,5 +1,7 @@
 import cardholder from '../assets/img/souvenirs-img/souvenir-1-cardholder.png'
 import acrylicRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-acrylic.png'
+import acrylicRefmagnetSpace from '../assets/img/souvenir-designs-img/souvenir-2-refmagnet-acrylic-space.png'
+import acrylicRefmagnetFlowers from '../assets/img/souvenir-designs-img/souvenir-2-refmagnet-acrylic-flowers.png'
 import facecutRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-facecut.png'
 import atmRefmagnet from '../assets/img/souvenirs-img/souvenir-2-refmagnet-atmsized.png'
 import glassCupCover from '../assets/img/souvenirs-img/souvenir-3-glasscup.png'
@@ -17,12 +19,18 @@ const souvenirsData = [
     bestSeller: true,
     image: acrylicRefmagnet,
     description: 'Clear acrylic magnet with vibrant photo print.',
-    colors: ['Black'],
+    colors: ['Space', 'Flowers'],
     designs: [
       {
-        id: 'acrylic-refmagnet-standard',
-        name: 'Standard Acrylic Design',
-        image: acrylicRefmagnet,
+        id: 'acrylic-refmagnet-space',
+        name: 'Space Design',
+        image: acrylicRefmagnetSpace,
+      },
+
+      {
+        id: 'acrylic-refmagnet-flowers',
+        name: 'Flowers Design',
+        image: acrylicRefmagnetFlowers,
       },
     ],
     gallery: [acrylicRefmagnet],
@@ -69,7 +77,7 @@ const souvenirsData = [
     id: 'card-holder',
     category: 'card-holder',
     name: 'Card Holder',
-    price: 15,
+    price: 70,
     unit: 'pc',
     minQty: 10,
     image: cardholder,

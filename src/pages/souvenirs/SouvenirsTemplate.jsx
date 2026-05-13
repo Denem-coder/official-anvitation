@@ -12,20 +12,17 @@ function SouvenirsTemplate({
 
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
-  const [selectedColor, setSelectedColor] = useState('')
   const [selectedDesign, setSelectedDesign] = useState(null)
 
   const openModal = (product) => {
     setSelectedProduct(product)
     setSelectedImage(product.image)
-    setSelectedColor(product.colors?.[0] || '')
     setSelectedDesign(null)
   }
 
   const closeModal = () => {
     setSelectedProduct(null)
     setSelectedImage(null)
-    setSelectedColor('')
     setSelectedDesign(null)
   }
 
@@ -44,15 +41,12 @@ function SouvenirsTemplate({
       params.set('design', selectedDesign.id)
     }
 
-    if (selectedColor) {
-      params.set('color', selectedColor)
-    }
-
     navigate(`/packages/souvenir?${params.toString()}`)
   }
 
   const needsDesign = selectedProduct?.designs?.length > 0
-  const canProceed = selectedProduct && (!needsDesign || selectedDesign)
+  const canProceed =
+    selectedProduct && (!needsDesign || selectedDesign)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-4 pt-28 pb-16">
@@ -142,17 +136,18 @@ function SouvenirsTemplate({
       {selectedProduct && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
           <div className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+
             <button
               type="button"
               onClick={closeModal}
               className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-700 shadow-md transition hover:bg-orange-50 hover:text-orange-500"
-              aria-label="Close modal"
             >
               ✕
             </button>
 
             <div className="overflow-y-auto p-4 pb-28 md:p-6">
               <div className="grid gap-6 md:grid-cols-2">
+
                 {/* LEFT IMAGE */}
                 <div>
                   <div className="overflow-hidden rounded-2xl bg-orange-50">
@@ -167,8 +162,8 @@ function SouvenirsTemplate({
                     <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
                       {selectedProduct.gallery.map((img, index) => (
                         <button
-                          type="button"
                           key={index}
+                          type="button"
                           onClick={() => setSelectedImage(img)}
                           className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border transition ${
                             selectedImage === img
@@ -208,38 +203,12 @@ function SouvenirsTemplate({
                   </p>
 
                   {selectedProduct.minQty && (
-                    <p className="mt-1 text-l text-black font-semibold">
+                    <p className="mt-1 text-sm font-semibold text-black">
                       Minimum order: {selectedProduct.minQty} pcs
                     </p>
                   )}
 
-                  {/* COLORS */}
-                  {selectedProduct.colors?.length > 0 && (
-                    <div className="mt-6">
-                      <h4 className="font-semibold text-gray-900">
-                        Choose motif / color
-                      </h4>
-
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {selectedProduct.colors.map((color) => (
-                          <button
-                            type="button"
-                            key={color}
-                            onClick={() => setSelectedColor(color)}
-                            className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                              selectedColor === color
-                                ? 'border-orange-500 bg-orange-500 text-white'
-                                : 'border-gray-200 bg-white text-gray-700 hover:border-orange-300 hover:text-orange-500'
-                            }`}
-                          >
-                            {color}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* DESIGNS */}
+                  {/* DESIGNS ONLY */}
                   {selectedProduct.designs?.length > 0 && (
                     <div className="mt-6">
                       <h4 className="font-semibold text-gray-900">
@@ -296,6 +265,7 @@ function SouvenirsTemplate({
                   : 'Next: Order Details'}
               </button>
             </div>
+
           </div>
         </div>
       )}

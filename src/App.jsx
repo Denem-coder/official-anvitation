@@ -4,6 +4,10 @@ import ScrollToTop from './components/ScrollToTop'
 import Footer from './components/Footer'
 import Cart from './pages/Cart'
 import { useCart } from './context/CartContext'
+import CheckoutPage from './pages/CheckoutPage'
+import OrderSuccessPage from './pages/OrderSuccessPage'
+import AdminOrdersPage from './pages/AdminOrdersPage'
+import TrackOrdersPage from './pages/TrackOrdersPage'
 
 import HomePage from './pages/HomePage'
 import DesignsPage from './pages/DesignsPage'
@@ -63,6 +67,10 @@ function App() {
 
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-success" element={<OrderSuccessPage />} />
+          <Route path="/admin/orders" element={<AdminOrdersPage />} />
+          <Route path="/track-order" element={<TrackOrdersPage />} />
         </Routes>
       </main>
 

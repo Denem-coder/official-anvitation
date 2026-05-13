@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 function Cart() {
@@ -63,69 +63,7 @@ function Cart() {
     return `${basePath}?${params.toString()}`
   }
 
-  const handleMessengerCheckout = () => {
-  if (cart.length === 0) return
-
-  const orderList = cart
-    .map((item, index) => {
-      const itemLineTotal = getItemLineTotal(item)
-
-      const orderTypeText =
-        item.orderMode === 'package'
-          ? `Package: ${
-              item.packageName ||
-              item.selectedPackage?.name ||
-              'Package Order'
-            }`
-          : `Product: ${item.productName || 'Build My Own'}`
-
-      const addOnsText =
-        item.selectedAddOns?.length > 0
-          ? `\nAdd-ons:\n${item.selectedAddOns
-              .map((addOn) => `- ${addOn.name} x${addOn.quantity}`)
-              .join('\n')}`
-          : ''
-
-      return `${index + 1}. ${item.title}
-${item.selectedColor ? `Motif/Color: ${item.selectedColor}\n` : ''}${orderTypeText}
-Quantity: ${item.quantity}${addOnsText}
-Total: ₱${itemLineTotal.toLocaleString()}`
-    })
-    .join('\n\n')
-
-  const message = `Hello! I would like to place an order:
-
-${orderList}
-
-Total Items: ${totalItems}
-Cart Total: ₱${cartSubtotal.toLocaleString()}
-
-Please send me the details. Thank you!`
-
-  navigator.clipboard.writeText(message).catch((error) => {
-    console.log('Clipboard failed:', error)
-  })
-
-  const isMobile =
-    /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(
-      navigator.userAgent
-    )
-
-  if (isMobile) {
-    // Open Messenger app on mobile
-    window.location.href = 'https://www.m.me/61563452485945'
-
-    // Fallback if app doesn't open
-    setTimeout(() => {
-      window.location.href = 'https://m.me/ANv8e'
-    }, 800)
-
-    return
-  }
-
-  // Open Facebook page on desktop
-  window.open('https://www.facebook.com/messages/e2ee/t/9404079399701394', '_blank')
-}
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-orange-50 px-6 pt-28 pb-12">
@@ -349,22 +287,13 @@ Please send me the details. Thank you!`
             </div>
 
             <p className="mb-4 mt-6 text-center text-sm text-gray-600">
-              When you click{' '}
-              <span className="font-semibold text-orange-500">Checkout</span>, you’ll be
-              redirected to Messenger.
-              <br />
-              Your order details will be copied automatically.
-              <br />
-              Simply{' '}
-              <span className="font-semibold text-orange-500">paste</span>{' '}
-              the message and tap{' '}
-              <span className="font-semibold text-orange-500">Send</span>{' '}
-              to place your order.
-          </p>
+              Proceed to checkout to provide your invitation details,
+              delivery information, and payment details.
+            </p>
 
             <div className="mt-6 flex flex-col gap-4 md:flex-row">
               <button
-                onClick={handleMessengerCheckout}
+                onClick={() => navigate('/checkout')}
                 className="w-full rounded-full bg-orange-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-orange-600"
               >
                 Checkout
@@ -382,6 +311,6 @@ Please send me the details. Thank you!`
       </div>
     </div>
   )
-}
 
+}
 export default Cart

@@ -15,46 +15,49 @@ export function CartProvider({ children }) {
   }, [cart])
 
   const recalculateCartItem = (item) => {
-    const isPackageOrder = item.orderMode === 'package'
-    const safeQuantity = isPackageOrder
-      ? 1
-      : Math.max(MIN_PRODUCT_QUANTITY, Number(item.quantity) || MIN_PRODUCT_QUANTITY)
+  const isPackageOrder = item.orderMode === 'package'
 
-    const unitPrice = Number(item.unitPrice) || 0
+  const safeQuantity = isPackageOrder
+    ? 1
+    : Math.max(MIN_PRODUCT_QUANTITY, Number(item.quantity) || MIN_PRODUCT_QUANTITY)
 
-    const selectedAddOns = (item.selectedAddOns || []).map((addOn) => {
-      const addOnPrice = Number(addOn.price) || 0
-      const addOnQuantity = Math.max(0, Number(addOn.quantity) || 0)
+  // ✅ FIX: fallback to item.price if unitPrice missing
+  const unitPrice = Number(item.unitPrice ?? item.price ?? 0)
 
-      return {
-        ...addOn,
-        price: addOnPrice,
-        quantity: addOnQuantity,
-        subtotal: addOnPrice * addOnQuantity,
-      }
-    })
-
-    const addOnsTotal = selectedAddOns.reduce(
-      (total, addOn) => total + addOn.subtotal,
-      0
-    )
-
-    const mainProductTotal = isPackageOrder ? 0 : unitPrice * safeQuantity
-    const packageTotal = isPackageOrder ? unitPrice : 0
-    const lineTotal = mainProductTotal + packageTotal + addOnsTotal
+  const selectedAddOns = (item.selectedAddOns || []).map((addOn) => {
+    const addOnPrice = Number(addOn.price) || 0
+    const addOnQuantity = Math.max(0, Number(addOn.quantity) || 0)
 
     return {
-      ...item,
-      quantity: safeQuantity,
-      unitPrice,
-      selectedAddOns,
-      mainProductTotal,
-      packageTotal,
-      addOnsTotal,
-      lineTotal,
-      price: lineTotal,
+      ...addOn,
+      price: addOnPrice,
+      quantity: addOnQuantity,
+      subtotal: addOnPrice * addOnQuantity,
     }
+  })
+
+  const addOnsTotal = selectedAddOns.reduce(
+    (total, addOn) => total + addOn.subtotal,
+    0
+  )
+
+  const mainProductTotal = isPackageOrder ? 0 : unitPrice * safeQuantity
+  const packageTotal = isPackageOrder ? unitPrice : 0
+
+  const lineTotal = mainProductTotal + packageTotal + addOnsTotal
+
+  return {
+    ...item,
+    quantity: safeQuantity,
+    unitPrice,
+    selectedAddOns,
+    mainProductTotal,
+    packageTotal,
+    addOnsTotal,
+    lineTotal,
+    price: lineTotal,
   }
+}
 
   const addToCart = (product) => {
     setCart((prevCart) => {

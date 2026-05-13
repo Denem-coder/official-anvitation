@@ -15,14 +15,18 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
   )
 
   const souvenirId = params.get('souvenir')
-  const variantId = params.get('variant')
+  const designId = params.get('design')
   const selectedColor = params.get('color')
 
   const selectedSouvenir =
-    souvenirsData.find((item) => item.id === souvenirId) || null
+    souvenirsData.find((item) => String(item.id) === String(souvenirId)) || null
 
-  const selectedVariant =
-    selectedSouvenir?.variants?.find((v) => v.id === variantId) || null
+  const selectedDesign =
+    selectedSouvenir?.designs?.find(
+      (d) => String(d.id) === String(designId)
+    ) || null
+
+  const selectedVariant = null
 
   const activePrice = Number(
     selectedVariant?.price ?? selectedSouvenir?.price ?? 0
@@ -69,6 +73,13 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
 
   const overallTotal = cartSubtotal + currentTotal
 
+  if (!selectedSouvenir) return
+
+  if (activePrice <= 0) {
+    console.warn('Invalid price detected')
+    return
+  }
+
   const canAddToCart =
     selectedSouvenir &&
     (orderMode === 'product' ||
@@ -88,14 +99,21 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
   }
 
   const choosePackage = (pkg) => {
-    setSelectedPackage((prev) => (prev?.id === pkg.id ? null : pkg))
-  }
+      setSelectedPackage((prev) => (prev?.id === pkg.id ? null : pkg))
+    }
 
-  const handleAddToCart = () => {
+    const handleAddToCart = () => {
     if (!canAddToCart) return
 
     const displayName = selectedVariant?.name || selectedSouvenir.name
     const displayImage = selectedVariant?.image || selectedSouvenir.image
+
+    const unitPrice =
+      orderMode === 'package'
+        ? Number(selectedPackage?.price || 0)
+        : activePrice
+
+    const quantity = orderMode === 'package' ? 1 : safeQuantity
 
     const cartItem = {
       id: `${selectedSouvenir.id}-${selectedVariant?.id || 'default'}-${
@@ -117,16 +135,16 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
       desc:
         orderMode === 'package'
           ? selectedPackage.subtitle || ''
-          : selectedVariant?.description || selectedSouvenir.description || '',
+          : selectedVariant?.description ||
+            selectedSouvenir.description ||
+            '',
 
-      price: currentTotal,
+      unitPrice, // ✅ IMPORTANT FIX
 
-      basePrice:
-        orderMode === 'package'
-          ? Number(selectedPackage?.price || 0)
-          : activePrice,
+      quantity,
 
-      quantity: orderMode === 'package' ? 1 : safeQuantity,
+      price: unitPrice * quantity, // ✅ THIS is what CartContext expects
+
       unit: activeUnit,
       image: displayImage,
       orderMode,
@@ -153,20 +171,17 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
           ? {
               id: selectedPackage.id,
               name: selectedPackage.name,
-              title: selectedPackage.title,
               subtitle: selectedPackage.subtitle,
               price: Number(selectedPackage.price),
               features: selectedPackage.features || [],
-              variantIds: selectedPackage.variantIds || [],
             }
           : null,
-
-      productTotal,
-      packageTotal,
     }
 
     addToCart(cartItem)
     navigate('/cart')
+
+    console.log('CART ITEM:', cartItem)
   }
 
   return (
@@ -234,10 +249,10 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
                       {selectedSouvenir.name}
                     </p>
 
-                    {selectedVariant && (
+                    {selectedDesign && (
                       <p className="mt-1 text-sm text-gray-700">
-                        <span className="font-medium">Style:</span>{' '}
-                        {selectedVariant.name}
+                        <span className="font-medium">Design:</span>{' '}
+                        {selectedDesign.name}
                       </p>
                     )}
 
@@ -486,10 +501,10 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
                       {selectedSouvenir.name}
                     </p>
 
-                    {selectedVariant && (
+                    {selectedDesign && (
                       <p>
-                        <span className="font-medium">Style:</span>{' '}
-                        {selectedVariant.name}
+                        <span className="font-medium">Design:</span>{' '}
+                        {selectedDesign.name}
                       </p>
                     )}
 
