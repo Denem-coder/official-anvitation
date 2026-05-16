@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { db } from "../firebase/config";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 
 function TrackOrdersPage() {
   const [orderId, setOrderId] = useState("");
@@ -8,7 +13,6 @@ function TrackOrdersPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ YOUR REAL ORDER FLOW
   const steps = [
     "Pending",
     "Confirmed",
@@ -18,7 +22,6 @@ function TrackOrdersPage() {
     "Completed",
   ];
 
-  // ✅ STATUS MAPPING (MATCHES YOUR SYSTEM)
   const getStepIndex = (status) => {
     const map = {
       Pending: 0,
@@ -32,27 +35,25 @@ function TrackOrdersPage() {
     return map[status] ?? 0;
   };
 
-  const handleTrackOrder = async (e) => {
+  const handleTrackOrder = (e) => {
     e.preventDefault();
+
     setLoading(true);
     setError("");
     setOrder(null);
 
-    try {
-      if (!orderId.trim()) {
-        setError("Please enter your Order Number.");
-        setLoading(false);
-        return;
-      }
+    if (!orderId.trim()) {
+      setError("Please enter your order number.");
+      setLoading(false);
+      return;
+    }
 
-      // ✅ MATCH YOUR FIRESTORE FIELD
-      const q = query(
-        collection(db, "orders"),
-        where("orderNumber", "==", orderId.trim())
-      );
+    const q = query(
+      collection(db, "orders"),
+      where("orderNumber", "==", orderId.trim())
+    );
 
-      const querySnapshot = await getDocs(q);
-
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       if (!querySnapshot.empty) {
         const docSnap = querySnapshot.docs[0];
 
@@ -60,187 +61,185 @@ function TrackOrdersPage() {
           id: docSnap.id,
           ...docSnap.data(),
         });
-      } else {
-        setError("We couldn’t find your order. Please check your Order Number.");
-      }
-    } catch (err) {
-      console.error(err);
-      setError("Something went wrong while fetching your order.");
-    }
 
-    setLoading(false);
+        setError("");
+      } else {
+        setOrder(null);
+        setError(
+          "We couldn't find your order. Please check your order number."
+        );
+      }
+
+      setLoading(false);
+    });
+
+    // optional: store unsubscribe if you want cleanup later
+    return unsubscribe;
   };
 
-  const isCancelled = order?.status === "Cancelled";
   const currentStep = order ? getStepIndex(order.status) : -1;
 
+  const isCancelled = order?.status === "Cancelled";
+
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-20">
+    <div className="min-h-screen bg-gray-50 mt-20">
 
-      {/* HEADER */}
-      <h1 className="text-3xl font-bold mb-2">Track Your Order</h1>
-      <p className="text-gray-500 mb-6">
-        Enter your Order Number (e.g. ANV-1778643709867)
-      </p>
+      {/* HERO */}
+      <section className="bg-gradient-to-r from-orange-500 to-orange-400 text-white py-16">
 
-      {/* SEARCH */}
-      <form
-        onSubmit={handleTrackOrder}
-        className="flex gap-2 bg-gray-100 p-3 rounded-lg"
-      >
-        <input
-          value={orderId}
-          onChange={(e) => setOrderId(e.target.value)}
-          placeholder="Enter Order Number"
-          className="flex-1 p-2 border rounded bg-white"
-        />
+        <div className="max-w-6xl mx-auto px-6 text-center">
 
-        <button className="bg-orange-500 text-white px-5 rounded">
-          Track
-        </button>
-      </form>
+          <h1 className="text-4xl md:text-5xl font-bold">
+            Track Your Order
+          </h1>
 
-      {/* LOADING */}
-      {loading && (
-        <p className="mt-4 text-gray-500">Searching order...</p>
-      )}
+          <p className="mt-4 text-lg opacity-90 max-w-2xl mx-auto">
+            Stay updated on your invitation order from confirmation up to completion.
+          </p>
 
-      {/* ERROR */}
-      {error && (
-        <p className="mt-4 text-red-500 font-medium">{error}</p>
-      )}
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
 
-      {/* ORDER CARD */}
-      {order && (
-        <div className="mt-8 border rounded-xl p-5 shadow-sm bg-white">
-
-          {/* HEADER */}
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">
-              Order #{order.orderNumber}
-            </h2>
-
-            <span
-              className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                order.status === "Completed"
-                  ? "bg-green-100 text-green-600"
-                  : order.status === "Cancelled"
-                  ? "bg-red-100 text-red-600"
-                  : "bg-orange-100 text-orange-600"
-              }`}
-            >
-              {order.status}
-            </span>
-          </div>
-
-          {/* CANCELLED STATE */}
-          {isCancelled ? (
-            <div className="mt-6 p-4 bg-red-100 text-red-600 rounded-lg font-semibold text-center">
-              ❌ This order has been cancelled
-            </div>
-          ) : (
-            <>
-              {/* PROGRESS TRACKER */}
-              <div className="mt-6">
-                <h3 className="font-semibold mb-3">Order Progress</h3>
-
-                <div className="flex justify-between relative">
-                  <div className="absolute top-4 left-0 right-0 h-1 bg-gray-200" />
-
-                  {steps.map((step, index) => {
-                    const done = index <= currentStep;
-
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center w-1/5 z-10"
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                            done
-                              ? "bg-orange-500 text-white"
-                              : "bg-gray-300 text-gray-600"
-                          }`}
-                        >
-                          {index + 1}
-                        </div>
-
-                        <p className="text-xs mt-2 text-center">
-                          {step}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* DETAILS */}
-          <div className="mt-6 grid grid-cols-2 gap-4 text-sm text-gray-600">
-
-            <div>
-              <p className="font-semibold">Customer</p>
-              <p>{order.customerName}</p>
+            <div className="bg-white/20 px-5 py-3 rounded-full text-sm">
+              📦 Real-time Status
             </div>
 
-            <div>
-              <p className="font-semibold">Phone</p>
-              <p>{order.phone}</p>
+            <div className="bg-white/20 px-5 py-3 rounded-full text-sm">
+              🎨 Design Progress
             </div>
 
-            <div>
-              <p className="font-semibold">Payment</p>
-              <p>{order.paymentMethod}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">Downpayment</p>
-              <p>₱{order.downpayment}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">Event Date</p>
-              <p>{order.eventDate}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">Delivery</p>
-              <p>{order.deliveryMethod}</p>
+            <div className="bg-white/20 px-5 py-3 rounded-full text-sm">
+              🚚 Pickup Updates
             </div>
 
           </div>
-
-          {/* ITEMS */}
-          {order.items?.length > 0 && (
-            <div className="mt-6">
-              <h3 className="font-semibold mb-2">Items</h3>
-
-              <div className="space-y-2">
-                {order.items.map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between border-b py-1 text-sm"
-                  >
-                    <span>
-                      {item.title} × {item.quantity}
-                    </span>
-                    <span>₱{item.lineTotal}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* NOTES */}
-          {order.notes && (
-            <div className="mt-4 p-3 bg-gray-50 rounded text-sm">
-              <strong>Notes:</strong> {order.notes}
-            </div>
-          )}
 
         </div>
-      )}
+
+      </section>
+
+      <div className="max-w-5xl mx-auto px-6 -mt-8">
+
+        {/* SEARCH CARD */}
+        <div className="bg-white rounded-3xl shadow-xl p-8">
+
+          <h2 className="text-2xl font-bold">
+            Enter Your Order Number
+          </h2>
+
+          <p className="text-gray-500 mt-2 mb-6">
+            Example: <span className="font-semibold">ANV-1778643709867</span>
+          </p>
+
+          <form
+            onSubmit={handleTrackOrder}
+            className="flex flex-col md:flex-row gap-3"
+          >
+
+            <input
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+              placeholder="Enter Order Number"
+              className="flex-1 rounded-xl border p-4 outline-none focus:border-orange-500"
+            />
+
+            <button
+              className="bg-orange-500 text-white p-5 rounded-3xl font-semibold hover:bg-orange-600 transition"
+            >
+              Track Order
+            </button>
+
+          </form>
+
+        </div>
+
+        {/* LOADING */}
+        {loading && (
+          <div className="bg-white rounded-3xl p-8 mt-8 text-center shadow">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+            <p className="mt-4 text-gray-500">
+              Searching for your order...
+            </p>
+          </div>
+        )}
+
+        {/* ERROR */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-3xl p-6 mt-8">
+            <p className="font-semibold text-red-600">{error}</p>
+          </div>
+        )}
+
+        {/* ORDER */}
+        {order && (
+          <div className="bg-white rounded-3xl shadow-xl p-8 mt-8">
+
+            <div className="flex flex-col md:flex-row justify-between gap-5">
+
+              <div>
+                <h2 className="text-3xl font-bold">
+                  {order.orderNumber}
+                </h2>
+
+                <p className="text-gray-500 mt-1">
+                  Customer: {order.customerName}
+                </p>
+
+                <p className="text-gray-500">
+                  Event: {order.eventDate}
+                </p>
+              </div>
+
+              <span
+                className={`p-3 flex justify-center items-center rounded-2xl font-semibold ${
+                  order.status === "Completed"
+                    ? "bg-green-100 text-green-600"
+                    : order.status === "Cancelled"
+                    ? "bg-red-100 text-red-600"
+                    : "bg-orange-100 text-orange-600"
+                }`}
+              >
+                {order.status}
+              </span>
+
+            </div>
+
+            {/* STATUS FLOW */}
+            {!isCancelled && (
+              <div className="mt-10 space-y-3">
+                {steps.map((step, index) => {
+                  const done = index <= currentStep;
+
+                  return (
+                    <div key={index} className="flex items-center gap-3">
+
+                      <div
+                        className={`w-8 h-8 flex items-center justify-center rounded-full font-bold ${
+                          done ? "bg-orange-500 text-white" : "bg-gray-300"
+                        }`}
+                      >
+                        {index + 1}
+                      </div>
+
+                      <p className={done ? "text-black" : "text-gray-400"}>
+                        {step}
+                      </p>
+
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {isCancelled && (
+              <div className="mt-8 p-5 rounded-2xl bg-red-100 text-red-600 text-center font-semibold">
+                ❌ This order has been cancelled.
+              </div>
+            )}
+
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

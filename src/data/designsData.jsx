@@ -77,7 +77,7 @@ const designsData = {
         },
         title: 'Passport Invitation',
         desc: 'Elegant passport invitation.',
-        price: 100,
+        price: 120,
         isBestSeller: false,
         sold: null,
         micro: "Includes passport + boardpass",

@@ -12,14 +12,23 @@ export default function CheckoutForm() {
     phone: '',
     email: '',
     facebook: '',
-    foundUs: '',
+    fulfillment: '',
+    recipientName: '',
+    recipientPhone: '',
+    address: '',
+    landmark: '',
     eventDate: '',
+    foundUs: '',
+    notes: '',
+    agreement: false,
   })
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     })
   }
 
@@ -36,11 +45,11 @@ export default function CheckoutForm() {
 
       cartItems.forEach((item, index) => {
         orderSummary += `
-${index + 1}. ${item.name || item.title}
-Quantity: ${item.quantity}
-Price: ₱${Number(item.price || 0).toLocaleString()}
-------------------------
-`
+        ${index + 1}. ${item.name || item.title}
+        Quantity: ${item.quantity}
+        Price: ₱${Number(item.price || 0).toLocaleString()}
+        ------------------------
+        `
       })
 
       // SAVE TO FIRESTORE / ADMIN DASHBOARD
@@ -56,52 +65,14 @@ Price: ₱${Number(item.price || 0).toLocaleString()}
         return
       }
 
-      // MESSAGE FOR MESSENGER
-      const message = `
-NEW ORDER - ANVITATION
-
-ORDER NUMBER
-------------------------
-${result.orderNumber}
-
-ORDER SUMMARY
-------------------------
-${orderSummary}
-
-Please review my order details. Thank you!
-`
-
-      // COPY TO CLIPBOARD
-      await navigator.clipboard.writeText(message)
-
-      // SHOW POPUP INSTRUCTION
-      alert(
-        'Order submitted successfully!\n\nOrder summary has been copied.\n\nPlease paste the message in Messenger and send it to continue.'
-      )
-
-      // DETECT DEVICE
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(
-        navigator.userAgent
-      )
-
-      // OPEN MESSENGER
-      const messengerURL = isMobile
-        ? 'https://www.m.me/61563452485945'
-        : 'https://www.facebook.com/messages/t/61563452485945'
-
-      window.open(messengerURL, '_blank')
-
       // CLEAR CART
       clearCart()
 
-      // REDIRECT TO SUCCESS PAGE
-      setTimeout(() => {
-        window.location.href = `/order-success?order=${result.orderNumber}`
-      }, 1500)
+      // DIRECT REDIRECT TO SUCCESS PAGE
+      window.location.href = `/order-success?order=${result.orderNumber}`
 
     } catch (error) {
       console.log(error)
-
       alert('Something went wrong while submitting your order.')
     }
 
@@ -157,20 +128,22 @@ Please review my order details. Thank you!
                 type="email"
                 placeholder="Email Address"
                 className="rounded-xl border p-3 outline-none focus:border-orange-500"
+                required
               />
 
               <input
                 name="facebook"
                 onChange={handleChange}
                 type="text"
-                placeholder="Facebook Name (Optional)"
+                placeholder="Facebook Name"
                 className="rounded-xl border p-3 outline-none focus:border-orange-500"
+                required
               />
 
             </div>
           </section>
 
-          {/* EVENT DATE */}
+          {/* EVENT INFORMATION */}
           <section>
             <h2 className="mb-4 text-xl font-semibold">
               Event Information
@@ -185,6 +158,97 @@ Please review my order details. Thank you!
             />
           </section>
 
+          {/* ORDER FULFILLMENT */}
+          <section>
+            <h2 className="mb-4 text-xl font-semibold">
+              Order Fulfillment
+            </h2>
+
+            <div className="space-y-4">
+
+              <select
+                name="fulfillment"
+                onChange={handleChange}
+                value={formData.fulfillment}
+                className="w-full rounded-xl border p-3 outline-none focus:border-orange-500"
+                required
+              >
+                <option value="">
+                  Select Fulfillment Method
+                </option>
+
+                <option value="Pickup">
+                  Pickup
+                </option>
+
+                <option value="Delivery">
+                  Delivery
+                </option>
+              </select>
+
+              {/* PICKUP ADDRESS */}
+              {formData.fulfillment === 'Pickup' && (
+                <div className="rounded-2xl border bg-gray-50 p-4">
+                  <p className="font-medium text-gray-800">
+                    Pickup Location
+                  </p>
+
+                  <p className="mt-1 text-gray-600">
+                    42 Telbang, Bayambang, Pangasinan
+                  </p>
+
+                  <p className="mt-2 text-sm text-orange-600">
+                    Please coordinate with us first before visiting for pickup.
+                  </p>
+                </div>
+              )}
+
+              {/* DELIVERY FIELDS */}
+              {formData.fulfillment === 'Delivery' && (
+                <div className="grid gap-4 md:grid-cols-2">
+
+                  <input
+                    name="recipientName"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="Recipient Name"
+                    className="rounded-xl border p-3 outline-none focus:border-orange-500"
+                    required
+                  />
+
+                  <input
+                    name="recipientPhone"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="Recipient Contact Number"
+                    className="rounded-xl border p-3 outline-none focus:border-orange-500"
+                    required
+                  />
+
+                  <input
+                    name="address"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="Complete Delivery Address"
+                    className="rounded-xl border p-3 outline-none focus:border-orange-500 md:col-span-2"
+                    required
+                  />
+
+                  <input
+                    name="landmark"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="Landmark"
+                    className="rounded-xl border p-3 outline-none focus:border-orange-500 md:col-span-2"
+                    required
+                  />
+
+                </div>
+              )}
+
+            </div>
+          </section>
+
           {/* HOW DID YOU FIND US */}
           <section>
             <h2 className="mb-4 text-xl font-semibold">
@@ -195,8 +259,12 @@ Please review my order details. Thank you!
               name="foundUs"
               onChange={handleChange}
               className="w-full rounded-xl border p-3 outline-none focus:border-orange-500"
+              required
             >
-              <option value="">Select an option</option>
+              <option value="">
+                Select an option
+              </option>
+
               <option>Facebook Page</option>
               <option>Facebook Ads</option>
               <option>TikTok</option>
@@ -208,13 +276,51 @@ Please review my order details. Thank you!
             </select>
           </section>
 
+          {/* ADDITIONAL NOTES */}
+          <section>
+            <h2 className="mb-4 text-xl font-semibold">
+              Additional Notes
+            </h2>
+
+            <textarea
+              name="notes"
+              onChange={handleChange}
+              rows="4"
+              placeholder="Enter additional instructions (optional)"
+              className="w-full rounded-xl border p-3 outline-none focus:border-orange-500"
+            />
+          </section>
+
+          {/* AGREEMENT */}
+          <section className="rounded-2xl border bg-orange-50 p-5">
+
+            <label className="flex items-start gap-3 cursor-pointer">
+
+              <input
+                type="checkbox"
+                name="agreement"
+                checked={formData.agreement}
+                onChange={handleChange}
+                required
+                className="mt-1 h-5 w-5"
+              />
+
+              <span className="text-sm text-gray-700">
+                I understand that production begins only after
+                downpayment confirmation.
+              </span>
+
+            </label>
+
+          </section>
+
           {/* SUBMIT BUTTON */}
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-xl bg-orange-500 py-3 font-semibold text-white transition hover:bg-orange-600 disabled:opacity-70"
           >
-            {loading ? 'Submitting Order...' : 'Continue to Messenger'}
+            {loading ? 'Submitting Order...' : 'Submit Order'}
           </button>
 
         </form>

@@ -546,9 +546,8 @@ const filteredPackages = useMemo(() => {
               Pick a design first before ordering.
             </p>
 
-            <p className="mt-2 text-sm text-gray-600">
-              You can view our packages and extras below, but you need to choose a
-              design first before selecting them.
+            <p className="mt-2 text-sm text-red-600">
+              Choose a design first to view all the packages available for that particular design.
             </p>
 
             <Link
@@ -623,6 +622,7 @@ const filteredPackages = useMemo(() => {
               </div>
             )}
 
+            {selectedDesign && (
             <div className="mb-8 rounded-[2rem] border border-gray-200 bg-white p-4 shadow-sm md:p-6">
               <div className="text-center">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
@@ -673,6 +673,7 @@ const filteredPackages = useMemo(() => {
                 </button>
               </div>
             </div>
+            )}
 
             {orderMode === 'product' && selectedProduct && (
               <div
@@ -753,7 +754,9 @@ const filteredPackages = useMemo(() => {
               </div>
             )}
 
-            {orderMode === 'package' && filteredPackages.length > 0 && (
+            {orderMode === 'package' &&
+            selectedDesign &&
+            filteredPackages.length > 0 && (
               <div
                 className={`mb-8 overflow-hidden rounded-[2rem] border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)] ${
                   selectedDesign ? 'border-gray-200' : 'border-gray-200 opacity-85'
@@ -863,7 +866,7 @@ const filteredPackages = useMemo(() => {
               </div>
             )}
 
-            {addOns.length > 0 && (
+            {selectedDesign && addOns.length > 0 && (
               <div
                 className={`mb-8 overflow-hidden rounded-[2rem] border bg-white shadow-sm ${
                   selectedDesign ? 'border-orange-100' : 'border-gray-200 opacity-85'

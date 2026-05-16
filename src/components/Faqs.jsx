@@ -5,7 +5,7 @@ function Faqs() {
     {
       question: "How do I place an order?",
       answer:
-        "Choose your design, select a package or quantity, then add it to your cart. Go to your cart then proceed to checkout via Messenger and send your order. We’ll guide you through customization, confirmation, and payment."
+        "Choose your design, select a package or quantity, then add it to your cart. Proceed to checkout and fill out your order details. Once submitted, your order will be recorded in our system and you can track its status anytime.",
     },
     {
       question: "Do you provide layout/design?",
@@ -15,22 +15,27 @@ function Faqs() {
     {
       question: "How long is the production time?",
       answer:
-        "Usually 3–5 days depending on quantity. Rush orders are also available.",
+        "Usually 3–5 days depending on quantity. Rush orders are also available depending on schedule and workload.",
     },
     {
       question: "Do you accept rush orders?",
       answer:
-        "Yes, we accept rush orders depending on availability. Additional fees may apply.",
+        "Yes, we accept rush orders depending on availability. Additional fees may apply for priority processing.",
     },
     {
       question: "Do you offer delivery?",
       answer:
-        "Yes! We offer nationwide shipping through trusted courier services. Delivery fees may vary based on your location, but we provide free delivery within downtown Bayambang only.",
+        "Yes! We offer nationwide shipping through trusted courier services. Delivery fees may vary based on your location, and we also offer free pickup at our shop in 42 Telbang, Bayambang, Pangasinan.",
     },
     {
       question: "What are your payment methods?",
       answer:
-        "We accept GCash, Maya, bank transfer, and cash payments.",
+        "We accept GCash, Maya, or bank transfer. Payment instructions will be provided after order submission or during confirmation.",
+    },
+    {
+      question: "Can I track my order?",
+      answer:
+        "Yes. After placing your order, you will receive an order number which you can use on our Track Order page to see real-time updates on your order status.",
     },
   ];
 

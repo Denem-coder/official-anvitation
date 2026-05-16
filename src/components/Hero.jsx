@@ -34,16 +34,22 @@ const slides = [
     image: hero1,
     mobileImage: hero1Mobile,
     ...buttonThemes.blue,
+    link: "/designs",
+    buttonText: "Browse Designs",
   },
   {
     image: hero2,
     mobileImage: hero2Mobile,
     ...buttonThemes.blue,
+    link: "/designs",
+    buttonText: "Browse Designs",
   },
   {
     image: hero3,
     mobileImage: hero3Mobile,
     ...buttonThemes.blue,
+    link: "/souvenirs",
+    buttonText: "View Souvenirs",
   },
 ];
 
@@ -133,7 +139,7 @@ function Hero() {
             >
               <div className="flex justify-center md:justify-start">
                 <Link
-                  to="/designs"
+                  to={slide.link}
                   className="mt-28 rounded-full border px-8 py-3 text-center text-sm font-bold shadow-lg transition duration-300 hover:scale-105 md:px-10 md:text-base"
                   style={{
                     backgroundColor: slide.primary.bg,
@@ -141,7 +147,7 @@ function Hero() {
                     borderColor: slide.primary.border,
                   }}
                 >
-                  Browse Designs
+                  {slide.buttonText}
                 </Link>
               </div>
             </div>

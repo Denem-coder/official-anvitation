@@ -1,84 +1,132 @@
-import { useSearchParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-function OrderSuccessPage() {
+export default function OrderSuccessPage() {
   const [params] = useSearchParams()
-
   const orderNumber = params.get('order')
 
+  const [copied, setCopied] = useState(false)
+
+  const [order, setOrder] = useState(null)
+
+  const copyOrderNumber = async () => {
+    await navigator.clipboard.writeText(orderNumber)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const openMessenger = () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    const url = isMobile
+      ? 'https://www.m.me/61563452485945'
+      : 'https://www.facebook.com/messages/t/61563452485945'
+
+    window.open(url, '_blank')
+  }
+
   return (
-    <div className="max-w-2xl mx-auto p-6 text-center mt-20">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-gray-50 flex items-center justify-center p-6 mt-20">
 
-      <div className="rounded-3xl border bg-white p-10 shadow-lg">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden">
 
-        <div className="mb-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-            <svg
-              className="h-10 w-10 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+        {/* HEADER */}
+        <div className="bg-orange-500 p-6 text-center text-white">
+          <div className="text-5xl">✅</div>
+
+          <h1 className="text-2xl font-bold mt-2">
+            Order Successful
+          </h1>
+
+          <p className="text-orange-100 mt-1">
+            Your order has been saved successfully
+          </p>
+        </div>
+
+        {/* BODY */}
+        <div className="p-6 space-y-6">
+
+          {/* ORDER NUMBER */}
+          <div className="text-center">
+            <p className="text-gray-500 text-sm">
+              Your Order Number
+            </p>
+
+            <div className="mt-2 flex items-center justify-center gap-2">
+              <span className="text-xl font-bold text-gray-800">
+                {orderNumber}
+              </span>
+
+              <button
+                onClick={copyOrderNumber}
+                className="text-sm px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+              >
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
           </div>
-        </div>
 
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">
-          Thank You!
-        </h1>
+          {/* STATUS CARD */}
+          <div className="rounded-2xl border bg-gray-50 p-4 text-center">
+            <p className="text-sm text-gray-500">
+              Current Status
+            </p>
 
-        <p className="text-lg text-gray-600 mb-6">
-          Your order has been submitted successfully.
-        </p>
+            <p className="mt-1 font-semibold text-orange-600">
+              {order?.status || 'Pending Confirmation'}
+            </p>
 
-        <div className="rounded-2xl border bg-gray-50 p-6 mb-8">
-          <p className="text-gray-500 text-sm">
-            Order Number
-          </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {order?.status === 'Pending Confirmation' && 'We will review your order shortly'}
+              {order?.status === 'Confirmed' && 'Your order has been confirmed'}
+              {order?.status === 'In Production' && 'We are now preparing your order'}
+              {order?.status === 'Ready for Pickup' && 'Your order is ready for pickup'}
+              {order?.status === 'Out for Delivery' && 'Your order is on the way'}
+              {!order?.status && 'We will review your order shortly'}
+            </p>
+          </div>
 
-          <h2 className="text-3xl font-bold mt-2 text-orange-500">
-            {orderNumber || 'Processing...'}
-          </h2>
-        </div>
+          {/* NEXT STEPS */}
+          <div className="space-y-2 text-sm text-gray-600">
+            <p>✔ Your order has been received</p>
+            <p>✔ Our team will review your details</p>
+            <p>✔ We will contact you for confirmation & downpayment</p>
+            <p>✔ Production will start after confirmation</p>
+          </div>
 
-        <div className="rounded-2xl bg-orange-50 p-5 mb-8 text-left">
-          <h3 className="font-semibold text-orange-600 mb-2">
-            Important
-          </h3>
+        {/* ACTION BUTTONS */}
+        <div className="space-y-3 pt-2">
 
-          <p className="text-sm text-gray-700">
-            Please save your order number. You can use it to
-            track the status of your order anytime.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-4 md:flex-row md:justify-center">
+          <button
+            onClick={openMessenger}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition"
+          >
+            Continue on Messenger
+          </button>
 
           <Link
-            to="/track-order"
-            className="rounded-xl bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
+            to={`/track-order?order=${orderNumber}`}
+            className="block text-center w-full border border-orange-500 text-orange-600 py-3 rounded-xl hover:bg-orange-50 transition font-semibold"
           >
-            Track Order
+            Track Your Order
           </Link>
 
           <Link
             to="/"
-            className="rounded-xl border px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+            className="block text-center w-full border py-3 rounded-xl hover:bg-gray-50 transition"
           >
             Back to Home
           </Link>
 
         </div>
 
+          {/* FOOTER NOTE */}
+          <p className="text-xs text-center text-gray-400 pt-2">
+            Please save your order number for tracking and inquiries
+          </p>
+
+        </div>
       </div>
     </div>
   )
 }
-
-export default OrderSuccessPage

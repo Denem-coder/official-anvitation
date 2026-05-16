@@ -38,16 +38,27 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
     selectedVariant?.minQty || selectedSouvenir?.minQty || 1
 
   const filteredPackages = useMemo(() => {
-    if (!selectedVariant) return packages
+    if (!selectedSouvenir) {
+      return packages
+    }
 
-    return packages.filter((pkg) => {
-      if (!pkg.variantIds || pkg.variantIds.length === 0) return true
+    const designSlug =
+      selectedDesign?.slug ||
+      selectedSouvenir?.slug ||
+      selectedSouvenir?.id
 
-      return pkg.variantIds
-        .map((id) => String(id).trim().toLowerCase())
-        .includes(selectedVariant.id.toLowerCase())
-    })
-  }, [packages, selectedVariant])
+    if (!designSlug) {
+      return packages
+    }
+
+    return packages.filter((pkg) =>
+      pkg.designSlugs?.includes(designSlug)
+    )
+  }, [
+    packages,
+    selectedDesign,
+    selectedSouvenir,
+  ])
 
   const [orderMode, setOrderMode] = useState('product')
   const [quantity, setQuantity] = useState(activeMinQty)
@@ -73,11 +84,8 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
 
   const overallTotal = cartSubtotal + currentTotal
 
-  if (!selectedSouvenir) return
-
-  if (activePrice <= 0) {
+  if (activePrice <= 0 && selectedSouvenir) {
     console.warn('Invalid price detected')
-    return
   }
 
   const canAddToCart =
@@ -212,7 +220,7 @@ function SouvenirPackageTemplate({ title, subtitle, packages = [] }) {
             </p>
 
             <p className="mt-2 text-sm text-gray-600">
-              Choose a souvenir item first so we can prepare your order details.
+              Choose a souvenir item first to add quantity and view all the packages available for that particular one.
             </p>
 
             <Link
